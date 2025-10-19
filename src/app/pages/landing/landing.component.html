@@ -1,0 +1,229 @@
+<!-- NAVBAR -->
+<header class="nav">
+  <div class="container">
+    <a class="brand" routerLink="/">
+      <img src="assets/wisepicklogo.png" alt="" />
+    </a>
+
+    <input id="menu-toggle" type="checkbox" />
+    <label for="menu-toggle" class="hamburger" aria-label="Menú">☰</label>
+
+    <nav class="links">
+      <a href="#home">Inicio</a>
+      <a href="#products">Productos</a>
+      <a href="#pricing">Planes</a>
+      <a href="#about">Nosotros</a>
+    </nav>
+
+    <div class="actions">
+      <a class="btn ghost" routerLink="/login">Iniciar sesión</a>
+      <a class="btn primary" routerLink="/dashboard" href="#cta">Probar Gratis</a>
+    </div>
+  </div>
+</header>
+
+<main id="home">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="col text">
+        <h1>Tú empresa más <b>ÁGIL</b><br /><span>Tus ventas más ALTAS!</span></h1>
+        <p class="lead">
+          Gestiona inventario, analiza tu negocio y vende más con campañas efectivas.
+          Digitaliza tu negocio y hazlo crecer con análisis, inventario y marketing
+          inteligente.
+        </p>
+        <div class="cta">
+          <a class="btn primary" routerLink="/dashboard" href="#cta">Empieza gratis !</a>
+          <small class="note">Ahora!</small>
+        </div>
+      </div>
+
+      <div class="col art">
+        <img src="assets/bussinesvision.png" alt="Ilustración hero" />
+      </div>
+    </div>
+    <div class="curve"></div>
+  </section>
+
+  <!-- ¿QUÉ PUEDES HACER? -->
+  <section class="section center">
+    <div class="container">
+      <h2>¿Qué puedes hacer con WisePick?</h2>
+      <p class="muted">Impulsa tu negocio con herramientas inteligentes.</p>
+
+      <div class="features-grid">
+        <article class="card">
+          <img src="assets/charticon.png" alt="" />
+          <h3>Análisis de datos</h3>
+          <p>Analiza ventas, clientes y productos para descubrir patrones y tendencias.</p>
+        </article>
+
+        <article class="card">
+          <img src="assets/brainicon.png" alt="" />
+          <h3>Recomendaciones personalizadas</h3>
+          <p>Algoritmos que sugieren productos y campañas adaptadas a cada cliente.</p>
+        </article>
+
+        <article class="card">
+          <img src="assets/dashboardicon.png" alt="" />
+          <h3>Dashboard interactivo</h3>
+          <p>Visualiza métricas en tiempo real con un panel claro y simple.</p>
+        </article>
+
+        <article class="card">
+          <img src="assets/features/automation.svg" alt="" />
+          <h3>Automatización de marketing</h3>
+          <p>Segmenta clientes y lanza campañas automáticas que fidelizan.</p>
+        </article>
+
+        <article class="card">
+          <img src="assets/cloudicon.png" alt="" />
+          <h3>Escalabilidad en la nube</h3>
+          <p>Arquitectura moderna basada en microservicios, segura y accesible.</p>
+        </article>
+      </div>
+
+      <div class="center mt-24">
+        <a class="btn primary" href="#cta">Suscríbete gratis ahora</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSISTEMA -->
+  <section class="ecosystem">
+    <div class="container eco-grid">
+      <div class="eco-graphic">
+        <img src="assets/ecosystem/ring.png" alt="Ecosistema" />
+      </div>
+      <div class="eco-copy">
+        <span class="pill purple">For Product Teams</span>
+        <h3>Conéctate con el mejor ecosistema</h3>
+        <p>
+          WisePick integra datos de venta, clientes e inventario desde múltiples fuentes
+          en una sola plataforma. Stack cloud con microservicios para máxima velocidad y
+          seguridad.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINES -->
+  <section class="pipelines">
+    <div class="container pipes-grid">
+      <div class="pipes-copy">
+        <span class="pill indigo">For Engineering Teams</span>
+        <h3>Data-driven pipelines in minutes</h3>
+        <p>
+          Maintenance-free data pipelines with quick set-up powered by a modern & scalable
+          platform.
+        </p>
+      </div>
+      <div class="pipes-graphic">
+        <img src="assets/ecosystem/stack.png" alt="Diagrama stack" />
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIO -->
+  <section class="testimonial">
+    <div class="container">
+      <blockquote>
+        “What I love about Qubly is the easy way we can collaborate even if there is a lot
+        of people involved in the process”
+      </blockquote>
+      <div class="person">
+        <img src="assets/people/testimonial.jpg" alt="Guillaume Cabane" />
+        <div>
+          <b>Guillaume Cabane</b>
+          <span>CTO @ BigSpring</span>
+        </div>
+      </div>
+
+      <div class="logos">
+        <img src="assets/logos/tonkean.svg" alt="Tonkean" />
+        <img src="assets/logos/bigspring.svg" alt="BigSpring" />
+        <img src="assets/logos/clearbit.svg" alt="Clearbit" />
+        <img src="assets/logos/mine.svg" alt="Mine" />
+        <img src="assets/logos/shake.svg" alt="Shake" />
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <!--section id="cta" class="cta">
+    <div class="container">
+      <form class="cta-form" (submit)="$event.preventDefault()">
+        <label>Subscribe</label>
+        <div class="row">
+          <input type="email" required placeholder="Enter your email address" />
+          <button class="btn primary" type="submit">Subscribe</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>-->
+
+<footer class="footer">
+  <div class="container grid">
+    <!-- Columna de suscripción -->
+    <div class="footer-subscribe">
+      <h5>Subscribe</h5>
+      <form class="cta-form" (submit)="$event.preventDefault()">
+        <div class="row">
+          <input type="email" required placeholder="Enter your email Address" />
+          <button class="btn primary" type="submit">Subscribe</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Product -->
+    <div>
+      <h5>Product</h5>
+      <a href="#">Landing Page</a>
+      <a href="#">Popup Builder</a>
+      <a href="#">Web-design</a>
+      <a href="#">Content</a>
+      <a href="#">Integrations</a>
+    </div>
+
+    <!-- Use Cases -->
+    <div>
+      <h5>Use Cases</h5>
+      <a href="#">Web-designers</a>
+      <a href="#">Marketers</a>
+      <a href="#">Small Business</a>
+      <a href="#">Website Builder</a>
+    </div>
+
+    <!-- Resources -->
+    <div>
+      <h5>Resources</h5>
+      <a href="#">Academy</a>
+      <a href="#">Blog</a>
+      <a href="#">Themes</a>
+      <a href="#">Hosting</a>
+      <a href="#">Developers</a>
+      <a href="#">Support</a>
+    </div>
+
+    <!-- Company -->
+    <div>
+      <h5>Company</h5>
+      <a href="#">About Us</a>
+      <a href="#">Careers</a>
+      <a href="#">FAQs</a>
+      <a href="#">Teams</a>
+      <a href="#">Contact Us</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <a class="brand" routerLink="/">
+      <img src="assets/logo/wisepicklogo.png" alt="" />
+      <span>WisePick</span>
+    </a>
+    <small>© {{ year }} All Rights Reserved</small>
+  </div>
+</footer>
+

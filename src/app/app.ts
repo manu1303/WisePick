@@ -1,28 +1,11 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <h1>🔥 WisePick conectado a Firestore</h1>
-    <p>Documentos en la colección "test":</p>
-    <ul>
-      <li *ngFor="let item of items$ | async">
-        {{ item | json }}
-      </li>
-    </ul>
-  `,
+  imports: [RouterOutlet],
+  template: `<router-outlet></router-outlet>`,
 })
-export class AppComponent {
-  private firestore = inject(Firestore);
-  items$: Observable<any[]>;
+export class AppComponent {}
 
-  constructor() {
-    const testCollection = collection(this.firestore, 'test');
-    this.items$ = collectionData(testCollection, { idField: 'id' });
-  }
-}
