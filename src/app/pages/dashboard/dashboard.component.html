@@ -1,31 +1,51 @@
 <div class="layout">
+  <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="logo" routerLink="/">
-      <img src="assets/icons/wisePickLogo.svg" alt="Wisepick" />
-    </div>
+    <a class="brand" routerLink="/">
+      <img src="assets/wisepicklogo.svg" alt="WisePick" />
+      <span>WisePick</span>
+    </a>
 
+    <p class="section-title">Navegación principal</p>
     <nav class="menu">
-      <a routerLink="/dashboard" routerLinkActive="active">
-        <i class="icon-home"></i> Inicio
-      </a>
-      <a routerLink="/dashboard/projects">
-        <i class="icon-folder"></i> Proyectos
-      </a>
-      <a routerLink="/dashboard/analytics">
-        <i class="icon-chart"></i> Análisis
-      </a>
-      <a routerLink="/dashboard/inventory">
-        <i class="icon-box"></i> Inventario
-      </a>
+      <a routerLink="/dashboard/home" routerLinkActive="active"><i>🏠</i> Inicio</a>
+      <a routerLink="/dashboard/projects" routerLinkActive="active"><i>📁</i> Proyectos</a>
+      <a routerLink="/dashboard/analytics" routerLinkActive="active"><i>📊</i> Análisis</a>
+      <a routerLink="/dashboard/inventory" routerLinkActive="active"><i>📦</i> Inventario</a>
     </nav>
+
+    <p class="section-title">Gestión</p>
+    <nav class="menu">
+      <a routerLink="/dashboard/clients" routerLinkActive="active"><i>👥</i> Clientes</a>
+      <a routerLink="/dashboard/docs" routerLinkActive="active"><i>📄</i> Documentos</a>
+    </nav>
+
+    <p class="section-title">Soporte</p>
+    <nav class="menu">
+      <a routerLink="/dashboard/support" routerLinkActive="active"><i>❓</i> Ayuda y Soporte</a>
+    </nav>
+
+    <div class="user">
+      <div class="avatar">JP</div>
+      <div class="info">
+        <b>Pao JP</b>
+        <small>paojp@mail.com</small>
+      </div>
+    </div>
   </aside>
 
+  <!-- Topbar -->
   <header class="topbar">
     <input class="search" type="text" placeholder="🔍 Buscar..." />
-    <button class="btn primary">+ Nuevo Proyecto</button>
+    <div class="actions">
+      <button class="btn ghost">🔔</button>
+      <button class="btn primary">+ Nuevo Proyecto</button>
+    </div>
   </header>
 
+  <!-- Contenido -->
   <main class="content">
     <router-outlet></router-outlet>
   </main>
 </div>
+
