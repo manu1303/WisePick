@@ -1,28 +1,52 @@
-<div class="layout">
+<div class="layout" [class.collapsed]="isSidebarCollapsed">
   <!-- Sidebar -->
   <aside class="sidebar">
     <a class="brand" routerLink="/">
-      <img src="assets/wisepicklogo.svg" alt="WisePick" />
-      <span>WisePick</span>
+      <img class="brand-logo" src="assets/wisepicklogo.svg" alt="WisePick" />
     </a>
 
     <p class="section-title">Navegación principal</p>
     <nav class="menu">
-      <a routerLink="/dashboard/home" routerLinkActive="active"><i>🏠</i> Inicio</a>
-      <a routerLink="/dashboard/projects" routerLinkActive="active"><i>📁</i> Proyectos</a>
-      <a routerLink="/dashboard/analytics" routerLinkActive="active"><i>📊</i> Análisis</a>
-      <a routerLink="/dashboard/inventory" routerLinkActive="active"><i>📦</i> Inventario</a>
+      <a class="item" routerLink="/dashboard/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <img class="ico" src="assets/homepick.svg" alt="" />
+        <span>Inicio</span>
+      </a>
+      <a class="item" routerLink="/dashboard/projects" routerLinkActive="active">
+        <img class="ico" src="assets/folderpick.svg" alt="" />
+        <span>Proyectos</span>
+      </a>
+      <a class="item" routerLink="/dashboard/dash" routerLinkActive="active">
+        <img class="ico" src="assets/dashpick.svg" alt="" />
+        <span>Dashboard</span>
+      </a>
+      <a class="item" routerLink="/dashboard/analytics" routerLinkActive="active">
+        <img class="ico" src="assets/chartpick.svg" alt="" />
+        <span>Análisis</span>
+      </a>
+      <a class="item" routerLink="/dashboard/inventory" routerLinkActive="active">
+        <img class="ico" src="assets/lockerpick.svg" alt="" />
+        <span>Inventario</span>
+      </a>
     </nav>
 
     <p class="section-title">Gestión</p>
     <nav class="menu">
-      <a routerLink="/dashboard/clients" routerLinkActive="active"><i>👥</i> Clientes</a>
-      <a routerLink="/dashboard/docs" routerLinkActive="active"><i>📄</i> Documentos</a>
+      <a class="item" routerLink="/dashboard/clients" routerLinkActive="active">
+        <img class="ico" src="assets/clientpick.svg" alt="" />
+        <span>Clientes</span>
+      </a>
+      <a class="item" routerLink="/dashboard/docs" routerLinkActive="active">
+        <img class="ico" src="assets/docpick.svg" alt="" />
+        <span>Documentos</span>
+      </a>
     </nav>
 
     <p class="section-title">Soporte</p>
     <nav class="menu">
-      <a routerLink="/dashboard/support" routerLinkActive="active"><i>❓</i> Ayuda y Soporte</a>
+      <a class="item" routerLink="/dashboard/support" routerLinkActive="active">
+        <img class="ico" src="assets/helppick.svg" alt="" />
+        <span>Ayuda y Soporte</span>
+      </a>
     </nav>
 
     <div class="user">
@@ -35,17 +59,37 @@
   </aside>
 
   <!-- Topbar -->
-  <header class="topbar">
-    <input class="search" type="text" placeholder="🔍 Buscar..." />
-    <div class="actions">
-      <button class="btn ghost">🔔</button>
-      <button class="btn primary">+ Nuevo Proyecto</button>
-    </div>
-  </header>
+ <header class="topbar">
+  <!-- LADO IZQUIERDO: toggle de sidebar -->
+  <div class="left">
+    <button class="icon-btn" type="button" (click)="toggleSidebar()" aria-label="Ocultar/mostrar menú">
+      <img src="assets/panelpick.svg" alt="" />
+    </button>
+  </div>
 
-  <!-- Contenido -->
+  <!-- CENTRO: buscador al 50% -->
+  <div class="center">
+    <input class="search" type="text" placeholder="🔍 Search" />
+  </div>
+
+  <!-- DERECHA: acciones -->
+  <div class="right">
+    <button class="btn primary" type="button">+ Nuevo Proyecto</button>
+    <button class="icon-btn" type="button" aria-label="Notificaciones">
+      <img src="assets/ringpick.svg" alt="" />
+    </button>
+    <button class="icon-btn" type="button" aria-label="Usuario">
+      <img class="avatar-ico" src="assets/userpick.svg" alt="" />
+    </button>
+  </div>
+</header>
+
+  <!-- Área de trabajo -->
   <main class="content">
     <router-outlet></router-outlet>
   </main>
 </div>
+
+
+
 
