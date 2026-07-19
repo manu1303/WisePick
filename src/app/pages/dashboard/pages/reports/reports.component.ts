@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
-  selector: 'app-support',
+  selector: 'app-reports',
   imports: [CommonModule],
-  templateUrl: './support.component.html',
+  templateUrl: './reports.component.html',
 })
-export class SupportComponent {}
-
+export class ReportsComponent {}

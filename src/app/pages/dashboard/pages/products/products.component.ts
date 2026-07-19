@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
-  selector: 'app-home',
+  selector: 'app-products',
   imports: [CommonModule],
-  templateUrl: './projects.component.html',
+  templateUrl: './products.component.html',
 })
-export class ProjectsComponent {}
+export class ProductsComponent {}

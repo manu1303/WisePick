@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
+  selector: 'app-campaigns',
   standalone: true,
-  selector: 'app-home',
   imports: [CommonModule],
-  templateUrl: './analytics.component.html',
+  templateUrl: './campaigns.component.html',
+  styleUrl: './campaigns.component.scss'
 })
-export class AnalyticsComponent {}
-
-
+export class CampaignsComponent {}

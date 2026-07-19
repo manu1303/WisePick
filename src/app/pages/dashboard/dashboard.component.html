@@ -2,50 +2,59 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <a class="brand" routerLink="/">
-      <img class="brand-logo" src="assets/wisepicklogo.svg" alt="WisePick" />
+      <img class="brand-logo" src="/assets/wisepicklogo.svg" alt="WisePick" />
     </a>
 
     <p class="section-title">Navegación principal</p>
     <nav class="menu">
       <a class="item" routerLink="/dashboard/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <img class="ico" src="assets/homepick.svg" alt="" />
+        <img class="ico" src="/assets/homepick.svg" alt="" />
         <span>Inicio</span>
       </a>
-      <a class="item" routerLink="/dashboard/projects" routerLinkActive="active">
-        <img class="ico" src="assets/folderpick.svg" alt="" />
-        <span>Proyectos</span>
+      <a class="item" routerLink="/dashboard/company" routerLinkActive="active">
+        <img class="ico" src="/assets/folderpick.svg" alt="" />
+        <span>Mi Empresa</span>
+      </a>
+      <a class="item" routerLink="/dashboard/products" routerLinkActive="active">
+        <img class="ico" src="/assets/lockerpick.svg" alt="" />
+        <span>Productos</span>
+      </a>
+      <a class="item" routerLink="/dashboard/sales" routerLinkActive="active">
+        <img class="ico" src="/assets/chartpick.svg" alt="" />
+        <span>Ventas</span>
+      </a>
+      <a class="item" routerLink="/dashboard/clients" routerLinkActive="active">
+        <img class="ico" src="/assets/clientpick.svg" alt="" />
+        <span>Clientes</span>
       </a>
       <a class="item" routerLink="/dashboard/dash" routerLinkActive="active">
-        <img class="ico" src="assets/dashpick.svg" alt="" />
+        <img class="ico" src="/assets/dashboardpick.svg" alt="" />
         <span>Dashboard</span>
       </a>
-      <a class="item" routerLink="/dashboard/analytics" routerLinkActive="active">
-        <img class="ico" src="assets/chartpick.svg" alt="" />
-        <span>Análisis</span>
+        <a class="item" routerLink="/dashboard/marketing-ia"routerLinkActive="active">
+        <img class="ico" src="/assets/marketingpick.svg" alt="" />
+        <span>Marketing IA</span>
       </a>
-      <a class="item" routerLink="/dashboard/inventory" routerLinkActive="active">
-        <img class="ico" src="assets/lockerpick.svg" alt="" />
-        <span>Inventario</span>
+        <a class="item" routerLink="/dashboard/campaigns"routerLinkActive="active">
+        <img class="ico" src="assets/marketingpick.svg" alt="" />
+        <span>Campañas</span>
       </a>
+      
     </nav>
 
     <p class="section-title">Gestión</p>
     <nav class="menu">
-      <a class="item" routerLink="/dashboard/clients" routerLinkActive="active">
-        <img class="ico" src="assets/clientpick.svg" alt="" />
-        <span>Clientes</span>
-      </a>
-      <a class="item" routerLink="/dashboard/docs" routerLinkActive="active">
-        <img class="ico" src="assets/docpick.svg" alt="" />
-        <span>Documentos</span>
+      <a class="item" routerLink="/dashboard/reports" routerLinkActive="active">
+        <img class="ico" src="/assets/docpick.svg" alt="" />
+        <span>Reportes</span>
       </a>
     </nav>
 
     <p class="section-title">Soporte</p>
     <nav class="menu">
       <a class="item" routerLink="/dashboard/support" routerLinkActive="active">
-        <img class="ico" src="assets/helppick.svg" alt="" />
-        <span>Ayuda y Soporte</span>
+        <img class="ico" src="/assets/helppick.svg" alt="" />
+        <span>Configuración</span>
       </a>
     </nav>
 
@@ -63,7 +72,7 @@
   <!-- LADO IZQUIERDO: toggle de sidebar -->
   <div class="left">
     <button class="icon-btn" type="button" (click)="toggleSidebar()" aria-label="Ocultar/mostrar menú">
-      <img src="assets/panelpick.svg" alt="" />
+      <img src="/assets/panelpick.svg" alt="" />
     </button>
   </div>
 
@@ -76,10 +85,10 @@
   <div class="right">
     <button class="btn primary" type="button">+ Nuevo Proyecto</button>
     <button class="icon-btn" type="button" aria-label="Notificaciones">
-      <img src="assets/ringpick.svg" alt="" />
+      <img src="/assets/ringpick.svg" alt="" />
     </button>
     <button class="icon-btn" type="button" aria-label="Usuario">
-      <img class="avatar-ico" src="assets/userpick.svg" alt="" />
+      <img class="avatar-ico" src="/assets/userpick.svg" alt="" />
     </button>
   </div>
 </header>
