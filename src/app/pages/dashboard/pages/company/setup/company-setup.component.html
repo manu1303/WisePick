@@ -1,0 +1,479 @@
+<div class="company-setup-page">
+
+  <div class="setup-container">
+
+    <!-- CABECERA -->
+
+    <div class="setup-header">
+
+      <div>
+        <span class="eyebrow">
+          CONFIGURACIÓN INICIAL
+        </span>
+
+        <h1>Cuéntanos sobre tu empresa</h1>
+
+        <p>
+          Esta información ayudará a WisePick a personalizar tus análisis
+          y recomendaciones.
+        </p>
+      </div>
+
+      <div class="step-counter">
+        Paso {{ currentStep }} de {{ totalSteps }}
+      </div>
+
+    </div>
+
+
+    <!-- PROGRESO -->
+
+    <div class="progress-wrapper">
+
+      <div class="progress-track">
+        <div
+          class="progress-fill"
+          [style.width.%]="(currentStep / totalSteps) * 100">
+        </div>
+      </div>
+
+      <div class="progress-labels">
+
+        <span [class.active]="currentStep >= 1">
+          Empresa
+        </span>
+
+        <span [class.active]="currentStep >= 2">
+          Negocio
+        </span>
+
+        <span [class.active]="currentStep >= 3">
+          Ventas
+        </span>
+
+        <span [class.active]="currentStep >= 4">
+          Objetivos
+        </span>
+
+        <span [class.active]="currentStep >= 5">
+          Inicio
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- CARD PRINCIPAL -->
+
+    <div class="setup-card">
+
+
+      <!-- PASO 1 -->
+
+      <div *ngIf="currentStep === 1" class="step">
+
+        <span class="step-icon">🏢</span>
+
+        <h2>Información de tu empresa</h2>
+
+        <p class="step-description">
+          Empecemos con los datos básicos.
+        </p>
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+            <label>Nombre de la empresa</label>
+
+            <input
+              type="text"
+              placeholder="Ej. Textiles Andinos"
+              [(ngModel)]="company.name">
+          </div>
+
+          <div class="form-group">
+            <label>Ciudad</label>
+
+            <select [(ngModel)]="company.city">
+              <option value="">Selecciona una ciudad</option>
+              <option value="Quito">Quito</option>
+              <option value="Guayaquil">Guayaquil</option>
+              <option value="Cuenca">Cuenca</option>
+              <option value="Ambato">Ambato</option>
+              <option value="Otra">Otra</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Número de empleados</label>
+
+            <select [(ngModel)]="company.employeesRange">
+              <option value="">Selecciona una opción</option>
+              <option value="1-5">1 - 5</option>
+              <option value="6-20">6 - 20</option>
+              <option value="21-50">21 - 50</option>
+              <option value="50+">Más de 50</option>
+            </select>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PASO 2 -->
+
+      <div *ngIf="currentStep === 2" class="step">
+
+        <span class="step-icon">🧵</span>
+
+        <h2>¿Cómo funciona tu negocio?</h2>
+
+        <p class="step-description">
+          Selecciona la opción que mejor describe tu empresa.
+        </p>
+
+        <div class="option-grid">
+
+          <button
+            class="option-card"
+            [class.selected]="company.businessType === 'Fabricante'"
+            (click)="company.businessType = 'Fabricante'">
+
+            <strong>Fabricante</strong>
+            <span>Produces tus propias prendas.</span>
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="company.businessType === 'Distribuidor'"
+            (click)="company.businessType = 'Distribuidor'">
+
+            <strong>Distribuidor</strong>
+            <span>Comercializas productos de terceros.</span>
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="company.businessType === 'Tienda física'"
+            (click)="company.businessType = 'Tienda física'">
+
+            <strong>Tienda física</strong>
+            <span>Vendes directamente en un local.</span>
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="company.businessType === 'Tienda online'"
+            (click)="company.businessType = 'Tienda online'">
+
+            <strong>Tienda online</strong>
+            <span>Vendes principalmente por canales digitales.</span>
+          </button>
+
+        </div>
+
+
+        <h3 class="section-question">
+          ¿Qué productos vendes principalmente?
+        </h3>
+
+
+        <div class="chips">
+
+          <button
+            class="chip"
+            [class.selected]="isSelected(company.categories, 'Camisetas')"
+            (click)="toggleCategory('Camisetas')">
+            Camisetas
+          </button>
+
+          <button
+            class="chip"
+            [class.selected]="isSelected(company.categories, 'Jeans')"
+            (click)="toggleCategory('Jeans')">
+            Jeans
+          </button>
+
+          <button
+            class="chip"
+            [class.selected]="isSelected(company.categories, 'Uniformes')"
+            (click)="toggleCategory('Uniformes')">
+            Uniformes
+          </button>
+
+          <button
+            class="chip"
+            [class.selected]="isSelected(company.categories, 'Moda femenina')"
+            (click)="toggleCategory('Moda femenina')">
+            Moda femenina
+          </button>
+
+          <button
+            class="chip"
+            [class.selected]="isSelected(company.categories, 'Moda masculina')"
+            (click)="toggleCategory('Moda masculina')">
+            Moda masculina
+          </button>
+
+          <button
+            class="chip"
+            [class.selected]="isSelected(company.categories, 'Ropa deportiva')"
+            (click)="toggleCategory('Ropa deportiva')">
+            Ropa deportiva
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PASO 3 -->
+
+      <div *ngIf="currentStep === 3" class="step">
+
+        <span class="step-icon">📊</span>
+
+        <h2>Conozcamos tus ventas</h2>
+
+        <p class="step-description">
+          Esto nos ayudará a conocer el nivel de digitalización de tu negocio.
+        </p>
+
+
+        <h3 class="section-question">
+          ¿Cómo registras actualmente tus ventas?
+        </h3>
+
+        <div class="option-grid">
+
+          <button
+            class="option-card"
+            [class.selected]="company.salesRecordMethod === 'Papel'"
+            (click)="company.salesRecordMethod = 'Papel'">
+            <strong>📝 Papel</strong>
+            <span>Cuaderno, notas o registros manuales.</span>
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="company.salesRecordMethod === 'Excel'"
+            (click)="company.salesRecordMethod = 'Excel'">
+            <strong>📊 Excel</strong>
+            <span>Hojas de cálculo.</span>
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="company.salesRecordMethod === 'ERP'"
+            (click)="company.salesRecordMethod = 'ERP'">
+            <strong>💻 Sistema / ERP</strong>
+            <span>Software de gestión o facturación.</span>
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="company.salesRecordMethod === 'Sin registro'"
+            (click)="company.salesRecordMethod = 'Sin registro'">
+            <strong>Sin registro</strong>
+            <span>No llevo un registro formal.</span>
+          </button>
+
+        </div>
+
+
+        <h3 class="section-question">
+          ¿Cuántas ventas realizas aproximadamente al día?
+        </h3>
+
+        <div class="chips">
+
+          <button
+            class="chip"
+            [class.selected]="company.dailySalesRange === '1-20'"
+            (click)="company.dailySalesRange = '1-20'">
+            1 - 20
+          </button>
+
+          <button
+            class="chip"
+            [class.selected]="company.dailySalesRange === '21-50'"
+            (click)="company.dailySalesRange = '21-50'">
+            21 - 50
+          </button>
+
+          <button
+            class="chip"
+            [class.selected]="company.dailySalesRange === '51-100'"
+            (click)="company.dailySalesRange = '51-100'">
+            51 - 100
+          </button>
+
+          <button
+            class="chip"
+            [class.selected]="company.dailySalesRange === '100+'"
+            (click)="company.dailySalesRange = '100+'">
+            Más de 100
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PASO 4 -->
+
+      <div *ngIf="currentStep === 4" class="step">
+
+        <span class="step-icon">🎯</span>
+
+        <h2>¿Qué quieres mejorar?</h2>
+
+        <p class="step-description">
+          Puedes seleccionar varias opciones.
+        </p>
+
+        <div class="option-grid">
+
+          <button
+            class="option-card"
+            [class.selected]="isSelected(company.objectives, 'Aumentar ventas')"
+            (click)="toggleObjective('Aumentar ventas')">
+
+            <strong>Aumentar ventas</strong>
+            <span>Encontrar nuevas oportunidades comerciales.</span>
+
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="isSelected(company.objectives, 'Conocer clientes')"
+            (click)="toggleObjective('Conocer clientes')">
+
+            <strong>Conocer mis clientes</strong>
+            <span>Identificar comportamiento y recurrencia.</span>
+
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="isSelected(company.objectives, 'Marketing')"
+            (click)="toggleObjective('Marketing')">
+
+            <strong>Mejorar marketing</strong>
+            <span>Crear campañas más efectivas.</span>
+
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="isSelected(company.objectives, 'Inventario')"
+            (click)="toggleObjective('Inventario')">
+
+            <strong>Optimizar inventario</strong>
+            <span>Identificar productos de baja y alta rotación.</span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PASO 5 -->
+
+      <div *ngIf="currentStep === 5" class="step">
+
+        <span class="step-icon">✨</span>
+
+        <h2>¿Cómo deseas comenzar?</h2>
+
+        <p class="step-description">
+          Elige cómo quieres proporcionar los primeros datos a WisePick.
+        </p>
+
+        <div class="option-grid">
+
+          <button
+            class="option-card"
+            [class.selected]="company.preferredDataSource === 'Manual'"
+            (click)="company.preferredDataSource = 'Manual'">
+
+            <strong>✍️ Registro manual</strong>
+            <span>Ideal para pocas ventas al día.</span>
+
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="company.preferredDataSource === 'Excel'"
+            (click)="company.preferredDataSource = 'Excel'">
+
+            <strong>📊 Importar Excel</strong>
+            <span>Carga múltiples registros rápidamente.</span>
+
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="company.preferredDataSource === 'Factura'"
+            (click)="company.preferredDataSource = 'Factura'">
+
+            <strong>📷 Foto o factura</strong>
+            <span>WisePick extraerá los datos con IA.</span>
+
+          </button>
+
+          <button
+            class="option-card"
+            [class.selected]="company.preferredDataSource === 'Demo'"
+            (click)="company.preferredDataSource = 'Demo'">
+
+            <strong>✨ Datos de prueba</strong>
+            <span>Explora WisePick antes de cargar información real.</span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- BOTONES -->
+
+      <div class="navigation-buttons">
+
+        <button
+          type="button"
+          class="secondary-button"
+          *ngIf="currentStep > 1"
+          (click)="previousStep()">
+          ← Atrás
+        </button>
+
+        <div class="spacer"></div>
+
+        <button
+          type="button"
+          class="primary-button"
+          *ngIf="currentStep < totalSteps"
+          (click)="nextStep()">
+          Continuar →
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          *ngIf="currentStep === totalSteps"
+          (click)="finishSetup()">
+          Finalizar configuración
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,487 @@
+<div class="manual-sale-page">
+
+  <div class="page-container">
+
+
+    <!-- =======================
+         HEADER
+    ======================== -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          VENTAS · REGISTRO MANUAL
+        </span>
+
+        <h1>
+          Registrar una venta
+        </h1>
+
+        <p>
+          Ingresa la información principal de la venta.
+          WisePick utilizará estos datos para actualizar
+          tus análisis comerciales.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="goBack()"
+      >
+        ← Cambiar método
+      </button>
+
+    </div>
+
+
+    <!-- =======================
+         FORMULARIO
+    ======================== -->
+
+    <div
+      class="sale-layout"
+      *ngIf="!saleSaved"
+    >
+
+
+      <!-- FORM -->
+
+      <div class="sale-card">
+
+        <div class="card-title">
+
+          <div class="title-icon">
+            ✍️
+          </div>
+
+          <div>
+
+            <span>
+              NUEVA VENTA
+            </span>
+
+            <h2>
+              Información de la venta
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <!-- FECHA -->
+
+          <div class="form-group">
+
+            <label>
+              Fecha de venta *
+            </label>
+
+            <input
+              type="date"
+              [(ngModel)]="sale.saleDate"
+            >
+
+          </div>
+
+
+          <!-- CLIENTE -->
+
+          <div class="form-group">
+
+            <label>
+              Cliente
+            </label>
+
+            <input
+              type="text"
+              placeholder="Ej. María López"
+              [(ngModel)]="sale.customerName"
+            >
+
+            <small>
+              Opcional si no tienes identificado al cliente.
+            </small>
+
+          </div>
+
+
+          <!-- PRODUCTO -->
+
+          <div class="form-group full">
+
+            <label>
+              Producto *
+            </label>
+
+            <input
+              type="text"
+              placeholder="Ej. Jean clásico azul"
+              [(ngModel)]="sale.productName"
+            >
+
+          </div>
+
+
+          <!-- CANTIDAD -->
+
+          <div class="form-group">
+
+            <label>
+              Cantidad *
+            </label>
+
+            <input
+              type="number"
+              min="1"
+              [(ngModel)]="sale.quantity"
+            >
+
+          </div>
+
+
+          <!-- PRECIO -->
+
+          <div class="form-group">
+
+            <label>
+              Precio unitario *
+            </label>
+
+            <div class="money-input">
+
+              <span>
+                $
+              </span>
+
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                [(ngModel)]="sale.unitPrice"
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- PAGO -->
+
+          <div class="form-group full">
+
+            <label>
+              Método de pago *
+            </label>
+
+            <div class="payment-grid">
+
+
+              <button
+                type="button"
+                class="payment-option"
+                [class.selected]="sale.paymentMethod === 'Efectivo'"
+                (click)="sale.paymentMethod = 'Efectivo'"
+              >
+                💵
+                <span>Efectivo</span>
+              </button>
+
+
+              <button
+                type="button"
+                class="payment-option"
+                [class.selected]="sale.paymentMethod === 'Transferencia'"
+                (click)="sale.paymentMethod = 'Transferencia'"
+              >
+                📲
+                <span>Transferencia</span>
+              </button>
+
+
+              <button
+                type="button"
+                class="payment-option"
+                [class.selected]="sale.paymentMethod === 'Tarjeta'"
+                (click)="sale.paymentMethod = 'Tarjeta'"
+              >
+                💳
+                <span>Tarjeta</span>
+              </button>
+
+
+              <button
+                type="button"
+                class="payment-option"
+                [class.selected]="sale.paymentMethod === 'Otro'"
+                (click)="sale.paymentMethod = 'Otro'"
+              >
+                •••
+                <span>Otro</span>
+              </button>
+
+
+            </div>
+
+          </div>
+
+
+          <!-- NOTAS -->
+
+          <div class="form-group full">
+
+            <label>
+              Notas
+            </label>
+
+            <textarea
+              rows="3"
+              placeholder="Información adicional de la venta..."
+              [(ngModel)]="sale.notes"
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="goBack()"
+          >
+            Cancelar
+          </button>
+
+
+          <button
+            type="button"
+            class="primary-button"
+            (click)="saveSale()"
+          >
+            Guardar venta
+          </button>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =======================
+           RESUMEN LATERAL
+      ======================== -->
+
+      <aside class="summary-card">
+
+        <span class="summary-label">
+          RESUMEN
+        </span>
+
+        <h2>
+          Total de la venta
+        </h2>
+
+        <div class="total">
+
+          $
+          {{ total | number:'1.2-2' }}
+
+        </div>
+
+
+        <div class="summary-details">
+
+
+          <div>
+
+            <span>
+              Cantidad
+            </span>
+
+            <strong>
+              {{ sale.quantity || 0 }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Precio unitario
+            </span>
+
+            <strong>
+              $
+              {{ sale.unitPrice | number:'1.2-2' }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Forma de pago
+            </span>
+
+            <strong>
+              {{ sale.paymentMethod || 'Sin seleccionar' }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="ai-info">
+
+          <div class="ai-icon">
+            ✦
+          </div>
+
+          <div>
+
+            <strong>
+              WisePick IA
+            </strong>
+
+            <p>
+              Esta venta formará parte de tus
+              indicadores y recomendaciones.
+            </p>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+
+
+    <!-- =======================
+         SUCCESS
+    ======================== -->
+
+    <div
+      class="success-card"
+      *ngIf="saleSaved"
+    >
+
+      <div class="success-icon">
+        ✓
+      </div>
+
+      <span class="success-label">
+        VENTA REGISTRADA
+      </span>
+
+      <h2>
+        ¡Venta guardada correctamente!
+      </h2>
+
+      <p>
+        La venta por
+        <strong>
+          ${{ total | number:'1.2-2' }}
+        </strong>
+        está lista para ser procesada por WisePick.
+      </p>
+
+
+      <div class="success-summary">
+
+        <div>
+
+          <span>
+            Producto
+          </span>
+
+          <strong>
+            {{ sale.productName }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Cantidad
+          </span>
+
+          <strong>
+            {{ sale.quantity }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Cliente
+          </span>
+
+          <strong>
+            {{ sale.customerName || 'Cliente no identificado' }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Total
+          </span>
+
+          <strong>
+            ${{ total | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="success-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="goToSales()"
+        >
+          Ver mis ventas
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="newSale()"
+        >
+          + Registrar otra venta
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,319 @@
+<div class="import-page">
+
+  <div class="import-container">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          AGREGAR DATOS
+        </span>
+
+        <h1>
+          ¿Cómo deseas comenzar?
+        </h1>
+
+        <p>
+          Elige la forma más cómoda de agregar información.
+          WisePick procesará y preparará los datos para generar
+          tus primeros análisis.
+        </p>
+
+      </div>
+
+      <div class="step-badge">
+        Paso 2 de 3
+      </div>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-card">
+
+      <div class="progress-step completed">
+
+        <div class="progress-number">
+          ✓
+        </div>
+
+        <div>
+          <strong>Empresa</strong>
+          <span>Configuración completada</span>
+        </div>
+
+      </div>
+
+      <div class="progress-line active"></div>
+
+      <div class="progress-step active">
+
+        <div class="progress-number">
+          2
+        </div>
+
+        <div>
+          <strong>Datos</strong>
+          <span>Selecciona cómo empezar</span>
+        </div>
+
+      </div>
+
+      <div class="progress-line"></div>
+
+      <div class="progress-step">
+
+        <div class="progress-number">
+          3
+        </div>
+
+        <div>
+          <strong>Análisis</strong>
+          <span>Descubre oportunidades</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- INTRO -->
+
+    <div class="section-header">
+
+      <h2>
+        Selecciona un método
+      </h2>
+
+      <p>
+        Puedes cambiar o utilizar otros métodos más adelante.
+      </p>
+
+    </div>
+
+
+    <!-- OPTIONS -->
+
+    <div class="methods-grid">
+
+
+      <!-- MANUAL -->
+
+      <button
+        type="button"
+        class="method-card"
+        [class.selected]="selectedMethod === 'manual'"
+        (click)="selectMethod('manual')"
+      >
+
+        <div class="method-top">
+
+          <div class="method-icon">
+            ✍️
+          </div>
+
+          <span class="recommended-badge">
+            Simple
+          </span>
+
+        </div>
+
+        <h3>
+          Registro manual
+        </h3>
+
+        <p>
+          Registra ventas una por una mediante un formulario rápido.
+        </p>
+
+        <div class="method-info">
+          Ideal para negocios con pocas ventas diarias.
+        </div>
+
+        <div class="selection-indicator">
+          <span></span>
+        </div>
+
+      </button>
+
+
+      <!-- EXCEL -->
+
+      <button
+        type="button"
+        class="method-card"
+        [class.selected]="selectedMethod === 'excel'"
+        (click)="selectMethod('excel')"
+      >
+
+        <div class="method-top">
+
+          <div class="method-icon">
+            📊
+          </div>
+
+          <span class="recommended-badge highlight">
+            Recomendado
+          </span>
+
+        </div>
+
+        <h3>
+          Importar Excel
+        </h3>
+
+        <p>
+          Carga varias ventas al mismo tiempo desde una hoja de cálculo.
+        </p>
+
+        <div class="method-info">
+          Ideal si ya manejas tus ventas en Excel.
+        </div>
+
+        <div class="selection-indicator">
+          <span></span>
+        </div>
+
+      </button>
+
+
+      <!-- FACTURA -->
+
+      <button
+        type="button"
+        class="method-card"
+        [class.selected]="selectedMethod === 'invoice'"
+        (click)="selectMethod('invoice')"
+      >
+
+        <div class="method-top">
+
+          <div class="method-icon">
+            📷
+          </div>
+
+          <span class="ai-badge">
+            IA
+          </span>
+
+        </div>
+
+        <h3>
+          Foto o factura
+        </h3>
+
+        <p>
+          Sube una fotografía y WisePick intentará identificar
+          automáticamente los datos de la venta.
+        </p>
+
+        <div class="method-info">
+          Ideal si registras tus ventas en papel.
+        </div>
+
+        <div class="selection-indicator">
+          <span></span>
+        </div>
+
+      </button>
+
+
+      <!-- DEMO -->
+
+      <button
+        type="button"
+        class="method-card"
+        [class.selected]="selectedMethod === 'demo'"
+        (click)="selectMethod('demo')"
+      >
+
+        <div class="method-top">
+
+          <div class="method-icon">
+            ✨
+          </div>
+
+          <span class="recommended-badge">
+            Demo
+          </span>
+
+        </div>
+
+        <h3>
+          Datos de demostración
+        </h3>
+
+        <p>
+          Explora WisePick utilizando información simulada
+          antes de cargar tus propios datos.
+        </p>
+
+        <div class="method-info">
+          Ideal para conocer cómo funciona la plataforma.
+        </div>
+
+        <div class="selection-indicator">
+          <span></span>
+        </div>
+
+      </button>
+
+    </div>
+
+
+    <!-- NOTICE -->
+
+    <div class="info-card">
+
+      <div class="info-icon">
+        ✦
+      </div>
+
+      <div>
+
+        <strong>
+          No te preocupes por el formato
+        </strong>
+
+        <p>
+          WisePick normalizará la información para que los diferentes
+          métodos de carga puedan utilizar el mismo motor de análisis.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="goBack()"
+      >
+        ← Volver
+      </button>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        [disabled]="!selectedMethod"
+        (click)="continue()"
+      >
+        Continuar
+        <span>→</span>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

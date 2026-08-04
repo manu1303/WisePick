@@ -1,5 +1,234 @@
-<div class="panel">
-  <h2>Mi Empresa</h2>
-  <p>Bienvenido a tu área de trabajo de WisePick.</p>
+<div class="company-page">
+
+  <div class="company-container">
+
+    <div class="page-header">
+
+      <div>
+        <span class="eyebrow">MI EMPRESA</span>
+
+        <h1>{{ company.name }}</h1>
+
+        <p>
+          Revisa la información de tu negocio y mantén actualizado
+          el contexto que WisePick utiliza para sus análisis.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="editCompany()"
+      >
+        ✏ Editar información
+      </button>
+
+    </div>
+
+
+    <!-- ESTADO -->
+
+    <div class="status-card">
+
+      <div class="status-icon">
+        ✓
+      </div>
+
+      <div class="status-content">
+        <strong>Tu empresa está configurada</strong>
+
+        <span>
+          WisePick ya cuenta con el contexto inicial de tu negocio.
+        </span>
+      </div>
+
+      <span class="status-badge">
+        Configuración completa
+      </span>
+
+    </div>
+
+
+    <!-- RESUMEN -->
+
+    <div class="summary-grid">
+
+      <!-- INFORMACIÓN GENERAL -->
+
+      <div class="summary-card">
+
+        <div class="card-header">
+          <div class="card-icon">🏢</div>
+
+          <div>
+            <span class="card-label">
+              INFORMACIÓN GENERAL
+            </span>
+
+            <h2>Datos de la empresa</h2>
+          </div>
+        </div>
+
+        <div class="detail-list">
+
+          <div class="detail-row">
+            <span>Nombre comercial</span>
+            <strong>{{ company.name }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Ciudad</span>
+            <strong>{{ company.city }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Tipo de negocio</span>
+            <strong>{{ company.businessType }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Número de empleados</span>
+            <strong>{{ company.employeesRange }}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PRODUCTOS -->
+
+      <div class="summary-card">
+
+        <div class="card-header">
+          <div class="card-icon">🧵</div>
+
+          <div>
+            <span class="card-label">
+              PRODUCTOS
+            </span>
+
+            <h2>Qué comercializas</h2>
+          </div>
+        </div>
+
+        <div class="tags">
+
+          <span
+            class="tag"
+            *ngFor="let category of company.categories"
+          >
+            {{ category }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- VENTAS -->
+
+      <div class="summary-card">
+
+        <div class="card-header">
+          <div class="card-icon">📊</div>
+
+          <div>
+            <span class="card-label">
+              OPERACIÓN
+            </span>
+
+            <h2>Cómo vendes actualmente</h2>
+          </div>
+        </div>
+
+        <div class="detail-list">
+
+          <div class="detail-row">
+            <span>Ventas aproximadas por día</span>
+            <strong>{{ company.dailySalesRange }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Registro actual</span>
+            <strong>{{ company.salesRecordMethod }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Método elegido para comenzar</span>
+            <strong>{{ company.preferredDataSource }}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- OBJETIVOS -->
+
+      <div class="summary-card">
+
+        <div class="card-header">
+          <div class="card-icon">🎯</div>
+
+          <div>
+            <span class="card-label">
+              OBJETIVOS
+            </span>
+
+            <h2>Qué quieres mejorar</h2>
+          </div>
+        </div>
+
+        <div class="tags">
+
+          <span
+            class="tag"
+            *ngFor="let objective of company.objectives"
+          >
+            {{ objective }}
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- SIGUIENTE PASO -->
+
+    <div class="next-step-card">
+
+      <div class="next-step-content">
+
+        <span class="eyebrow">
+          SIGUIENTE PASO
+        </span>
+
+        <h2>
+          Agrega tus primeros datos
+        </h2>
+
+        <p>
+          Para generar análisis, indicadores y recomendaciones con IA,
+          WisePick necesita información real de tu negocio.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="addData()"
+      >
+        Agregar mis primeros datos
+        <span>→</span>
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
 

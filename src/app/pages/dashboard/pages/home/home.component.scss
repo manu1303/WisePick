@@ -1,0 +1,416 @@
+.home-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 34px 38px 50px;
+  box-sizing: border-box;
+}
+
+
+/* ==============================
+   WELCOME
+================================ */
+
+.welcome-section {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.welcome-card {
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+
+  min-height: 340px;
+
+  background: #ffffff;
+  border: 1px solid #eef0f6;
+  border-radius: 24px;
+
+  padding: 48px;
+
+  box-shadow:
+    0 4px 18px rgba(20, 31, 61, 0.04);
+
+  overflow: hidden;
+}
+
+
+/* LEFT */
+
+.welcome-content {
+  max-width: 720px;
+}
+
+.eyebrow {
+  display: inline-block;
+
+  margin-bottom: 14px;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+
+  color: #6c63ff;
+}
+
+.welcome-content h1 {
+  margin: 0 0 14px;
+
+  font-size: clamp(32px, 4vw, 46px);
+  line-height: 1.08;
+  font-weight: 700;
+
+  color: #141a2e;
+}
+
+.welcome-description {
+  margin: 0;
+
+  max-width: 620px;
+
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 500;
+
+  color: #343a50;
+}
+
+.welcome-helper {
+  max-width: 620px;
+
+  margin: 18px 0 24px;
+
+  font-size: 15px;
+  line-height: 1.7;
+
+  color: #74798b;
+}
+
+
+/* SETUP INFO */
+
+.setup-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: fit-content;
+
+  margin-bottom: 28px;
+  padding: 12px 16px;
+
+  background: #f7f8ff;
+  border: 1px solid #eceeff;
+  border-radius: 14px;
+}
+
+.setup-icon {
+  font-size: 20px;
+}
+
+.setup-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setup-info strong {
+  font-size: 13px;
+  color: #272c42;
+}
+
+.setup-info span {
+  font-size: 12px;
+  color: #7d8296;
+}
+
+
+/* BUTTON */
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  min-height: 50px;
+
+  padding: 0 22px;
+
+  border: 0;
+  border-radius: 14px;
+
+  background: #506de8;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px rgba(80, 109, 232, 0.18);
+
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.primary-button:hover {
+  background: #425ed4;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 22px rgba(80, 109, 232, 0.23);
+}
+
+.arrow {
+  font-size: 19px;
+}
+
+
+/* ==============================
+   IA VISUAL CARD
+================================ */
+
+.welcome-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding-left: 32px;
+}
+
+.ai-card {
+  width: 100%;
+  max-width: 310px;
+
+  padding: 32px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f5f6ff,
+      #eef2ff
+    );
+
+  border: 1px solid #e4e7ff;
+}
+
+.ai-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 54px;
+
+  margin-bottom: 20px;
+
+  border-radius: 16px;
+
+  background: #506de8;
+  color: #ffffff;
+
+  font-size: 25px;
+
+  box-shadow:
+    0 8px 18px rgba(80, 109, 232, 0.2);
+}
+
+.ai-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  color: #20263a;
+}
+
+.ai-card p {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.65;
+
+  color: #73798c;
+}
+
+
+/* ==============================
+   JOURNEY
+================================ */
+
+.journey-card {
+  margin-top: 24px;
+  padding: 30px 34px;
+
+  background: #ffffff;
+
+  border: 1px solid #eef0f6;
+  border-radius: 20px;
+
+  box-shadow:
+    0 4px 14px rgba(20, 31, 61, 0.035);
+}
+
+.journey-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.journey-header .eyebrow {
+  margin-bottom: 7px;
+}
+
+.journey-header h2 {
+  margin: 0;
+
+  font-size: 21px;
+  font-weight: 650;
+
+  color: #202538;
+}
+
+.progress-label {
+  padding: 8px 12px;
+
+  border-radius: 10px;
+
+  background: #f5f6fb;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #74798b;
+}
+
+
+/* STEPS */
+
+.journey-steps {
+  display: flex;
+  align-items: flex-start;
+
+  margin-top: 32px;
+}
+
+.journey-step {
+  flex: 1;
+
+  display: flex;
+  gap: 13px;
+
+  min-width: 0;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+
+  background: #f0f2f7;
+  color: #9297a8;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.journey-step.active .step-number {
+  background: #506de8;
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 14px rgba(80, 109, 232, 0.2);
+}
+
+.step-content h3 {
+  margin: 0 0 6px;
+
+  font-size: 14px;
+  font-weight: 650;
+
+  color: #2b3043;
+}
+
+.step-content p {
+  margin: 0;
+
+  max-width: 190px;
+
+  font-size: 12px;
+  line-height: 1.55;
+
+  color: #9296a5;
+}
+
+.step-line {
+  flex: 0 0 50px;
+
+  height: 1px;
+
+  margin: 18px 18px 0;
+
+  background: #e3e5ec;
+}
+
+
+/* ==============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 1000px) {
+
+  .welcome-card {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-visual {
+    padding-left: 0;
+    padding-top: 35px;
+    justify-content: flex-start;
+  }
+
+}
+
+
+@media (max-width: 760px) {
+
+  .home-page {
+    padding: 22px 18px 40px;
+  }
+
+  .welcome-card {
+    padding: 30px 24px;
+  }
+
+  .journey-card {
+    padding: 26px 22px;
+  }
+
+  .journey-steps {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .step-line {
+    display: none;
+  }
+
+}

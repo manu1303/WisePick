@@ -1,6 +1,413 @@
-<div class="panel">
-  <h2>Análisis</h2>
-  <p>Bienvenido a tu área de trabajo de WisePick.</p>
+<div class="sales-page">
+
+  <div class="sales-container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          VENTAS
+        </span>
+
+        <h1>
+          Tus ventas
+        </h1>
+
+        <p>
+          Consulta y administra la información comercial
+          que WisePick utilizará para generar tus análisis.
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="addManualSale()"
+        >
+          + Venta manual
+        </button>
+
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="addData()"
+        >
+          + Agregar datos
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- EMPTY STATE -->
+
+    <div
+      class="empty-state"
+      *ngIf="sales.length === 0"
+    >
+
+      <div class="empty-icon">
+        📊
+      </div>
+
+      <span class="empty-label">
+        TODAVÍA NO HAY VENTAS
+      </span>
+
+      <h2>
+        Agrega tus primeros datos
+      </h2>
+
+      <p>
+        WisePick necesita información de ventas para
+        comenzar a generar indicadores, tendencias
+        y recomendaciones.
+      </p>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="addData()"
+      >
+        Agregar mis primeros datos →
+      </button>
+
+    </div>
+
+
+
+    <!-- CONTENT -->
+
+    <ng-container *ngIf="sales.length > 0">
+
+
+      <!-- KPI -->
+
+      <div class="kpi-grid">
+
+
+        <div class="kpi-card">
+
+          <div class="kpi-top">
+
+            <span>
+              INGRESOS
+            </span>
+
+            <div class="kpi-icon">
+              💰
+            </div>
+
+          </div>
+
+          <strong>
+            ${{ totalSales | number:'1.2-2' }}
+          </strong>
+
+          <small>
+            Total registrado
+          </small>
+
+        </div>
+
+
+
+        <div class="kpi-card">
+
+          <div class="kpi-top">
+
+            <span>
+              VENTAS
+            </span>
+
+            <div class="kpi-icon">
+              🧾
+            </div>
+
+          </div>
+
+          <strong>
+            {{ totalTransactions }}
+          </strong>
+
+          <small>
+            Transacciones
+          </small>
+
+        </div>
+
+
+
+        <div class="kpi-card">
+
+          <div class="kpi-top">
+
+            <span>
+              PRODUCTOS
+            </span>
+
+            <div class="kpi-icon">
+              🛍️
+            </div>
+
+          </div>
+
+          <strong>
+            {{ totalProducts }}
+          </strong>
+
+          <small>
+            Unidades vendidas
+          </small>
+
+        </div>
+
+
+
+        <div class="kpi-card">
+
+          <div class="kpi-top">
+
+            <span>
+              TICKET PROMEDIO
+            </span>
+
+            <div class="kpi-icon">
+              📈
+            </div>
+
+          </div>
+
+          <strong>
+            ${{ averageTicket | number:'1.2-2' }}
+          </strong>
+
+          <small>
+            Por transacción
+          </small>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- SALES TABLE -->
+
+      <div class="table-card">
+
+
+        <div class="table-header">
+
+          <div>
+
+            <span class="table-label">
+              HISTORIAL
+            </span>
+
+            <h2>
+              Ventas registradas
+            </h2>
+
+          </div>
+
+
+          <div class="search-box">
+
+            <span>
+              🔍
+            </span>
+
+            <input
+              type="text"
+              placeholder="Buscar venta..."
+              [(ngModel)]="searchTerm"
+            >
+
+          </div>
+
+        </div>
+
+
+
+        <div class="table-responsive">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Fecha
+                </th>
+
+                <th>
+                  Producto
+                </th>
+
+                <th>
+                  Cliente
+                </th>
+
+                <th>
+                  Cantidad
+                </th>
+
+                <th>
+                  Pago
+                </th>
+
+                <th>
+                  Origen
+                </th>
+
+                <th class="right">
+                  Total
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="let sale of filteredSales"
+              >
+
+                <td>
+                  {{ sale.saleDate }}
+                </td>
+
+
+                <td>
+
+                  <div class="product-cell">
+
+                    <div class="product-avatar">
+                      {{ sale.productName.charAt(0) }}
+                    </div>
+
+                    <strong>
+                      {{ sale.productName }}
+                    </strong>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+                  {{ sale.customerName }}
+                </td>
+
+
+                <td>
+                  {{ sale.quantity }}
+                </td>
+
+
+                <td>
+
+                  <span class="payment-badge">
+                    {{ sale.paymentMethod }}
+                  </span>
+
+                </td>
+
+
+                <td>
+
+                  <span class="source-badge">
+                    Manual
+                  </span>
+
+                </td>
+
+
+                <td class="right total-cell">
+
+                  ${{ sale.total | number:'1.2-2' }}
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        <!-- TABLE FOOTER -->
+
+        <div class="table-footer">
+
+          <span>
+            {{ filteredSales.length }}
+            ventas encontradas
+          </span>
+
+          <span>
+            Total:
+            <strong>
+              ${{ totalSales | number:'1.2-2' }}
+            </strong>
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- IA INFO -->
+
+      <div class="ai-banner">
+
+        <div class="ai-banner-icon">
+          ✦
+        </div>
+
+        <div>
+
+          <strong>
+            Tus datos están listos para ser analizados
+          </strong>
+
+          <p>
+            A medida que registres más ventas,
+            WisePick podrá identificar patrones
+            comerciales y generar mejores recomendaciones.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="ai-button"
+        >
+          Analizar con IA →
+        </button>
+
+      </div>
+
+    </ng-container>
+
+  </div>
+
 </div>
-
-

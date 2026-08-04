@@ -1,0 +1,577 @@
+<div class="excel-page">
+
+  <div class="page-container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          VENTAS · IMPORTAR EXCEL
+        </span>
+
+        <h1>
+          Importa tus ventas
+        </h1>
+
+        <p>
+          Carga varias ventas al mismo tiempo.
+          WisePick validará y normalizará la información
+          antes de agregarla a tus análisis.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="goBack()"
+      >
+        ← Cambiar método
+      </button>
+
+    </div>
+
+
+
+    <!-- ==========================
+         SUCCESS
+    =========================== -->
+
+    <div
+      class="success-card"
+      *ngIf="importCompleted"
+    >
+
+      <div class="success-icon">
+        ✓
+      </div>
+
+      <span class="eyebrow">
+        IMPORTACIÓN COMPLETADA
+      </span>
+
+      <h2>
+        Tus ventas fueron importadas
+      </h2>
+
+      <p>
+        Se agregaron
+        <strong>
+          {{ totalValid }}
+        </strong>
+        ventas correctamente.
+      </p>
+
+
+      <div class="success-stats">
+
+        <div>
+
+          <span>
+            Ventas agregadas
+          </span>
+
+          <strong>
+            {{ totalValid }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Total importado
+          </span>
+
+          <strong>
+            ${{ totalAmount | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Origen
+          </span>
+
+          <strong>
+            Excel
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="success-actions">
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="goToSales()"
+        >
+          Ver mis ventas →
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ==========================
+         UPLOAD
+    =========================== -->
+
+    <ng-container
+      *ngIf="!importCompleted"
+    >
+
+
+      <div class="upload-card">
+
+
+        <div class="upload-header">
+
+          <div class="upload-icon">
+            📊
+          </div>
+
+          <div>
+
+            <span class="card-label">
+              ARCHIVO DE VENTAS
+            </span>
+
+            <h2>
+              Selecciona tu archivo Excel
+            </h2>
+
+          </div>
+
+        </div>
+
+
+
+        <label
+          class="drop-zone"
+          for="excelFile"
+        >
+
+          <div class="drop-icon">
+            ↑
+          </div>
+
+          <strong>
+            Selecciona un archivo Excel
+          </strong>
+
+          <span>
+            Formatos permitidos:
+            .xlsx y .xls
+          </span>
+
+          <div class="select-file-button">
+            Elegir archivo
+          </div>
+
+
+          <input
+            id="excelFile"
+            type="file"
+            accept=".xlsx,.xls"
+            (change)="onFileSelected($event)"
+            hidden
+          >
+
+        </label>
+
+
+
+        <div
+          class="selected-file"
+          *ngIf="selectedFile"
+        >
+
+          <div class="file-icon">
+            XLS
+          </div>
+
+          <div>
+
+            <strong>
+              {{ fileName }}
+            </strong>
+
+            <span>
+              Archivo seleccionado
+            </span>
+
+          </div>
+
+          <div
+            class="processing"
+            *ngIf="processing"
+          >
+            Procesando...
+          </div>
+
+        </div>
+
+
+
+        <div
+          class="error-box"
+          *ngIf="globalError"
+        >
+          ⚠ {{ globalError }}
+        </div>
+
+
+      </div>
+
+
+
+      <!-- FORMAT HELP -->
+
+      <div class="format-card">
+
+        <div>
+
+          <span class="card-label">
+            FORMATO ESPERADO
+          </span>
+
+          <h3>
+            Columnas necesarias
+          </h3>
+
+          <p>
+            Para importar correctamente tus ventas,
+            el archivo debe contener estas columnas.
+          </p>
+
+        </div>
+
+
+        <div class="columns">
+
+          <span>Fecha</span>
+
+          <span>Cliente</span>
+
+          <span>Producto</span>
+
+          <span>Cantidad</span>
+
+          <span>PrecioUnitario</span>
+
+          <span>MetodoPago</span>
+
+        </div>
+
+
+        <div class="format-note">
+
+          <strong>
+            Cliente es opcional.
+          </strong>
+
+          Si no existe información del cliente,
+          WisePick registrará la venta como
+          “Cliente no identificado”.
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ==========================
+           PREVIEW
+      =========================== -->
+
+      <div
+        class="preview-section"
+        *ngIf="fileProcessed"
+      >
+
+
+        <div class="preview-header">
+
+          <div>
+
+            <span class="eyebrow">
+              VISTA PREVIA
+            </span>
+
+            <h2>
+              Revisa antes de importar
+            </h2>
+
+            <p>
+              WisePick encontró
+              {{ totalRows }}
+              registros en el archivo.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- KPIS -->
+
+        <div class="preview-kpis">
+
+
+          <div class="preview-kpi">
+
+            <span>
+              FILAS
+            </span>
+
+            <strong>
+              {{ totalRows }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-kpi success">
+
+            <span>
+              VÁLIDAS
+            </span>
+
+            <strong>
+              {{ totalValid }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-kpi error">
+
+            <span>
+              CON ERRORES
+            </span>
+
+            <strong>
+              {{ totalInvalid }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-kpi">
+
+            <span>
+              TOTAL
+            </span>
+
+            <strong>
+              ${{ totalAmount | number:'1.2-2' }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- TABLE -->
+
+        <div class="table-card">
+
+          <div class="table-scroll">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Estado
+                  </th>
+
+                  <th>
+                    Fecha
+                  </th>
+
+                  <th>
+                    Producto
+                  </th>
+
+                  <th>
+                    Cliente
+                  </th>
+
+                  <th>
+                    Cant.
+                  </th>
+
+                  <th>
+                    Precio
+                  </th>
+
+                  <th>
+                    Pago
+                  </th>
+
+                  <th>
+                    Total
+                  </th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody>
+
+                <tr
+                  *ngFor="
+                    let sale of previewSales
+                  "
+                  [class.invalid-row]="
+                    !sale.valid
+                  "
+                >
+
+                  <td>
+
+                    <span
+                      class="status-valid"
+                      *ngIf="sale.valid"
+                    >
+                      ✓ Válida
+                    </span>
+
+
+                    <span
+                      class="status-error"
+                      *ngIf="!sale.valid"
+                    >
+                      ⚠ Error
+                    </span>
+
+                  </td>
+
+
+                  <td>
+                    {{ sale.saleDate || '-' }}
+                  </td>
+
+
+                  <td>
+                    {{ sale.productName || '-' }}
+                  </td>
+
+
+                  <td>
+                    {{ sale.customerName }}
+                  </td>
+
+
+                  <td>
+                    {{ sale.quantity || '-' }}
+                  </td>
+
+
+                  <td>
+                    ${{ sale.unitPrice | number:'1.2-2' }}
+                  </td>
+
+
+                  <td>
+                    {{ sale.paymentMethod || '-' }}
+                  </td>
+
+
+                  <td class="total-cell">
+                    ${{ sale.total | number:'1.2-2' }}
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ERRORS -->
+
+        <div
+          class="errors-card"
+          *ngIf="
+            totalInvalid > 0
+          "
+        >
+
+          <strong>
+            ⚠ Se encontraron registros con errores
+          </strong>
+
+          <p>
+            Las filas incorrectas no serán importadas.
+            Puedes corregir tu archivo y volver a cargarlo.
+          </p>
+
+        </div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="resetPreview()"
+          >
+            Cargar otro archivo
+          </button>
+
+
+          <button
+            type="button"
+            class="primary-button"
+            [disabled]="
+              totalValid === 0
+            "
+            (click)="importSales()"
+          >
+            Importar
+            {{ totalValid }}
+            ventas →
+          </button>
+
+        </div>
+
+
+      </div>
+
+
+    </ng-container>
+
+  </div>
+
+</div>
