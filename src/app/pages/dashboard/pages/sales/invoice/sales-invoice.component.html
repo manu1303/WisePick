@@ -1,0 +1,683 @@
+<div class="invoice-page">
+
+  <div class="page-container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          VENTAS · FOTO / FACTURA
+        </span>
+
+        <h1>
+          Digitaliza una venta
+        </h1>
+
+        <p>
+          Sube una fotografía de tu factura, nota de venta
+          o registro en papel. WisePick identificará la
+          información y la preparará para tus análisis.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="goBack()"
+      >
+        ← Cambiar método
+      </button>
+
+    </div>
+
+
+
+    <!-- SUCCESS -->
+
+    <div
+      class="success-card"
+      *ngIf="saleSaved"
+    >
+
+      <div class="success-icon">
+        ✓
+      </div>
+
+      <span class="eyebrow">
+        VENTA REGISTRADA
+      </span>
+
+      <h2>
+        Información guardada correctamente
+      </h2>
+
+      <p>
+        La venta extraída de la imagen fue revisada
+        y agregada a WisePick.
+      </p>
+
+
+      <div class="success-data">
+
+        <div>
+          <span>Producto</span>
+          <strong>
+            {{ extractedSale.productName }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Cantidad</span>
+          <strong>
+            {{ extractedSale.quantity }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Total</span>
+          <strong>
+            ${{ total | number:'1.2-2' }}
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="success-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="resetAnalysis()"
+        >
+          Procesar otra imagen
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="goToSales()"
+        >
+          Ver mis ventas →
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <ng-container *ngIf="!saleSaved">
+
+
+      <!-- ======================
+           CARGA
+      ======================= -->
+
+      <div
+        class="invoice-layout"
+        *ngIf="!analysisCompleted"
+      >
+
+
+        <div class="upload-card">
+
+
+          <div class="card-heading">
+
+            <div class="card-icon">
+              📷
+            </div>
+
+            <div>
+
+              <span class="card-label">
+                DOCUMENTO
+              </span>
+
+              <h2>
+                Sube una fotografía
+              </h2>
+
+            </div>
+
+          </div>
+
+
+
+          <label
+            class="drop-zone"
+            for="invoiceFile"
+            *ngIf="!imagePreview"
+          >
+
+            <div class="upload-icon">
+              ↑
+            </div>
+
+            <strong>
+              Selecciona una foto
+            </strong>
+
+            <p>
+              Puedes utilizar una factura,
+              una nota de venta o una fotografía
+              de tu registro en papel.
+            </p>
+
+            <span>
+              JPG, PNG o WEBP · Máximo 8 MB
+            </span>
+
+            <div class="select-button">
+              Elegir imagen
+            </div>
+
+
+            <input
+              id="invoiceFile"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              (change)="onFileSelected($event)"
+              hidden
+            >
+
+          </label>
+
+
+
+          <!-- IMAGE PREVIEW -->
+
+          <div
+            class="image-preview"
+            *ngIf="imagePreview"
+          >
+
+            <img
+              [src]="imagePreview"
+              alt="Vista previa del documento"
+            >
+
+
+            <div class="file-info">
+
+              <div>
+
+                <strong>
+                  {{ fileName }}
+                </strong>
+
+                <span>
+                  Imagen lista para analizar
+                </span>
+
+              </div>
+
+
+              <label
+                for="invoiceFileReplace"
+                class="replace-button"
+              >
+                Cambiar imagen
+              </label>
+
+
+              <input
+                id="invoiceFileReplace"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                (change)="onFileSelected($event)"
+                hidden
+              >
+
+            </div>
+
+          </div>
+
+
+
+          <div
+            class="error-box"
+            *ngIf="globalError"
+          >
+            ⚠ {{ globalError }}
+          </div>
+
+
+
+          <button
+            type="button"
+            class="analyze-button"
+            [disabled]="
+              !selectedFile ||
+              analyzing
+            "
+            (click)="analyzeInvoice()"
+          >
+
+            <span *ngIf="!analyzing">
+              ✦ Analizar con WisePick IA
+            </span>
+
+            <span *ngIf="analyzing">
+              Analizando documento...
+            </span>
+
+          </button>
+
+        </div>
+
+
+
+        <!-- EXPLANATION -->
+
+        <aside class="info-card">
+
+          <div class="ai-symbol">
+            ✦
+          </div>
+
+          <span class="card-label">
+            WISEPICK IA
+          </span>
+
+          <h2>
+            ¿Qué identificaremos?
+          </h2>
+
+          <p>
+            WisePick analizará el documento
+            e intentará identificar los datos
+            principales de la venta.
+          </p>
+
+
+          <div class="detected-fields">
+
+            <div>
+              <span>✓</span>
+              Fecha
+            </div>
+
+            <div>
+              <span>✓</span>
+              Producto
+            </div>
+
+            <div>
+              <span>✓</span>
+              Cantidad
+            </div>
+
+            <div>
+              <span>✓</span>
+              Precio
+            </div>
+
+            <div>
+              <span>✓</span>
+              Cliente, cuando esté disponible
+            </div>
+
+          </div>
+
+
+          <div class="privacy-note">
+
+            <strong>
+              Tú tienes el control
+            </strong>
+
+            <p>
+              Antes de guardar, podrás revisar
+              y corregir toda la información
+              identificada.
+            </p>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+
+
+      <!-- ======================
+           RESULTADO IA
+      ======================= -->
+
+      <div
+        class="review-layout"
+        *ngIf="analysisCompleted"
+      >
+
+
+        <!-- IMAGE -->
+
+        <aside class="document-card">
+
+          <span class="card-label">
+            DOCUMENTO ORIGINAL
+          </span>
+
+          <h2>
+            Imagen analizada
+          </h2>
+
+
+          <img
+            *ngIf="imagePreview"
+            [src]="imagePreview"
+            alt="Documento analizado"
+          >
+
+
+          <button
+            type="button"
+            class="secondary-button full-button"
+            (click)="resetAnalysis()"
+          >
+            Cambiar documento
+          </button>
+
+        </aside>
+
+
+
+        <!-- EXTRACTED DATA -->
+
+        <div class="extracted-card">
+
+
+          <div class="extracted-header">
+
+            <div>
+
+              <span class="eyebrow">
+                INFORMACIÓN DETECTADA
+              </span>
+
+              <h2>
+                Revisa antes de guardar
+              </h2>
+
+              <p>
+                La IA puede cometer errores.
+                Verifica la información y corrige
+                cualquier dato necesario.
+              </p>
+
+            </div>
+
+
+            <span class="ai-badge">
+              ✦ IA
+            </span>
+
+          </div>
+
+
+
+          <div class="form-grid">
+
+
+            <div class="form-group">
+
+              <label>
+                Fecha *
+              </label>
+
+              <input
+                type="date"
+                [(ngModel)]="
+                  extractedSale.saleDate
+                "
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Cliente
+              </label>
+
+              <input
+                type="text"
+                placeholder="Cliente no identificado"
+                [(ngModel)]="
+                  extractedSale.customerName
+                "
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Producto *
+              </label>
+
+              <input
+                type="text"
+                [(ngModel)]="
+                  extractedSale.productName
+                "
+              >
+
+              <small
+                class="error-message"
+                *ngIf="
+                  showErrors &&
+                  !extractedSale.productName
+                "
+              >
+                Ingresa el producto.
+              </small>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Cantidad *
+              </label>
+
+              <input
+                type="number"
+                min="1"
+                [(ngModel)]="
+                  extractedSale.quantity
+                "
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Precio unitario *
+              </label>
+
+              <div class="money-input">
+
+                <span>
+                  $
+                </span>
+
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  [(ngModel)]="
+                    extractedSale.unitPrice
+                  "
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Método de pago *
+              </label>
+
+
+              <div class="payment-options">
+
+                <button
+                  type="button"
+                  [class.selected]="
+                    extractedSale.paymentMethod ===
+                    'Efectivo'
+                  "
+                  (click)="
+                    extractedSale.paymentMethod =
+                    'Efectivo'
+                  "
+                >
+                  💵 Efectivo
+                </button>
+
+
+                <button
+                  type="button"
+                  [class.selected]="
+                    extractedSale.paymentMethod ===
+                    'Transferencia'
+                  "
+                  (click)="
+                    extractedSale.paymentMethod =
+                    'Transferencia'
+                  "
+                >
+                  📲 Transferencia
+                </button>
+
+
+                <button
+                  type="button"
+                  [class.selected]="
+                    extractedSale.paymentMethod ===
+                    'Tarjeta'
+                  "
+                  (click)="
+                    extractedSale.paymentMethod =
+                    'Tarjeta'
+                  "
+                >
+                  💳 Tarjeta
+                </button>
+
+
+                <button
+                  type="button"
+                  [class.selected]="
+                    extractedSale.paymentMethod ===
+                    'Otro'
+                  "
+                  (click)="
+                    extractedSale.paymentMethod =
+                    'Otro'
+                  "
+                >
+                  ••• Otro
+                </button>
+
+              </div>
+
+
+              <small
+                class="error-message"
+                *ngIf="
+                  showErrors &&
+                  !extractedSale.paymentMethod
+                "
+              >
+                Selecciona un método de pago.
+              </small>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Notas
+              </label>
+
+              <textarea
+                rows="3"
+                [(ngModel)]="
+                  extractedSale.notes
+                "
+              ></textarea>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- TOTAL -->
+
+          <div class="total-card">
+
+            <span>
+              Total calculado
+            </span>
+
+            <strong>
+              ${{ total | number:'1.2-2' }}
+            </strong>
+
+          </div>
+
+
+
+          <!-- ACTIONS -->
+
+          <div class="review-actions">
+
+            <button
+              type="button"
+              class="secondary-button"
+              (click)="resetAnalysis()"
+            >
+              Cancelar
+            </button>
+
+
+            <button
+              type="button"
+              class="primary-button"
+              (click)="saveSale()"
+            >
+              Confirmar y guardar venta
+            </button>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </ng-container>
+
+  </div>
+
+</div>

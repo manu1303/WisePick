@@ -20,6 +20,7 @@ export const routes: Routes = [
       { path: 'sales/import', loadComponent: () => import('./pages/dashboard/pages/sales/import/sales-import.component').then(m => m.SalesImportComponent) },
       { path: 'sales/manual', loadComponent: () => import('./pages/dashboard/pages/sales/manual/sales-manual.component').then(m => m.SalesManualComponent) },
       { path: 'sales/excel',  loadComponent: () => import('./pages/dashboard/pages/sales/excel/sales-excel.component').then(m => m.SalesExcelComponent) },
+      { path: 'sales/invoice',loadComponent: () => import('./pages/dashboard/pages/sales/invoice/sales-invoice.component').then(m => m.SalesInvoiceComponent) },
       { path: 'products',     loadComponent: () => import('./pages/dashboard/pages/products/products.component').then(m => m.ProductsComponent) },
       { path: 'clients',      loadComponent: () => import('./pages/dashboard/pages/clients/clients.component').then(m => m.ClientsComponent) },
       { path: 'reports',      loadComponent: () => import('./pages/dashboard/pages/reports/reports.component').then(m => m.ReportsComponent) },
