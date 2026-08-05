@@ -121,14 +121,70 @@
               Producto *
             </label>
 
-            <input
-              type="text"
-              placeholder="Ej. Jean clásico azul"
-              [(ngModel)]="sale.productName"
+            <select
+              [(ngModel)]="sale.productId"
+              (ngModelChange)="onProductSelected()"
+              >
+
+
+                <option value="">Selecciona un producto</option>
+                
+                <option
+                  *ngFor="let product of products"
+                  [value]="product.id"
+                >
+                  
+
+                {{ product.name }}
+                . ${{product.price | number:'1.2-2'}}
+                . Stock: {{product.stock}}
+              </option>
+            </select>
+            <div
+              class="selected-product-info"
+              *ngIf="sale.productId"
             >
 
-          </div>
+              <div>
 
+                <span>
+                  Producto seleccionado
+                </span>
+
+                <strong>
+                  {{ sale.productName }}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  Precio
+                </span>
+
+                <strong>
+                  ${{ sale.unitPrice | number:'1.2-2' }}
+                </strong>
+
+              </div>
+
+            </div>
+            
+            <small
+              class="error-message"
+              *ngIf="
+                showErrors &&
+                !sale.productId
+                "
+            >
+
+              No tienes productos activos.
+              Primero registra productos en tu catálogo.
+            </small>
+            
+          <div>
 
           <!-- CANTIDAD -->
 

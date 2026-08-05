@@ -1,14 +1,29 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
+
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  sku: string;
+  cost: number;
+  price: number;
+  stock: number;
+  status: 'active' | 'inactive';
+}
 interface SaleForm {
   saleDate: string;
   customerName: string;
+
+  productId: string;
   productName: string;
+
   quantity: number;
   unitPrice: number;
+
   paymentMethod: string;
   notes: string;
 }
@@ -23,16 +38,65 @@ interface SaleForm {
   templateUrl: './sales-manual.component.html',
   styleUrls: ['./sales-manual.component.scss']
 })
-export class SalesManualComponent {
+export class SalesManualComponent implements OnInit {
+
+  ngOnInit(): void {
+  this.loadProducts();
+  }
+
+  private loadProducts(): void {
+
+  const storedProducts =
+    JSON.parse(
+      localStorage.getItem('wisepick_products') || '[]'
+    );
+
+  this.products =
+    storedProducts.filter(
+      (product: Product) =>
+        product.status === 'active'
+    );
+  }
+
+  onProductSelected(): void {
+
+  const product =
+    this.products.find(
+      item =>
+        item.id === this.sale.productId
+    );
+
+  if (!product) {
+
+    this.sale.productName = '';
+    this.sale.unitPrice = 0;
+
+    return;
+  }
+
+  this.sale.productName =
+    product.name;
+
+  this.sale.unitPrice =
+    product.price;
+ }
+
+  products: Product[] = [];
+
+  showErrors = false;
 
   saleSaved = false;
 
   sale: SaleForm = {
     saleDate: this.getToday(),
     customerName: '',
+
+    productId: '',
     productName: '',
+
     quantity: 1,
     unitPrice: 0,
+
     paymentMethod: '',
     notes: ''
   };
@@ -62,6 +126,9 @@ export class SalesManualComponent {
 
     customerName:
       this.sale.customerName || 'Cliente no identificado',
+
+    productId:
+      this.sale.productId,
 
     productName:
       this.sale.productName,
@@ -112,6 +179,7 @@ export class SalesManualComponent {
 
     return !!(
       this.sale.saleDate &&
+      this.sale.productId &&
       this.sale.productName &&
       this.sale.quantity > 0 &&
       this.sale.unitPrice > 0 &&
@@ -124,6 +192,7 @@ export class SalesManualComponent {
     this.sale = {
       saleDate: this.getToday(),
       customerName: '',
+      productId: '',
       productName: '',
       quantity: 1,
       unitPrice: 0,
@@ -132,6 +201,8 @@ export class SalesManualComponent {
     };
 
     this.saleSaved = false;
+
+    this.showErrors = false;
   }
 
   goToSales(): void {
