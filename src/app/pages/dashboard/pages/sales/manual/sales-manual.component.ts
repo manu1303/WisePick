@@ -14,8 +14,27 @@ interface Product {
   stock: number;
   status: 'active' | 'inactive';
 }
+
+interface Client {
+
+  id: string;
+
+  name: string;
+
+  phone: string;
+
+  email: string;
+
+  city: string;
+
+  status: 'active' | 'inactive';
+
+}
+
 interface SaleForm {
   saleDate: string;
+
+  customerId: string;
   customerName: string;
 
   productId: string;
@@ -42,6 +61,7 @@ export class SalesManualComponent implements OnInit {
 
   ngOnInit(): void {
   this.loadProducts();
+  this.loadClients();
   }
 
   private loadProducts(): void {
@@ -55,6 +75,20 @@ export class SalesManualComponent implements OnInit {
     storedProducts.filter(
       (product: Product) =>
         product.status === 'active'
+    );
+  }
+
+  private loadClients(): void {
+
+  const storedClients =
+    JSON.parse(
+      localStorage.getItem('wisepick_clients') || '[]'
+    );
+
+  this.clients =
+    storedClients.filter(
+      (client: Client) =>
+        client.status === 'active'
     );
   }
 
@@ -81,7 +115,51 @@ export class SalesManualComponent implements OnInit {
     product.price;
  }
 
+
+ onClientSelected(): void {
+
+  /*
+    Sin identificar
+  */
+
+  if (!this.sale.customerId) {
+
+    this.sale.customerName =
+      '';
+
+    return;
+
+  }
+
+
+  const client =
+    this.clients.find(
+
+      item =>
+        item.id ===
+        this.sale.customerId
+
+    );
+
+
+  if (!client) {
+
+    this.sale.customerName =
+      '';
+
+    return;
+
+  }
+
+
+  this.sale.customerName =
+    client.name;
+
+}
+
   products: Product[] = [];
+  clients: Client[] = [];
+
 
   showErrors = false;
 
@@ -89,6 +167,8 @@ export class SalesManualComponent implements OnInit {
 
   sale: SaleForm = {
     saleDate: this.getToday(),
+
+    customerId: '',
     customerName: '',
 
     productId: '',
@@ -123,6 +203,9 @@ export class SalesManualComponent implements OnInit {
     id: crypto.randomUUID(),
 
     saleDate: this.sale.saleDate,
+
+    customerId:
+      this.sale.customerId || null,
 
     customerName:
       this.sale.customerName || 'Cliente no identificado',
@@ -191,6 +274,7 @@ export class SalesManualComponent implements OnInit {
 
     this.sale = {
       saleDate: this.getToday(),
+      customerId: '',
       customerName: '',
       productId: '',
       productName: '',

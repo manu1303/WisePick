@@ -1,5 +1,712 @@
-<div class="panel">
-  <h2>Clientes</h2>
-  <p>Bienvenido a tu área de trabajo de WisePick.</p>
+<div class="clients-page">
+
+  <div class="clients-container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          CLIENTES
+        </span>
+
+        <h1>
+          Tus clientes
+        </h1>
+
+        <p>
+          Organiza tu base de clientes y descubre
+          cómo compran, cuánto gastan y con qué
+          frecuencia regresan a tu negocio.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="openNewClient()"
+      >
+        + Nuevo cliente
+      </button>
+
+    </div>
+
+
+
+    <!-- EMPTY -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        clients.length === 0 &&
+        !showClientForm
+      "
+    >
+
+      <div class="empty-icon">
+        👥
+      </div>
+
+      <span class="empty-label">
+        TODAVÍA NO TIENES CLIENTES
+      </span>
+
+      <h2>
+        Crea tu primer cliente
+      </h2>
+
+      <p>
+        Identificar clientes permitirá
+        analizar recurrencia, comportamiento
+        de compra y generar campañas
+        personalizadas.
+      </p>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="openNewClient()"
+      >
+        + Crear cliente
+      </button>
+
+    </div>
+
+
+
+    <!-- FORM -->
+
+    <div
+      class="client-form-card"
+      *ngIf="showClientForm"
+    >
+
+      <div class="form-header">
+
+        <div>
+
+          <span class="eyebrow">
+
+            {{
+              editingClientId
+                ? 'EDITAR CLIENTE'
+                : 'NUEVO CLIENTE'
+            }}
+
+          </span>
+
+          <h2>
+
+            {{
+              editingClientId
+                ? 'Actualiza la información'
+                : 'Agrega un cliente'
+            }}
+
+          </h2>
+
+          <p>
+            Solo el nombre es obligatorio.
+            Los demás datos pueden completarse
+            posteriormente.
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeForm()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+
+      <div class="form-grid">
+
+
+        <div class="form-group full">
+
+          <label>
+            Nombre *
+          </label>
+
+          <input
+            type="text"
+            placeholder="Ej. María López"
+            [(ngModel)]="
+              clientForm.name
+            "
+          >
+
+
+          <small
+            class="error-message"
+            *ngIf="
+              showErrors &&
+              !clientForm.name
+            "
+          >
+            Ingresa el nombre del cliente.
+          </small>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label>
+            Teléfono
+          </label>
+
+          <input
+            type="tel"
+            placeholder="Ej. 0991234567"
+            [(ngModel)]="
+              clientForm.phone
+            "
+          >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label>
+            Correo electrónico
+          </label>
+
+          <input
+            type="email"
+            placeholder="cliente@correo.com"
+            [(ngModel)]="
+              clientForm.email
+            "
+          >
+
+        </div>
+
+
+
+        <div class="form-group full">
+
+          <label>
+            Ciudad
+          </label>
+
+          <input
+            type="text"
+            placeholder="Ej. Quito"
+            [(ngModel)]="
+              clientForm.city
+            "
+          >
+
+        </div>
+
+      </div>
+
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="closeForm()"
+        >
+          Cancelar
+        </button>
+
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="saveClient()"
+        >
+
+          {{
+            editingClientId
+              ? 'Guardar cambios'
+              : 'Crear cliente'
+          }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- CONTENT -->
+
+    <ng-container
+      *ngIf="
+        clients.length > 0 &&
+        !showClientForm
+      "
+    >
+
+
+      <!-- KPI -->
+
+      <div class="kpi-grid">
+
+
+        <div class="kpi-card">
+
+          <span>
+            CLIENTES
+          </span>
+
+          <strong>
+            {{ totalClients }}
+          </strong>
+
+          <small>
+            Registrados
+          </small>
+
+        </div>
+
+
+
+        <div class="kpi-card">
+
+          <span>
+            ACTIVOS
+          </span>
+
+          <strong>
+            {{ activeClients }}
+          </strong>
+
+          <small>
+            Disponibles
+          </small>
+
+        </div>
+
+
+
+        <div class="kpi-card">
+
+          <span>
+            CON COMPRAS
+          </span>
+
+          <strong>
+            {{ clientsWithPurchases }}
+          </strong>
+
+          <small>
+            Clientes identificados
+          </small>
+
+        </div>
+
+
+
+        <div class="kpi-card">
+
+          <span>
+            VENTAS IDENTIFICADAS
+          </span>
+
+          <strong>
+            ${{
+              totalClientRevenue
+              | number:'1.2-2'
+            }}
+          </strong>
+
+          <small>
+            Asociadas a clientes
+          </small>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- TABLE -->
+
+      <div class="table-card">
+
+
+        <div class="table-header">
+
+          <div>
+
+            <span class="table-label">
+              BASE DE CLIENTES
+            </span>
+
+            <h2>
+              Clientes registrados
+            </h2>
+
+          </div>
+
+
+          <div class="table-tools">
+
+
+            <div class="search-box">
+
+              <span>
+                🔍
+              </span>
+
+              <input
+                type="text"
+                placeholder="Buscar cliente..."
+                [(ngModel)]="
+                  searchTerm
+                "
+              >
+
+            </div>
+
+
+            <select
+              class="filter-select"
+              [(ngModel)]="
+                statusFilter
+              "
+            >
+
+              <option value="all">
+                Todos
+              </option>
+
+              <option value="active">
+                Activos
+              </option>
+
+              <option value="inactive">
+                Inactivos
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+
+        <div
+          class="filter-bar"
+          *ngIf="
+            searchTerm ||
+            statusFilter !== 'all'
+          "
+        >
+
+          <span>
+
+            {{ filteredClients.length }}
+            clientes encontrados
+
+          </span>
+
+
+          <button
+            type="button"
+            (click)="clearFilters()"
+          >
+            Limpiar filtros
+          </button>
+
+        </div>
+
+
+
+        <div class="table-responsive">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Cliente
+                </th>
+
+                <th>
+                  Contacto
+                </th>
+
+                <th>
+                  Ciudad
+                </th>
+
+                <th>
+                  Compras
+                </th>
+
+                <th>
+                  Total gastado
+                </th>
+
+                <th>
+                  Ticket promedio
+                </th>
+
+                <th>
+                  Última compra
+                </th>
+
+                <th>
+                  Estado
+                </th>
+
+                <th>
+                  Acciones
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let client
+                  of filteredClients
+                "
+              >
+
+
+                <td>
+
+                  <div class="client-cell">
+
+                    <div class="client-avatar">
+
+                      {{
+                        client.name
+                          .charAt(0)
+                          .toUpperCase()
+                      }}
+
+                    </div>
+
+                    <strong>
+                      {{ client.name }}
+                    </strong>
+
+                  </div>
+
+                </td>
+
+
+
+                <td>
+
+                  <div class="contact-cell">
+
+                    <span>
+                      {{
+                        client.phone ||
+                        'Sin teléfono'
+                      }}
+                    </span>
+
+                    <small>
+                      {{
+                        client.email ||
+                        'Sin correo'
+                      }}
+                    </small>
+
+                  </div>
+
+                </td>
+
+
+
+                <td>
+
+                  {{
+                    client.city ||
+                    '-'
+                  }}
+
+                </td>
+
+
+
+                <td>
+
+                  <strong>
+
+                    {{
+                      getClientSalesCount(
+                        client.id
+                      )
+                    }}
+
+                  </strong>
+
+                </td>
+
+
+
+                <td>
+
+                  ${{
+                    getClientTotal(
+                      client.id
+                    )
+                    | number:'1.2-2'
+                  }}
+
+                </td>
+
+
+
+                <td>
+
+                  ${{
+                    getClientAverageTicket(
+                      client.id
+                    )
+                    | number:'1.2-2'
+                  }}
+
+                </td>
+
+
+
+                <td>
+
+                  {{
+                    getLastPurchase(
+                      client.id
+                    )
+                  }}
+
+                </td>
+
+
+
+                <td>
+
+                  <button
+                    type="button"
+                    class="status-button"
+                    [class.inactive]="
+                      client.status ===
+                      'inactive'
+                    "
+                    (click)="
+                      toggleStatus(client)
+                    "
+                  >
+
+                    {{
+                      client.status ===
+                      'active'
+                        ? 'Activo'
+                        : 'Inactivo'
+                    }}
+
+                  </button>
+
+                </td>
+
+
+
+                <td>
+
+                  <div class="row-actions">
+
+                    <button
+                      type="button"
+                      title="Editar"
+                      (click)="
+                        editClient(client)
+                      "
+                    >
+                      ✏
+                    </button>
+
+
+                    <button
+                      type="button"
+                      title="Eliminar"
+                      (click)="
+                        deleteClient(client)
+                      "
+                    >
+                      🗑
+                    </button>
+
+                  </div>
+
+                </td>
+
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- IA -->
+
+      <div class="ai-banner">
+
+        <div class="ai-icon">
+          ✦
+        </div>
+
+        <div>
+
+          <strong>
+            Tus clientes podrán ser segmentados automáticamente
+          </strong>
+
+          <p>
+            Cuando exista suficiente historial,
+            WisePick podrá detectar clientes frecuentes,
+            clientes inactivos y oportunidades
+            de fidelización.
+          </p>
+
+        </div>
+
+      </div>
+
+
+    </ng-container>
+
+  </div>
+
 </div>
 

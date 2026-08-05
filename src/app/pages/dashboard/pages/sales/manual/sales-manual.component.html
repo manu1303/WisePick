@@ -100,14 +100,39 @@
               Cliente
             </label>
 
-            <input
-              type="text"
-              placeholder="Ej. María López"
-              [(ngModel)]="sale.customerName"
+            
+            <select
+              [(ngModel)]="sale.customerId"
+              (ngModelChange)="onClientSelected()"
             >
 
+              <option value="">
+                Cliente no identificado
+              </option>
+
+              <option
+                *ngFor="
+                  let client of clients
+                "
+                  [value]="client.id"
+              >
+
+                {{ client.name }}
+
+                {{
+                  client.phone
+                    ? ' · ' + client.phone
+                    : ''
+                }}
+
+              </option>
+
+            </select>
+
+
             <small>
-              Opcional si no tienes identificado al cliente.
+              Opcional. Puedes registrar la venta
+              sin identificar al cliente.
             </small>
 
           </div>

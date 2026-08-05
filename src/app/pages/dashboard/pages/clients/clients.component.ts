@@ -1,11 +1,619 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+
+interface Client {
+
+  id: string;
+
+  name: string;
+
+  phone: string;
+
+  email: string;
+
+  city: string;
+
+  status: 'active' | 'inactive';
+
+  createdAt: string;
+}
+
+
+interface Sale {
+
+  id: string;
+
+  customerId?: string;
+
+  customerName: string;
+
+  total: number;
+
+  saleDate: string;
+}
+
+
+interface ClientForm {
+
+  name: string;
+
+  phone: string;
+
+  email: string;
+
+  city: string;
+}
+
 
 @Component({
+  selector: 'app-clients',
   standalone: true,
-  selector: 'app-home',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './clients.component.html',
+  styleUrls: ['./clients.component.scss']
 })
-export class ClientsComponent {}
+export class ClientsComponent implements OnInit {
+
+  clients: Client[] = [];
+
+  sales: Sale[] = [];
+
+  searchTerm = '';
+
+  statusFilter = 'all';
+
+  showClientForm = false;
+
+  editingClientId: string | null = null;
+
+  showErrors = false;
+
+
+  clientForm: ClientForm = {
+
+    name: '',
+
+    phone: '',
+
+    email: '',
+
+    city: ''
+
+  };
+
+
+  ngOnInit(): void {
+
+    this.loadClients();
+
+    this.loadSales();
+  }
+
+
+  /* ============================
+     LOAD
+  ============================ */
+
+  loadClients(): void {
+
+    this.clients =
+      JSON.parse(
+        localStorage.getItem(
+          'wisepick_clients'
+        ) || '[]'
+      );
+
+  }
+
+
+  loadSales(): void {
+
+    this.sales =
+      JSON.parse(
+        localStorage.getItem(
+          'wisepick_sales'
+        ) || '[]'
+      );
+
+  }
+
+
+  /* ============================
+     KPIs
+  ============================ */
+
+  get totalClients(): number {
+
+    return this.clients.length;
+  }
+
+
+  get activeClients(): number {
+
+    return this.clients.filter(
+      client =>
+        client.status === 'active'
+    ).length;
+
+  }
+
+
+  get clientsWithPurchases(): number {
+
+    return this.clients.filter(
+
+      client =>
+        this.getClientSalesCount(
+          client.id
+        ) > 0
+
+    ).length;
+
+  }
+
+
+  get totalClientRevenue(): number {
+
+    return this.sales
+      .filter(
+        sale => !!sale.customerId
+      )
+      .reduce(
+        (sum, sale) =>
+          sum + Number(sale.total),
+        0
+      );
+
+  }
+
+
+  /* ============================
+     ANALYTICS CLIENT
+  ============================ */
+
+  getClientSales(
+    clientId: string
+  ): Sale[] {
+
+    return this.sales.filter(
+      sale =>
+        sale.customerId === clientId
+    );
+
+  }
+
+
+  getClientSalesCount(
+    clientId: string
+  ): number {
+
+    return this.getClientSales(
+      clientId
+    ).length;
+
+  }
+
+
+  getClientTotal(
+    clientId: string
+  ): number {
+
+    return this.getClientSales(
+      clientId
+    ).reduce(
+
+      (sum, sale) =>
+        sum + Number(sale.total),
+
+      0
+    );
+
+  }
+
+
+  getClientAverageTicket(
+    clientId: string
+  ): number {
+
+    const sales =
+      this.getClientSales(
+        clientId
+      );
+
+
+    if (!sales.length) {
+
+      return 0;
+
+    }
+
+
+    return (
+      this.getClientTotal(clientId) /
+      sales.length
+    );
+
+  }
+
+
+  getLastPurchase(
+    clientId: string
+  ): string {
+
+    const sales =
+      this.getClientSales(clientId);
+
+
+    if (!sales.length) {
+
+      return 'Sin compras';
+
+    }
+
+
+    const sorted =
+      [...sales].sort(
+
+        (a, b) =>
+          new Date(b.saleDate).getTime() -
+          new Date(a.saleDate).getTime()
+
+      );
+
+
+    return sorted[0].saleDate;
+
+  }
+
+
+  /* ============================
+     FILTER
+  ============================ */
+
+  get filteredClients(): Client[] {
+
+    const term =
+      this.searchTerm
+        .trim()
+        .toLowerCase();
+
+
+    return this.clients.filter(
+
+      client => {
+
+        const matchesSearch =
+
+          !term ||
+
+          client.name
+            .toLowerCase()
+            .includes(term) ||
+
+          client.phone
+            .toLowerCase()
+            .includes(term) ||
+
+          client.email
+            .toLowerCase()
+            .includes(term);
+
+
+        const matchesStatus =
+
+          this.statusFilter === 'all' ||
+
+          client.status ===
+            this.statusFilter;
+
+
+        return (
+          matchesSearch &&
+          matchesStatus
+        );
+
+      }
+
+    );
+
+  }
+
+
+  /* ============================
+     CREATE
+  ============================ */
+
+  openNewClient(): void {
+
+    this.editingClientId = null;
+
+    this.showErrors = false;
+
+
+    this.clientForm = {
+
+      name: '',
+
+      phone: '',
+
+      email: '',
+
+      city: ''
+
+    };
+
+
+    this.showClientForm = true;
+  }
+
+
+  /* ============================
+     EDIT
+  ============================ */
+
+  editClient(
+    client: Client
+  ): void {
+
+    this.editingClientId =
+      client.id;
+
+
+    this.clientForm = {
+
+      name:
+        client.name,
+
+      phone:
+        client.phone,
+
+      email:
+        client.email,
+
+      city:
+        client.city
+
+    };
+
+
+    this.showErrors = false;
+
+    this.showClientForm = true;
+  }
+
+
+  /* ============================
+     VALIDATION
+  ============================ */
+
+  private isValid(): boolean {
+
+    return !!(
+      this.clientForm.name
+    );
+
+  }
+
+
+  /* ============================
+     SAVE
+  ============================ */
+
+  saveClient(): void {
+
+    this.showErrors = true;
+
+
+    if (!this.isValid()) {
+
+      return;
+
+    }
+
+
+    /*
+      EDITAR
+    */
+
+    if (this.editingClientId) {
+
+      const index =
+        this.clients.findIndex(
+
+          client =>
+            client.id ===
+            this.editingClientId
+
+        );
+
+
+      if (index !== -1) {
+
+        this.clients[index] = {
+
+          ...this.clients[index],
+
+          name:
+            this.clientForm.name,
+
+          phone:
+            this.clientForm.phone,
+
+          email:
+            this.clientForm.email,
+
+          city:
+            this.clientForm.city
+
+        };
+
+      }
+
+    }
+
+
+    /*
+      CREAR
+    */
+
+    else {
+
+      const newClient: Client = {
+
+        id:
+          crypto.randomUUID(),
+
+        name:
+          this.clientForm.name,
+
+        phone:
+          this.clientForm.phone,
+
+        email:
+          this.clientForm.email,
+
+        city:
+          this.clientForm.city,
+
+        status:
+          'active',
+
+        createdAt:
+          new Date()
+            .toISOString()
+
+      };
+
+
+      this.clients.unshift(
+        newClient
+      );
+
+    }
+
+
+    this.persistClients();
+
+    this.closeForm();
+  }
+
+
+  /* ============================
+     DELETE
+  ============================ */
+
+  deleteClient(
+    client: Client
+  ): void {
+
+    const purchases =
+      this.getClientSalesCount(
+        client.id
+      );
+
+
+    if (purchases > 0) {
+
+      alert(
+        'Este cliente tiene ventas asociadas. Puedes desactivarlo, pero no eliminarlo.'
+      );
+
+      return;
+
+    }
+
+
+    const confirmed =
+      window.confirm(
+        `¿Deseas eliminar a "${client.name}"?`
+      );
+
+
+    if (!confirmed) {
+
+      return;
+
+    }
+
+
+    this.clients =
+      this.clients.filter(
+
+        item =>
+          item.id !== client.id
+
+      );
+
+
+    this.persistClients();
+  }
+
+
+  /* ============================
+     STATUS
+  ============================ */
+
+  toggleStatus(
+    client: Client
+  ): void {
+
+    client.status =
+
+      client.status === 'active'
+        ? 'inactive'
+        : 'active';
+
+
+    this.persistClients();
+  }
+
+
+  /* ============================
+     STORAGE
+  ============================ */
+
+  private persistClients(): void {
+
+    localStorage.setItem(
+
+      'wisepick_clients',
+
+      JSON.stringify(
+        this.clients
+      )
+
+    );
+
+  }
+
+
+  /* ============================
+     UI
+  ============================ */
+
+  closeForm(): void {
+
+    this.showClientForm = false;
+
+    this.editingClientId = null;
+
+    this.showErrors = false;
+
+  }
+
+
+  clearFilters(): void {
+
+    this.searchTerm = '';
+
+    this.statusFilter = 'all';
+
+  }
+
+}
 
