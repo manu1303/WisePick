@@ -1,4 +1,827 @@
-<section class="dash">
-  <h1>Dashboard</h1>
-  <p>Bienvenido al panel principal de análisis visual de WisePick.</p>
-</section>
+<div class="analytics-page">
+
+  <div class="analytics-container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          DASHBOARD ANALÍTICO
+        </span>
+
+        <h1>
+          Así está tu negocio
+        </h1>
+
+        <p>
+          WisePick transforma tus ventas,
+          productos y clientes en indicadores
+          que facilitan la toma de decisiones.
+        </p>
+
+      </div>
+
+
+      <div class="data-badge">
+
+        <span class="status-dot">
+        </span>
+
+        Datos actualizados
+
+      </div>
+
+    </div>
+
+
+
+    <!-- EMPTY STATE -->
+
+    <div
+      class="empty-state"
+      *ngIf="sales.length === 0"
+    >
+
+      <div class="empty-icon">
+        📊
+      </div>
+
+      <span class="empty-label">
+        SIN INFORMACIÓN SUFICIENTE
+      </span>
+
+      <h2>
+        Aún no tenemos ventas para analizar
+      </h2>
+
+      <p>
+        Registra tus primeras ventas para que
+        WisePick pueda generar indicadores
+        comerciales.
+      </p>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="goToSales()"
+      >
+        Ir a Ventas →
+      </button>
+
+    </div>
+
+
+
+    <!-- ANALYTICS -->
+
+    <ng-container
+      *ngIf="sales.length > 0"
+    >
+
+
+      <!-- KPIs -->
+
+      <div class="kpi-grid">
+
+
+        <div class="kpi-card">
+
+          <div class="kpi-header">
+
+            <span>
+              INGRESOS
+            </span>
+
+            <div class="kpi-icon">
+              $
+            </div>
+
+          </div>
+
+          <strong>
+
+            ${{
+              totalRevenue
+              | number:'1.2-2'
+            }}
+
+          </strong>
+
+          <small>
+            Ingresos registrados
+          </small>
+
+        </div>
+
+
+
+        <div class="kpi-card">
+
+          <div class="kpi-header">
+
+            <span>
+              VENTAS
+            </span>
+
+            <div class="kpi-icon">
+              🧾
+            </div>
+
+          </div>
+
+          <strong>
+            {{ totalTransactions }}
+          </strong>
+
+          <small>
+            Transacciones
+          </small>
+
+        </div>
+
+
+
+        <div class="kpi-card">
+
+          <div class="kpi-header">
+
+            <span>
+              TICKET PROMEDIO
+            </span>
+
+            <div class="kpi-icon">
+              ↗
+            </div>
+
+          </div>
+
+          <strong>
+
+            ${{
+              averageTicket
+              | number:'1.2-2'
+            }}
+
+          </strong>
+
+          <small>
+            Promedio por venta
+          </small>
+
+        </div>
+
+
+
+        <div class="kpi-card">
+
+          <div class="kpi-header">
+
+            <span>
+              CLIENTES
+            </span>
+
+            <div class="kpi-icon">
+              👤
+            </div>
+
+          </div>
+
+          <strong>
+            {{ identifiedCustomers }}
+          </strong>
+
+          <small>
+            Clientes con compras
+          </small>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- MAIN ANALYTICS -->
+
+      <div class="main-grid">
+
+
+        <!-- SALES EVOLUTION -->
+
+        <div class="analytics-card sales-evolution">
+
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-label">
+                COMPORTAMIENTO
+              </span>
+
+              <h2>
+                Evolución de ventas
+              </h2>
+
+              <p>
+                Ingresos registrados
+                por fecha.
+              </p>
+
+            </div>
+
+
+            <div class="card-value">
+
+              ${{
+                totalRevenue
+                | number:'1.2-2'
+              }}
+
+            </div>
+
+          </div>
+
+
+
+          <div class="chart-area">
+
+
+            <div class="chart-y-axis">
+
+              <span>
+                ${{
+                  maxDailyRevenue
+                  | number:'1.0-0'
+                }}
+              </span>
+
+              <span>
+                ${{
+                  maxDailyRevenue / 2
+                  | number:'1.0-0'
+                }}
+              </span>
+
+              <span>
+                $0
+              </span>
+
+            </div>
+
+
+
+            <div class="bars-container">
+
+              <div
+                class="bar-item"
+                *ngFor="
+                  let day
+                  of dailySales
+                "
+              >
+
+                <div class="bar-wrapper">
+
+                  <div
+                    class="bar"
+                    [style.height.%]="
+                      getBarHeight(
+                        day.total
+                      )
+                    "
+                    [title]="
+                      '$' +
+                      (
+                        day.total
+                        | number:'1.2-2'
+                      )
+                    "
+                  >
+                  </div>
+
+                </div>
+
+
+                <span class="bar-date">
+
+                  {{
+                    day.date
+                    | date:'dd/MM'
+                  }}
+
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- TOP PRODUCTS -->
+
+        <div class="analytics-card">
+
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-label">
+                PRODUCTOS
+              </span>
+
+              <h2>
+                Más vendidos
+              </h2>
+
+              <p>
+                Ranking por unidades.
+              </p>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="link-button"
+              (click)="goToProducts()"
+            >
+              Ver productos
+            </button>
+
+          </div>
+
+
+
+          <div
+            class="ranking-list"
+            *ngIf="
+              topProducts.length > 0
+            "
+          >
+
+
+            <div
+              class="ranking-item"
+              *ngFor="
+                let product
+                of topProducts;
+                let i = index
+              "
+            >
+
+
+              <div class="ranking-position">
+
+                {{ i + 1 }}
+
+              </div>
+
+
+              <div class="ranking-product">
+
+                <strong>
+                  {{ product.productName }}
+                </strong>
+
+                <span>
+
+                  {{ product.quantity }}
+                  unidades
+
+                </span>
+
+              </div>
+
+
+              <div class="ranking-value">
+
+                ${{
+                  product.revenue
+                  | number:'1.2-2'
+                }}
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- SECONDARY GRID -->
+
+      <div class="secondary-grid">
+
+
+        <!-- PAYMENT METHODS -->
+
+        <div class="analytics-card">
+
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-label">
+                PAGOS
+              </span>
+
+              <h2>
+                Métodos de pago
+              </h2>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="distribution-list">
+
+
+            <div
+              class="distribution-item"
+              *ngFor="
+                let item
+                of paymentDistribution
+              "
+            >
+
+
+              <div class="distribution-info">
+
+                <span>
+                  {{ item.label }}
+                </span>
+
+                <strong>
+
+                  {{
+                    item.percentage
+                    | number:'1.0-0'
+                  }}%
+
+                </strong>
+
+              </div>
+
+
+              <div class="progress-track">
+
+                <div
+                  class="progress-fill"
+                  [style.width.%]="
+                    item.percentage
+                  "
+                >
+                </div>
+
+              </div>
+
+
+              <small>
+
+                {{ item.value }}
+                ventas
+
+              </small>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- DATA SOURCES -->
+
+        <div class="analytics-card">
+
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-label">
+                CALIDAD DE DATOS
+              </span>
+
+              <h2>
+                Origen de tus ventas
+              </h2>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="distribution-list">
+
+
+            <div
+              class="distribution-item"
+              *ngFor="
+                let item
+                of sourceDistribution
+              "
+            >
+
+
+              <div class="distribution-info">
+
+                <span>
+                  {{ item.label }}
+                </span>
+
+                <strong>
+
+                  {{
+                    item.percentage
+                    | number:'1.0-0'
+                  }}%
+
+                </strong>
+
+              </div>
+
+
+              <div class="progress-track">
+
+                <div
+                  class="progress-fill"
+                  [style.width.%]="
+                    item.percentage
+                  "
+                >
+                </div>
+
+              </div>
+
+
+              <small>
+
+                {{ item.value }}
+                registros
+
+              </small>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- CUSTOMER DATA -->
+
+        <div class="analytics-card customer-card">
+
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-label">
+                CLIENTES
+              </span>
+
+              <h2>
+                Identificación
+              </h2>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="link-button"
+              (click)="goToClients()"
+            >
+              Ver clientes
+            </button>
+
+          </div>
+
+
+          <div class="customer-percentage">
+
+            <strong>
+
+              {{
+                identifiedSalesPercentage
+                | number:'1.0-0'
+              }}%
+
+            </strong>
+
+            <span>
+              de tus ventas tienen
+              cliente identificado
+            </span>
+
+          </div>
+
+
+          <div class="progress-track large">
+
+            <div
+              class="progress-fill"
+              [style.width.%]="
+                identifiedSalesPercentage
+              "
+            >
+            </div>
+
+          </div>
+
+
+          <div class="customer-stats">
+
+
+            <div>
+
+              <span>
+                Identificados
+              </span>
+
+              <strong>
+                {{ identifiedCustomers }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                Ventas anónimas
+              </span>
+
+              <strong>
+                {{ anonymousSales }}
+              </strong>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- STOCK ALERT -->
+
+      <div
+        class="stock-alert"
+        *ngIf="
+          lowStockProducts.length > 0
+        "
+      >
+
+        <div class="alert-icon">
+          !
+        </div>
+
+
+        <div>
+
+          <strong>
+            Tienes productos con stock bajo
+          </strong>
+
+          <p>
+
+            {{
+              lowStockProducts.length
+            }}
+            producto(s) tienen
+            5 unidades o menos disponibles.
+
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          (click)="goToProducts()"
+        >
+          Revisar inventario →
+        </button>
+
+      </div>
+
+
+
+      <!-- IA INSIGHT -->
+
+      <div class="ai-insight">
+
+
+        <div class="ai-icon-large">
+          ✦
+        </div>
+
+
+        <div class="ai-content">
+
+          <span class="card-label">
+            WISEPICK IA
+          </span>
+
+          <h2>
+            Primer insight de tu negocio
+          </h2>
+
+
+          <p *ngIf="bestProduct">
+
+            Actualmente
+
+            <strong>
+              {{ bestProduct.productName }}
+            </strong>
+
+            es tu producto con mayor número
+            de unidades vendidas, con
+
+            <strong>
+              {{ bestProduct.quantity }}
+              unidades
+            </strong>
+
+            y
+
+            <strong>
+              ${{
+                bestProduct.revenue
+                | number:'1.2-2'
+              }}
+            </strong>
+
+            en ingresos registrados.
+
+          </p>
+
+
+          <p *ngIf="!bestProduct">
+
+            Registra más información para
+            comenzar a identificar patrones
+            comerciales.
+
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="ai-button"
+          (click)="goToAI()"
+        >
+          Explorar con IA →
+        </button>
+
+
+      </div>
+
+
+    </ng-container>
+
+
+  </div>
+
+</div>
