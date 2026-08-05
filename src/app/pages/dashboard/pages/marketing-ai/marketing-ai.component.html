@@ -1,4 +1,361 @@
-<div class="panel">
-  <h2>Marketing IA</h2>
-  <p>Bienvenido a tu área de trabajo de WisePick.</p>
+<div class="marketing-ai-page">
+
+  <div class="marketing-container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          MARKETING IA
+        </span>
+
+        <h1>
+          Oportunidades para tu negocio
+        </h1>
+
+        <p>
+          WisePick analiza el comportamiento
+          de tus ventas, productos y clientes
+          para ayudarte a identificar acciones
+          comerciales.
+        </p>
+
+      </div>
+
+
+      <div class="ai-status">
+
+        <span>
+          ✦
+        </span>
+
+        Motor de análisis activo
+
+      </div>
+
+    </div>
+
+
+
+    <!-- NO DATA -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        sales.length === 0
+      "
+    >
+
+      <div class="empty-icon">
+        ✦
+      </div>
+
+      <span class="empty-label">
+        TODAVÍA NO HAY DATOS
+      </span>
+
+      <h2>
+        WisePick necesita conocer tu negocio
+      </h2>
+
+      <p>
+        Registra ventas para comenzar a
+        generar oportunidades y
+        recomendaciones comerciales.
+      </p>
+
+    </div>
+
+
+
+    <ng-container
+      *ngIf="
+        sales.length > 0
+      "
+    >
+
+
+      <!-- HERO AI -->
+
+      <div class="ai-hero">
+
+        <div class="ai-hero-icon">
+          ✦
+        </div>
+
+
+        <div class="ai-hero-content">
+
+          <span class="eyebrow">
+            ANÁLISIS ACTUAL
+          </span>
+
+          <h2>
+            WisePick encontró
+            {{ insights.length }}
+            oportunidades
+          </h2>
+
+          <p>
+            Estas recomendaciones se generan
+            utilizando los datos actualmente
+            registrados en tu empresa.
+          </p>
+
+        </div>
+
+
+        <div class="analysis-score">
+
+          <span>
+            Datos identificados
+          </span>
+
+          <strong>
+
+            {{
+              identifiedPercentage
+              | number:'1.0-0'
+            }}%
+
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- INSIGHTS -->
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="eyebrow">
+            RECOMENDACIONES
+          </span>
+
+          <h2>
+            Acciones sugeridas
+          </h2>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="insights-grid">
+
+
+        <div
+          class="insight-card"
+          *ngFor="
+            let insight
+            of insights
+          "
+          [attr.data-type]="
+            insight.type
+          "
+        >
+
+
+          <div class="insight-icon">
+
+            {{ insight.icon }}
+
+          </div>
+
+
+          <div class="insight-content">
+
+            <span class="insight-type">
+
+              {{
+                insight.type ===
+                  'warning'
+                  ? 'ATENCIÓN'
+                  : insight.type ===
+                    'success'
+                    ? 'DESTACADO'
+                    : insight.type ===
+                      'customer'
+                      ? 'CLIENTES'
+                      : 'OPORTUNIDAD'
+              }}
+
+            </span>
+
+
+            <h3>
+
+              {{ insight.title }}
+
+            </h3>
+
+
+            <p>
+
+              {{
+                insight.description
+              }}
+
+            </p>
+
+
+            <button
+              type="button"
+              (click)="
+                executeInsight(
+                  insight
+                )
+              "
+            >
+
+              {{ insight.action }}
+
+              →
+
+            </button>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- BEST PRODUCT -->
+
+      <div
+        class="business-highlight"
+        *ngIf="bestProduct"
+      >
+
+
+        <div>
+
+          <span class="eyebrow">
+            PRODUCTO DESTACADO
+          </span>
+
+          <h2>
+
+            {{
+              bestProduct.name
+            }}
+
+          </h2>
+
+          <p>
+
+            Actualmente representa una
+            de tus principales oportunidades
+            comerciales.
+
+          </p>
+
+        </div>
+
+
+        <div class="highlight-stats">
+
+
+          <div>
+
+            <span>
+              Unidades
+            </span>
+
+            <strong>
+
+              {{
+                bestProduct.quantity
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Ingresos
+            </span>
+
+            <strong>
+
+              ${{
+                bestProduct.revenue
+                | number:'1.2-2'
+              }}
+
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- CAMPAIGN CTA -->
+
+      <div class="campaign-card">
+
+
+        <div class="campaign-icon">
+          🎯
+        </div>
+
+
+        <div>
+
+          <span class="eyebrow">
+            SIGUIENTE PASO
+          </span>
+
+          <h2>
+            Convierte insights en campañas
+          </h2>
+
+          <p>
+            Utiliza las oportunidades
+            identificadas para crear acciones
+            de marketing orientadas a tus
+            clientes y productos.
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="goToCampaigns()"
+        >
+          Crear campaña →
+        </button>
+
+
+      </div>
+
+
+    </ng-container>
+
+
+  </div>
+
 </div>

@@ -87,121 +87,149 @@
 
       <div class="kpi-grid">
 
+        <!-- INGRESOS -->
 
         <div class="kpi-card">
 
           <div class="kpi-header">
+            <span>INGRESOS</span>
 
-            <span>
-              INGRESOS
-            </span>
-
-            <div class="kpi-icon">
-              $
-            </div>
-
+              <div class="kpi-icon">
+                $
           </div>
-
-          <strong>
-
-            ${{
-              totalRevenue
-              | number:'1.2-2'
-            }}
-
-          </strong>
-
-          <small>
-            Ingresos registrados
-          </small>
-
+            
         </div>
 
+        <strong>
+          ${{ totalRevenue | number:'1.2-2' }}
+        </strong>
 
-
-        <div class="kpi-card">
-
-          <div class="kpi-header">
-
-            <span>
-              VENTAS
-            </span>
-
-            <div class="kpi-icon">
-              🧾
-            </div>
-
-          </div>
-
-          <strong>
-            {{ totalTransactions }}
-          </strong>
-
-          <small>
-            Transacciones
-          </small>
-
-        </div>
-
-
-
-        <div class="kpi-card">
-
-          <div class="kpi-header">
-
-            <span>
-              TICKET PROMEDIO
-            </span>
-
-            <div class="kpi-icon">
-              ↗
-            </div>
-
-          </div>
-
-          <strong>
-
-            ${{
-              averageTicket
-              | number:'1.2-2'
-            }}
-
-          </strong>
-
-          <small>
-            Promedio por venta
-          </small>
-
-        </div>
-
-
-
-        <div class="kpi-card">
-
-          <div class="kpi-header">
-
-            <span>
-              CLIENTES
-            </span>
-
-            <div class="kpi-icon">
-              👤
-            </div>
-
-          </div>
-
-          <strong>
-            {{ identifiedCustomers }}
-          </strong>
-
-          <small>
-            Clientes con compras
-          </small>
-
-        </div>
-
+        <small>
+          Ingresos registrados
+        </small>
 
       </div>
+
+
+      <!-- VENTAS -->
+
+      <div class="kpi-card">
+
+        <div class="kpi-header">
+          <span>VENTAS</span>
+
+          <div class="kpi-icon">
+            🧾
+          </div>
+        </div>
+
+        <strong>
+          {{ totalTransactions }}
+        </strong>
+
+        <small>
+          Transacciones
+        </small>
+
+      </div>
+
+
+      <!-- TICKET -->
+
+      <div class="kpi-card">
+
+        <div class="kpi-header">
+          <span>TICKET PROMEDIO</span>
+
+          <div class="kpi-icon">
+            ↗
+          </div>
+        </div>
+
+        <strong>
+          ${{ averageTicket | number:'1.2-2' }}
+        </strong>
+
+        <small>
+          Promedio por venta
+        </small>
+
+      </div>
+
+
+      <!-- CLIENTES -->
+
+      <div class="kpi-card">
+
+        <div class="kpi-header">
+          <span>CLIENTES</span>
+
+          <div class="kpi-icon">
+            👤
+          </div>
+        </div>
+
+        <strong>
+          {{ identifiedCustomers }}
+        </strong>
+
+        <small>
+          Clientes con compras
+        </small>
+
+      </div>
+
+
+
+      <!-- MARGEN -->
+
+        <div class="kpi-card">
+
+          <div class="kpi-header">
+            <span>GANANCIA EST.</span>
+
+            <div class="kpi-icon">
+              💰
+            </div>
+            
+          </div>
+
+          <strong>
+            ${{ estimatedGrossProfit | number:'1.2-2' }}
+          </strong>
+
+          <small>
+            Margen estimado:
+            {{ estimatedMarginPercentage | number:'1.0-1' }}%
+          </small>
+
+        </div>
+
+
+        <!-- RECURRENTES -->
+
+        <div class="kpi-card">
+
+          <div class="kpi-header">
+            <span>RECURRENTES</span>
+
+            <div class="kpi-icon">
+              ↻
+            </div>
+          </div>
+
+          <strong>
+            {{ recurringCustomers }}
+          </strong>
+
+          <small>
+            {{ recurringCustomerPercentage | number:'1.0-0' }}%
+            de clientes identificados
+          </small>
+
+          </div>
+
+        </div>
 
 
 

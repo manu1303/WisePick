@@ -641,4 +641,110 @@ export class DashComponent implements OnInit {
 
   }
 
+  /* ============================
+   PROFIT / MARGIN
+  ============================ */
+
+  get estimatedGrossProfit(): number {
+
+    return this.sales.reduce(
+      (sum, sale) => {
+
+        if (!sale.productId) {
+          return sum;
+        }
+
+        const product =
+          this.products.find(
+            item =>
+              item.id === sale.productId
+          );
+
+        if (!product) {
+          return sum;
+        }
+
+        const profitPerUnit =
+          Number(sale.unitPrice) -
+          Number(product.cost);
+
+        return (
+          sum +
+          (
+            profitPerUnit *
+            Number(sale.quantity)
+          )
+        );
+      },
+      0
+    );
+  }
+
+
+  get estimatedMarginPercentage(): number {
+
+    if (!this.totalRevenue) {
+      return 0;
+    }
+
+    return (
+      this.estimatedGrossProfit /
+      this.totalRevenue
+    ) * 100;
+  }
+
+
+  /* ============================
+    RECURRING CLIENTS
+  ============================ */
+
+  get recurringCustomers(): number {
+
+    const purchases =
+      new Map<string, number>();
+
+
+    this.sales
+      .filter(
+        sale =>
+          !!sale.customerId
+      )
+      .forEach(
+        sale => {
+
+          const id =
+            sale.customerId as string;
+
+          purchases.set(
+            id,
+            (
+              purchases.get(id) || 0
+            ) + 1
+          );
+
+        }
+      );
+
+
+    return Array
+      .from(purchases.values())
+      .filter(
+        count => count >= 2
+      ).length;
+  }
+
+
+  get recurringCustomerPercentage(): number {
+
+    if (!this.identifiedCustomers) {
+      return 0;
+    }
+
+    return (
+      this.recurringCustomers /
+      this.identifiedCustomers
+    ) * 100;
+  }
+
 }
+
