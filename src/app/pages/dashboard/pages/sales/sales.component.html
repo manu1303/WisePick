@@ -18,8 +18,9 @@
         </h1>
 
         <p>
-          Consulta y administra la información comercial
-          que WisePick utilizará para generar tus análisis.
+          Consulta, organiza y administra la información
+          comercial que WisePick utilizará para generar
+          tus análisis y recomendaciones.
         </p>
 
       </div>
@@ -35,7 +36,6 @@
           + Venta manual
         </button>
 
-
         <button
           type="button"
           class="primary-button"
@@ -50,7 +50,7 @@
 
 
 
-    <!-- EMPTY STATE -->
+    <!-- EMPTY -->
 
     <div
       class="empty-state"
@@ -70,9 +70,9 @@
       </h2>
 
       <p>
-        WisePick necesita información de ventas para
-        comenzar a generar indicadores, tendencias
-        y recomendaciones.
+        WisePick necesita información de ventas
+        para comenzar a identificar tendencias,
+        productos destacados y oportunidades.
       </p>
 
       <button
@@ -87,12 +87,10 @@
 
 
 
-    <!-- CONTENT -->
-
     <ng-container *ngIf="sales.length > 0">
 
 
-      <!-- KPI -->
+      <!-- KPIs -->
 
       <div class="kpi-grid">
 
@@ -142,7 +140,7 @@
           </strong>
 
           <small>
-            Transacciones
+            Transacciones registradas
           </small>
 
         </div>
@@ -154,7 +152,7 @@
           <div class="kpi-top">
 
             <span>
-              PRODUCTOS
+              UNIDADES
             </span>
 
             <div class="kpi-icon">
@@ -168,7 +166,7 @@
           </strong>
 
           <small>
-            Unidades vendidas
+            Productos vendidos
           </small>
 
         </div>
@@ -194,16 +192,50 @@
           </strong>
 
           <small>
-            Por transacción
+            Promedio por venta
           </small>
 
         </div>
+
 
       </div>
 
 
 
-      <!-- SALES TABLE -->
+      <!-- DATA QUALITY -->
+
+      <div class="data-summary">
+
+        <div>
+
+          <span class="data-summary-icon">
+            ✓
+          </span>
+
+          <div>
+            <strong>
+              {{ totalTransactions }}
+              ventas listas para analizar
+            </strong>
+
+            <span>
+              {{ identifiedCustomers }}
+              clientes identificados
+            </span>
+          </div>
+
+        </div>
+
+
+        <span class="data-status">
+          Datos disponibles
+        </span>
+
+      </div>
+
+
+
+      <!-- TABLE -->
 
       <div class="table-card">
 
@@ -223,19 +255,121 @@
           </div>
 
 
-          <div class="search-box">
+          <div class="table-tools">
 
-            <span>
-              🔍
-            </span>
 
-            <input
-              type="text"
-              placeholder="Buscar venta..."
-              [(ngModel)]="searchTerm"
+            <!-- SEARCH -->
+
+            <div class="search-box">
+
+              <span>
+                🔍
+              </span>
+
+              <input
+                type="text"
+                placeholder="Buscar producto o cliente..."
+                [(ngModel)]="searchTerm"
+              >
+
+            </div>
+
+
+            <!-- SOURCE FILTER -->
+
+            <select
+              class="filter-select"
+              [(ngModel)]="sourceFilter"
             >
 
+              <option value="all">
+                Todos los orígenes
+              </option>
+
+              <option value="manual">
+                Manual
+              </option>
+
+              <option value="excel">
+                Excel
+              </option>
+
+              <option value="invoice">
+                Foto / Factura
+              </option>
+
+              <option value="demo">
+                Demo
+              </option>
+
+            </select>
+
+
+            <!-- PAYMENT FILTER -->
+
+            <select
+              class="filter-select"
+              [(ngModel)]="paymentFilter"
+            >
+
+              <option value="all">
+                Todos los pagos
+              </option>
+
+              <option value="Efectivo">
+                Efectivo
+              </option>
+
+              <option value="Transferencia">
+                Transferencia
+              </option>
+
+              <option value="Tarjeta">
+                Tarjeta
+              </option>
+
+              <option value="Otro">
+                Otro
+              </option>
+
+            </select>
+
+
           </div>
+
+        </div>
+
+
+
+        <!-- ACTIVE FILTERS -->
+
+        <div
+          class="filter-bar"
+          *ngIf="
+            searchTerm ||
+            sourceFilter !== 'all' ||
+            paymentFilter !== 'all'
+          "
+        >
+
+          <span>
+            Mostrando
+            <strong>
+              {{ filteredSales.length }}
+            </strong>
+            de
+            <strong>
+              {{ sales.length }}
+            </strong>
+            ventas
+          </span>
+
+          <button
+            type="button"
+            (click)="clearFilters()"
+          >
+            Limpiar filtros
+          </button>
 
         </div>
 
@@ -262,7 +396,11 @@
                 </th>
 
                 <th>
-                  Cantidad
+                  Cant.
+                </th>
+
+                <th>
+                  Precio
                 </th>
 
                 <th>
@@ -277,6 +415,9 @@
                   Total
                 </th>
 
+                <th class="actions-column">
+                </th>
+
               </tr>
 
             </thead>
@@ -284,9 +425,13 @@
 
             <tbody>
 
+
               <tr
-                *ngFor="let sale of filteredSales"
+                *ngFor="
+                  let sale of filteredSales
+                "
               >
+
 
                 <td>
                   {{ sale.saleDate }}
@@ -311,12 +456,28 @@
 
 
                 <td>
-                  {{ sale.customerName }}
+
+                  <span
+                    [class.unidentified]="
+                      sale.customerName ===
+                      'Cliente no identificado'
+                    "
+                  >
+
+                    {{ sale.customerName }}
+
+                  </span>
+
                 </td>
 
 
                 <td>
                   {{ sale.quantity }}
+                </td>
+
+
+                <td>
+                  ${{ sale.unitPrice | number:'1.2-2' }}
                 </td>
 
 
@@ -331,8 +492,13 @@
 
                 <td>
 
-                  <span class="source-badge">
-                    {{ sale.source }}
+                  <span
+                    class="source-badge"
+                    [attr.data-source]="sale.source"
+                  >
+
+                    {{ getSourceLabel(sale.source) }}
+
                   </span>
 
                 </td>
@@ -344,7 +510,49 @@
 
                 </td>
 
+
+                <td class="actions-column">
+
+                  <button
+                    type="button"
+                    class="row-action"
+                    title="Eliminar venta"
+                    (click)="deleteSale(sale.id)"
+                  >
+                    ⋮
+                  </button>
+
+                </td>
+
+
               </tr>
+
+
+              <!-- NO RESULTS -->
+
+              <tr
+                *ngIf="filteredSales.length === 0"
+              >
+
+                <td
+                  colspan="9"
+                  class="no-results"
+                >
+
+                  No encontramos ventas
+                  con estos filtros.
+
+                  <button
+                    type="button"
+                    (click)="clearFilters()"
+                  >
+                    Limpiar filtros
+                  </button>
+
+                </td>
+
+              </tr>
+
 
             </tbody>
 
@@ -353,35 +561,42 @@
         </div>
 
 
-        <!-- TABLE FOOTER -->
 
         <div class="table-footer">
 
           <span>
+
             {{ filteredSales.length }}
             ventas encontradas
+
           </span>
 
+
           <span>
-            Total:
+
+            Total mostrado:
+
             <strong>
-              ${{ totalSales | number:'1.2-2' }}
+              ${{ filteredTotal | number:'1.2-2' }}
             </strong>
+
           </span>
 
         </div>
+
 
       </div>
 
 
 
-      <!-- IA INFO -->
+      <!-- AI -->
 
       <div class="ai-banner">
 
         <div class="ai-banner-icon">
           ✦
         </div>
+
 
         <div>
 
@@ -390,21 +605,24 @@
           </strong>
 
           <p>
-            A medida que registres más ventas,
-            WisePick podrá identificar patrones
-            comerciales y generar mejores recomendaciones.
+            WisePick puede utilizar tus ventas para
+            identificar patrones, productos destacados
+            y oportunidades comerciales.
           </p>
 
         </div>
 
+
         <button
           type="button"
           class="ai-button"
+          (click)="analyzeWithAI()"
         >
           Analizar con IA →
         </button>
 
       </div>
+
 
     </ng-container>
 

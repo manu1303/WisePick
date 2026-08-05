@@ -12,7 +12,7 @@ interface Sale {
   unitPrice: number;
   total: number;
   paymentMethod: string;
-  source: string;
+  source: 'manual' | 'excel' | 'invoice' | 'demo';
   createdAt: string;
 }
 
@@ -32,6 +32,9 @@ export class SalesComponent implements OnInit {
 
   searchTerm = '';
 
+  sourceFilter = 'all';
+  paymentFilter = 'all';
+
   constructor(
     private router: Router
   ) {}
@@ -42,45 +45,42 @@ export class SalesComponent implements OnInit {
 
   loadSales(): void {
 
-    this.sales =
+    const storedSales =
       JSON.parse(
         localStorage.getItem('wisepick_sales') || '[]'
       );
 
-    this.sales.sort(
-      (a, b) =>
+    this.sales = storedSales.sort(
+      (a: Sale, b: Sale) =>
         new Date(b.createdAt).getTime() -
         new Date(a.createdAt).getTime()
     );
   }
 
-
   get totalSales(): number {
 
     return this.sales.reduce(
-      (sum, sale) => sum + sale.total,
+      (sum, sale) => sum + Number(sale.total),
       0
     );
   }
-
 
   get totalTransactions(): number {
     return this.sales.length;
   }
 
-
   get totalProducts(): number {
 
     return this.sales.reduce(
-      (sum, sale) => sum + sale.quantity,
+      (sum, sale) =>
+        sum + Number(sale.quantity),
       0
     );
   }
 
-
   get averageTicket(): number {
 
-    if (!this.sales.length) {
+    if (this.totalTransactions === 0) {
       return 0;
     }
 
@@ -90,6 +90,25 @@ export class SalesComponent implements OnInit {
     );
   }
 
+  get identifiedCustomers(): number {
+
+    const customers =
+      this.sales
+        .filter(
+          sale =>
+            sale.customerName &&
+            sale.customerName !==
+              'Cliente no identificado'
+        )
+        .map(
+          sale =>
+            sale.customerName
+              .trim()
+              .toLowerCase()
+        );
+
+    return new Set(customers).size;
+  }
 
   get filteredSales(): Sale[] {
 
@@ -98,37 +117,118 @@ export class SalesComponent implements OnInit {
         .toLowerCase()
         .trim();
 
-    if (!term) {
-      return this.sales;
-    }
+    return this.sales.filter(sale => {
 
-    return this.sales.filter(
-      sale =>
+      const matchesSearch =
+        !term ||
         sale.productName
           .toLowerCase()
           .includes(term) ||
-
         sale.customerName
           .toLowerCase()
           .includes(term) ||
-
         sale.paymentMethod
           .toLowerCase()
-          .includes(term)
+          .includes(term);
+
+      const matchesSource =
+        this.sourceFilter === 'all' ||
+        sale.source === this.sourceFilter;
+
+      const matchesPayment =
+        this.paymentFilter === 'all' ||
+        sale.paymentMethod ===
+          this.paymentFilter;
+
+      return (
+        matchesSearch &&
+        matchesSource &&
+        matchesPayment
+      );
+
+    });
+  }
+
+  get filteredTotal(): number {
+
+    return this.filteredSales.reduce(
+      (sum, sale) =>
+        sum + Number(sale.total),
+      0
     );
   }
 
-
   addData(): void {
+
     this.router.navigate([
       '/dashboard/sales/import'
     ]);
   }
 
-
   addManualSale(): void {
+
     this.router.navigate([
       '/dashboard/sales/manual'
     ]);
   }
+
+  clearFilters(): void {
+
+    this.searchTerm = '';
+    this.sourceFilter = 'all';
+    this.paymentFilter = 'all';
+  }
+
+  deleteSale(id: string): void {
+
+    const confirmed =
+      window.confirm(
+        '¿Seguro que deseas eliminar esta venta?'
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.sales =
+      this.sales.filter(
+        sale => sale.id !== id
+      );
+
+    localStorage.setItem(
+      'wisepick_sales',
+      JSON.stringify(this.sales)
+    );
+  }
+
+  getSourceLabel(
+    source: Sale['source']
+  ): string {
+
+    switch (source) {
+
+      case 'manual':
+        return 'Manual';
+
+      case 'excel':
+        return 'Excel';
+
+      case 'invoice':
+        return 'Foto / Factura';
+
+      case 'demo':
+        return 'Demo';
+
+      default:
+        return source;
+    }
+  }
+
+  analyzeWithAI(): void {
+
+    this.router.navigate([
+      '/dashboard/marketing-ia'
+    ]);
+  }
+
 }

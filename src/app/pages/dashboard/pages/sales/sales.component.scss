@@ -584,3 +584,306 @@ tbody tr:hover {
   }
 
 }
+/* ==============================
+   DATA SUMMARY
+================================ */
+
+.data-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 20px;
+
+  padding: 14px 18px;
+
+  background: #f7f8ff;
+
+  border: 1px solid #e5e8ff;
+  border-radius: 14px;
+}
+
+.data-summary > div {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.data-summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 10px;
+
+  background: #506de8;
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.data-summary div div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.data-summary strong {
+  font-size: 11px;
+
+  color: #3d4255;
+}
+
+.data-summary div div span {
+  font-size: 9px;
+
+  color: #9296a5;
+}
+
+.data-status {
+  padding: 6px 9px;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #506de8;
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+
+/* ==============================
+   TABLE TOOLS
+================================ */
+
+.table-tools {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+.filter-select {
+  height: 41px;
+
+  padding: 0 31px 0 12px;
+
+  border: 1px solid #e0e3eb;
+  border-radius: 11px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #626778;
+
+  font-family: inherit;
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  border-color: #506de8;
+}
+
+
+/* ==============================
+   FILTER BAR
+================================ */
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 20px;
+
+  border-bottom: 1px solid #eef0f5;
+
+  background: #fafbff;
+
+  font-size: 9px;
+
+  color: #898e9d;
+}
+
+.filter-bar strong {
+  color: #51566a;
+}
+
+.filter-bar button {
+  border: 0;
+
+  background: transparent;
+
+  color: #506de8;
+
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* ==============================
+   SOURCE
+================================ */
+
+.source-badge[data-source="manual"] {
+  background: #eef1ff;
+
+  color: #506de8;
+}
+
+.source-badge[data-source="excel"] {
+  background: #effaf4;
+
+  color: #39835a;
+}
+
+.source-badge[data-source="invoice"] {
+  background: #fff5e9;
+
+  color: #a76925;
+}
+
+.source-badge[data-source="demo"] {
+  background: #f5efff;
+
+  color: #7651ad;
+}
+
+
+/* ==============================
+   CUSTOMER
+================================ */
+
+.unidentified {
+  color: #aaaebb;
+
+  font-style: italic;
+}
+
+
+/* ==============================
+   TABLE ACTION
+================================ */
+
+.actions-column {
+  width: 35px;
+
+  text-align: center;
+}
+
+.row-action {
+  width: 29px;
+  height: 29px;
+
+  padding: 0;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #858a9a;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+.row-action:hover {
+  border-color: #e3e5ec;
+
+  background: #f7f8fb;
+
+  color: #506de8;
+}
+
+
+/* ==============================
+   NO RESULTS
+================================ */
+
+.no-results {
+  padding: 35px !important;
+
+  text-align: center;
+
+  color: #9296a5;
+}
+
+.no-results button {
+  margin-left: 6px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #506de8;
+
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* ==============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 1050px) {
+
+  .table-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .table-tools {
+    width: 100%;
+
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    flex: 1;
+
+    min-width: 220px;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .table-tools {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box,
+  .filter-select {
+    width: 100%;
+  }
+
+  .data-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}

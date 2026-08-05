@@ -1,5 +1,885 @@
-<div class="panel">
-  <h2>Productos</h2>
-  <p>Bienvenido a tu área de trabajo de WisePick.</p>
+<div class="products-page">
+
+  <div class="products-container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          PRODUCTOS
+        </span>
+
+        <h1>
+          Tu catálogo
+        </h1>
+
+        <p>
+          Administra los productos que comercializa tu empresa.
+          WisePick utilizará esta información para analizar
+          ventas, márgenes, rotación e inventario.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="openNewProduct()"
+      >
+        + Nuevo producto
+      </button>
+
+    </div>
+
+
+
+    <!-- EMPTY STATE -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        products.length === 0 &&
+        !showProductForm
+      "
+    >
+
+      <div class="empty-icon">
+        🛍️
+      </div>
+
+      <span class="empty-label">
+        CATÁLOGO VACÍO
+      </span>
+
+      <h2>
+        Registra tu primer producto
+      </h2>
+
+      <p>
+        Al crear tu catálogo podrás relacionar
+        las ventas con productos específicos
+        y obtener mejores análisis.
+      </p>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="openNewProduct()"
+      >
+        + Crear producto
+      </button>
+
+    </div>
+
+
+
+    <!-- FORM -->
+
+    <div
+      class="product-form-card"
+      *ngIf="showProductForm"
+    >
+
+
+      <div class="form-header">
+
+        <div>
+
+          <span class="eyebrow">
+            {{
+              editingProductId
+                ? 'EDITAR PRODUCTO'
+                : 'NUEVO PRODUCTO'
+            }}
+          </span>
+
+          <h2>
+
+            {{
+              editingProductId
+                ? 'Actualiza la información'
+                : 'Agrega un producto'
+            }}
+
+          </h2>
+
+          <p>
+            Esta información será utilizada
+            posteriormente por ventas,
+            inventario y análisis.
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeForm()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+
+      <div class="form-grid">
+
+
+        <!-- NAME -->
+
+        <div class="form-group full">
+
+          <label>
+            Nombre del producto *
+          </label>
+
+          <input
+            type="text"
+            placeholder="Ej. Jean clásico azul"
+            [(ngModel)]="productForm.name"
+          >
+
+          <small
+            class="error-message"
+            *ngIf="
+              showErrors &&
+              !productForm.name
+            "
+          >
+            Ingresa el nombre del producto.
+          </small>
+
+        </div>
+
+
+
+        <!-- CATEGORY -->
+
+        <div class="form-group">
+
+          <label>
+            Categoría *
+          </label>
+
+          <select
+            [(ngModel)]="
+              productForm.category
+            "
+          >
+
+            <option value="">
+              Selecciona una categoría
+            </option>
+
+            <option value="Camisetas">
+              Camisetas
+            </option>
+
+            <option value="Jeans">
+              Jeans
+            </option>
+
+            <option value="Uniformes">
+              Uniformes
+            </option>
+
+            <option value="Moda femenina">
+              Moda femenina
+            </option>
+
+            <option value="Moda masculina">
+              Moda masculina
+            </option>
+
+            <option value="Ropa deportiva">
+              Ropa deportiva
+            </option>
+
+            <option value="Ropa infantil">
+              Ropa infantil
+            </option>
+
+            <option value="Otro">
+              Otro
+            </option>
+
+          </select>
+
+
+          <small
+            class="error-message"
+            *ngIf="
+              showErrors &&
+              !productForm.category
+            "
+          >
+            Selecciona una categoría.
+          </small>
+
+        </div>
+
+
+
+        <!-- SKU -->
+
+        <div class="form-group">
+
+          <label>
+            SKU
+          </label>
+
+          <input
+            type="text"
+            placeholder="Opcional"
+            [(ngModel)]="
+              productForm.sku
+            "
+          >
+
+          <small>
+            Si lo dejas vacío,
+            WisePick generará uno.
+          </small>
+
+        </div>
+
+
+
+        <!-- COST -->
+
+        <div class="form-group">
+
+          <label>
+            Costo *
+          </label>
+
+          <div class="money-input">
+
+            <span>
+              $
+            </span>
+
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="
+                productForm.cost
+              "
+            >
+
+          </div>
+
+        </div>
+
+
+
+        <!-- PRICE -->
+
+        <div class="form-group">
+
+          <label>
+            Precio de venta *
+          </label>
+
+          <div class="money-input">
+
+            <span>
+              $
+            </span>
+
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="
+                productForm.price
+              "
+            >
+
+          </div>
+
+
+          <small
+            class="error-message"
+            *ngIf="
+              showErrors &&
+              productForm.price <= 0
+            "
+          >
+            Ingresa un precio válido.
+          </small>
+
+        </div>
+
+
+
+        <!-- STOCK -->
+
+        <div class="form-group full">
+
+          <label>
+            Stock actual
+          </label>
+
+          <input
+            type="number"
+            min="0"
+            [(ngModel)]="
+              productForm.stock
+            "
+          >
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- MARGIN PREVIEW -->
+
+      <div
+        class="margin-preview"
+        *ngIf="
+          productForm.price > 0
+        "
+      >
+
+        <div>
+
+          <span>
+            Precio
+          </span>
+
+          <strong>
+            ${{ productForm.price | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Costo
+          </span>
+
+          <strong>
+            ${{ productForm.cost | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Ganancia estimada
+          </span>
+
+          <strong>
+            ${{
+              productForm.price -
+              productForm.cost
+              | number:'1.2-2'
+            }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="closeForm()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="saveProduct()"
+        >
+          {{
+            editingProductId
+              ? 'Guardar cambios'
+              : 'Crear producto'
+          }}
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- PRODUCT CONTENT -->
+
+    <ng-container
+      *ngIf="
+        products.length > 0 &&
+        !showProductForm
+      "
+    >
+
+
+      <!-- KPIS -->
+
+      <div class="kpi-grid">
+
+
+        <div class="kpi-card">
+
+          <span>
+            PRODUCTOS
+          </span>
+
+          <strong>
+            {{ totalProducts }}
+          </strong>
+
+          <small>
+            Productos registrados
+          </small>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+          <span>
+            ACTIVOS
+          </span>
+
+          <strong>
+            {{ activeProducts }}
+          </strong>
+
+          <small>
+            Disponibles para venta
+          </small>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+          <span>
+            STOCK
+          </span>
+
+          <strong>
+            {{ totalStock }}
+          </strong>
+
+          <small>
+            Unidades disponibles
+          </small>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+          <span>
+            VALOR INVENTARIO
+          </span>
+
+          <strong>
+            ${{ inventoryValue | number:'1.2-2' }}
+          </strong>
+
+          <small>
+            Basado en costo
+          </small>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- TABLE -->
+
+      <div class="table-card">
+
+
+        <div class="table-header">
+
+          <div>
+
+            <span class="table-label">
+              CATÁLOGO
+            </span>
+
+            <h2>
+              Productos registrados
+            </h2>
+
+          </div>
+
+
+          <div class="table-tools">
+
+
+            <div class="search-box">
+
+              <span>
+                🔍
+              </span>
+
+              <input
+                type="text"
+                placeholder="Buscar producto o SKU..."
+                [(ngModel)]="
+                  searchTerm
+                "
+              >
+
+            </div>
+
+
+            <select
+              class="filter-select"
+              [(ngModel)]="
+                categoryFilter
+              "
+            >
+
+              <option value="all">
+                Todas las categorías
+              </option>
+
+              <option
+                *ngFor="
+                  let category
+                  of categories
+                "
+                [value]="category"
+              >
+                {{ category }}
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FILTER -->
+
+        <div
+          class="filter-bar"
+          *ngIf="
+            searchTerm ||
+            categoryFilter !== 'all'
+          "
+        >
+
+          <span>
+
+            {{
+              filteredProducts.length
+            }}
+            productos encontrados
+
+          </span>
+
+
+          <button
+            type="button"
+            (click)="clearFilters()"
+          >
+            Limpiar filtros
+          </button>
+
+        </div>
+
+
+
+        <div class="table-responsive">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Producto
+                </th>
+
+                <th>
+                  SKU
+                </th>
+
+                <th>
+                  Categoría
+                </th>
+
+                <th>
+                  Stock
+                </th>
+
+                <th>
+                  Costo
+                </th>
+
+                <th>
+                  Precio
+                </th>
+
+                <th>
+                  Margen
+                </th>
+
+                <th>
+                  Estado
+                </th>
+
+                <th>
+                  Acciones
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let product
+                  of filteredProducts
+                "
+              >
+
+
+                <td>
+
+                  <div class="product-cell">
+
+                    <div class="product-avatar">
+
+                      {{
+                        product.name
+                          .charAt(0)
+                      }}
+
+                    </div>
+
+
+                    <strong>
+                      {{ product.name }}
+                    </strong>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+                  {{ product.sku }}
+                </td>
+
+
+                <td>
+
+                  <span class="category-badge">
+                    {{ product.category }}
+                  </span>
+
+                </td>
+
+
+                <td>
+
+                  <span
+                    [class.low-stock]="
+                      product.stock <= 5
+                    "
+                  >
+                    {{ product.stock }}
+                  </span>
+
+                </td>
+
+
+                <td>
+                  ${{ product.cost | number:'1.2-2' }}
+                </td>
+
+
+                <td class="price-cell">
+                  ${{ product.price | number:'1.2-2' }}
+                </td>
+
+
+                <td>
+
+                  <span class="margin-badge">
+
+                    {{
+                      getMargin(product)
+                      | number:'1.0-1'
+                    }}%
+
+                  </span>
+
+                </td>
+
+
+                <td>
+
+                  <button
+                    type="button"
+                    class="status-button"
+                    [class.inactive]="
+                      product.status ===
+                      'inactive'
+                    "
+                    (click)="
+                      toggleStatus(product)
+                    "
+                  >
+
+                    {{
+                      product.status ===
+                      'active'
+                        ? 'Activo'
+                        : 'Inactivo'
+                    }}
+
+                  </button>
+
+                </td>
+
+
+                <td>
+
+                  <div class="row-actions">
+
+                    <button
+                      type="button"
+                      title="Editar"
+                      (click)="
+                        editProduct(product)
+                      "
+                    >
+                      ✏
+                    </button>
+
+
+                    <button
+                      type="button"
+                      title="Eliminar"
+                      (click)="
+                        deleteProduct(product)
+                      "
+                    >
+                      🗑
+                    </button>
+
+                  </div>
+
+                </td>
+
+
+              </tr>
+
+
+              <tr
+                *ngIf="
+                  filteredProducts.length === 0
+                "
+              >
+
+                <td
+                  colspan="9"
+                  class="no-results"
+                >
+
+                  No encontramos productos
+                  con estos filtros.
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        <div class="table-footer">
+
+          <span>
+            {{ filteredProducts.length }}
+            productos
+          </span>
+
+          <button
+            type="button"
+            (click)="openNewProduct()"
+          >
+            + Nuevo producto
+          </button>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- AI BANNER -->
+
+      <div class="ai-banner">
+
+        <div class="ai-icon">
+          ✦
+        </div>
+
+        <div>
+
+          <strong>
+            Tu catálogo permitirá mejorar los análisis
+          </strong>
+
+          <p>
+            WisePick podrá relacionar productos,
+            ventas, stock y margen para generar
+            recomendaciones más precisas.
+          </p>
+
+        </div>
+
+      </div>
+
+
+    </ng-container>
+
+  </div>
+
 </div>
 
