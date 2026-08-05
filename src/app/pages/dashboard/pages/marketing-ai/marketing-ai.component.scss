@@ -692,3 +692,32 @@
   }
 
 }
+.insight-evidence {
+  margin: 13px 0;
+
+  padding: 11px 12px;
+
+  border-radius: 10px;
+
+  background: #f7f8fb;
+}
+
+.insight-evidence span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  color: #767b8e;
+}
+
+.insight-evidence p {
+  margin: 0 !important;
+
+  font-size: 9px !important;
+  line-height: 1.5;
+
+  color: #9296a5 !important;
+}

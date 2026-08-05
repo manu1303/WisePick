@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-
 interface Sale {
   id: string;
-
   saleDate: string;
 
   customerId?: string | null;
@@ -27,49 +25,33 @@ interface Sale {
     | 'demo';
 }
 
-
 interface Product {
-
   id: string;
-
   name: string;
-
   category: string;
-
   cost: number;
-
   price: number;
-
   stock: number;
-
   status: 'active' | 'inactive';
 }
-
 
 interface Client {
-
   id: string;
-
   name: string;
-
+  phone?: string;
+  email?: string;
+  city?: string;
   status: 'active' | 'inactive';
 }
 
-
 interface ProductMetric {
-
   id?: string;
-
   name: string;
-
   quantity: number;
-
   revenue: number;
 }
 
-
 interface Insight {
-
   id: string;
 
   type:
@@ -78,21 +60,29 @@ interface Insight {
     | 'success'
     | 'customer';
 
+  priority:
+    | 'high'
+    | 'medium'
+    | 'low';
+
   icon: string;
 
   title: string;
-
   description: string;
+
+  evidence: string;
 
   action: string;
 
-  route:
-    | 'products'
-    | 'clients'
-    | 'campaigns'
-    | 'sales';
-}
+  targetType?:
+    | 'product'
+    | 'customer'
+    | 'sales'
+    | 'inventory';
 
+  targetId?: string;
+  targetName?: string;
+}
 
 @Component({
   selector: 'app-marketing-ai',
@@ -103,8 +93,7 @@ interface Insight {
   templateUrl: './marketing-ai.component.html',
   styleUrls: ['./marketing-ai.component.scss']
 })
-export class MarketingAiComponent
-implements OnInit {
+export class MarketingAiComponent implements OnInit {
 
   sales: Sale[] = [];
 
@@ -114,23 +103,20 @@ implements OnInit {
 
   insights: Insight[] = [];
 
-
   constructor(
     private router: Router
   ) {}
-
 
   ngOnInit(): void {
 
     this.loadData();
 
     this.generateInsights();
-
   }
 
 
   /* ============================
-     LOAD
+     DATA
   ============================ */
 
   private loadData(): void {
@@ -142,7 +128,6 @@ implements OnInit {
         ) || '[]'
       );
 
-
     this.products =
       JSON.parse(
         localStorage.getItem(
@@ -150,19 +135,17 @@ implements OnInit {
         ) || '[]'
       );
 
-
     this.clients =
       JSON.parse(
         localStorage.getItem(
           'wisepick_clients'
         ) || '[]'
       );
-
   }
 
 
   /* ============================
-     KPIs
+     KPI
   ============================ */
 
   get totalRevenue(): number {
@@ -172,7 +155,6 @@ implements OnInit {
         sum + Number(sale.total),
       0
     );
-
   }
 
 
@@ -182,7 +164,6 @@ implements OnInit {
       sale =>
         !!sale.customerId
     ).length;
-
   }
 
 
@@ -196,23 +177,17 @@ implements OnInit {
       this.identifiedSales /
       this.sales.length
     ) * 100;
-
   }
 
 
   /* ============================
-     PRODUCT ANALYTICS
+     PRODUCTS
   ============================ */
 
-  get productMetrics():
-    ProductMetric[] {
+  get productMetrics(): ProductMetric[] {
 
     const map =
-      new Map<
-        string,
-        ProductMetric
-      >();
-
+      new Map<string, ProductMetric>();
 
     this.sales.forEach(
       sale => {
@@ -221,31 +196,22 @@ implements OnInit {
           sale.productId ||
           sale.productName;
 
-
         const current =
           map.get(key);
-
 
         if (current) {
 
           current.quantity +=
-            Number(
-              sale.quantity
-            );
+            Number(sale.quantity);
 
           current.revenue +=
-            Number(
-              sale.total
-            );
+            Number(sale.total);
 
-        }
-
-        else {
+        } else {
 
           map.set(
             key,
             {
-
               id:
                 sale.productId,
 
@@ -253,23 +219,15 @@ implements OnInit {
                 sale.productName,
 
               quantity:
-                Number(
-                  sale.quantity
-                ),
+                Number(sale.quantity),
 
               revenue:
-                Number(
-                  sale.total
-                )
-
+                Number(sale.total)
             }
           );
-
         }
-
       }
     );
-
 
     return Array
       .from(map.values())
@@ -278,7 +236,6 @@ implements OnInit {
           b.quantity -
           a.quantity
       );
-
   }
 
 
@@ -289,23 +246,17 @@ implements OnInit {
       this.productMetrics[0] ||
       null
     );
-
   }
 
 
   /* ============================
-     CUSTOMER ANALYTICS
+     CLIENTS
   ============================ */
 
-  get recurringCustomers():
-    number {
+  get recurringCustomers(): number {
 
     const map =
-      new Map<
-        string,
-        number
-      >();
-
+      new Map<string, number>();
 
     this.sales
       .filter(
@@ -318,52 +269,48 @@ implements OnInit {
           const id =
             sale.customerId as string;
 
-
           map.set(
             id,
             (
-              map.get(id) ||
-              0
+              map.get(id) || 0
             ) + 1
           );
-
         }
       );
-
 
     return Array
       .from(map.values())
       .filter(
         purchases =>
           purchases >= 2
-      ).length;
-
+      )
+      .length;
   }
 
 
   /* ============================
-     INSIGHT GENERATOR
+     INSIGHT ENGINE
   ============================ */
 
   private generateInsights(): void {
 
-    const generated:
-      Insight[] = [];
+    const result: Insight[] = [];
 
 
-    /*
-      PRODUCTO MÁS VENDIDO
-    */
+    /* PRODUCTO DESTACADO */
 
     if (this.bestProduct) {
 
-      generated.push({
+      result.push({
 
         id:
-          'top-product',
+          crypto.randomUUID(),
 
         type:
           'success',
+
+        priority:
+          'high',
 
         icon:
           '🔥',
@@ -372,34 +319,42 @@ implements OnInit {
           'Producto destacado',
 
         description:
-          `${this.bestProduct.name} lidera tus ventas con ${this.bestProduct.quantity} unidades vendidas y $${this.bestProduct.revenue.toFixed(2)} en ingresos.`,
+          `${this.bestProduct.name} es actualmente tu producto con mayor número de unidades vendidas.`,
+
+        evidence:
+          `${this.bestProduct.quantity} unidades vendidas y $${this.bestProduct.revenue.toFixed(2)} en ingresos.`,
 
         action:
-          'Ver productos',
+          'Crear campaña',
 
-        route:
-          'products'
+        targetType:
+          'product',
 
+        targetId:
+          this.bestProduct.id,
+
+        targetName:
+          this.bestProduct.name
       });
-
     }
 
 
-    /*
-      CLIENTES RECURRENTES
-    */
+    /* CLIENTES RECURRENTES */
 
     if (
       this.recurringCustomers > 0
     ) {
 
-      generated.push({
+      result.push({
 
         id:
-          'recurring-customers',
+          crypto.randomUUID(),
 
         type:
           'customer',
+
+        priority:
+          'high',
 
         icon:
           '👥',
@@ -408,65 +363,65 @@ implements OnInit {
           'Oportunidad de fidelización',
 
         description:
-          `Tienes ${this.recurringCustomers} cliente(s) que han comprado más de una vez. Puedes crear una campaña especial para fortalecer su fidelidad.`,
+          `Tienes ${this.recurringCustomers} cliente(s) que han comprado más de una vez.`,
+
+        evidence:
+          'Los clientes recurrentes pueden ser candidatos para promociones o campañas de fidelización.',
 
         action:
           'Crear campaña',
 
-        route:
-          'campaigns'
-
+        targetType:
+          'customer'
       });
-
     }
 
 
-    /*
-      IDENTIFICACIÓN DE CLIENTES
-    */
+    /* CLIENTES NO IDENTIFICADOS */
 
     if (
       this.identifiedPercentage <
       60
     ) {
 
-      generated.push({
+      result.push({
 
         id:
-          'customer-data',
+          crypto.randomUUID(),
 
         type:
           'opportunity',
+
+        priority:
+          'medium',
 
         icon:
           '🎯',
 
         title:
-          'Conoce mejor a tus clientes',
+          'Mejora la identificación de clientes',
 
         description:
-          `Solo el ${this.identifiedPercentage.toFixed(0)}% de tus ventas tienen un cliente identificado. Registrar más clientes mejorará la segmentación y las recomendaciones.`,
+          `Solo el ${this.identifiedPercentage.toFixed(0)}% de tus ventas tienen un cliente identificado.`,
+
+        evidence:
+          'Identificar clientes permite mejorar segmentación, recurrencia y campañas personalizadas.',
 
         action:
           'Ver clientes',
 
-        route:
-          'clients'
-
+        targetType:
+          'sales'
       });
-
     }
 
 
-    /*
-      STOCK BAJO
-    */
+    /* STOCK BAJO */
 
     const lowStock =
       this.products.filter(
         product =>
-          product.status ===
-            'active' &&
+          product.status === 'active' &&
           product.stock <= 5
       );
 
@@ -475,98 +430,149 @@ implements OnInit {
       lowStock.length > 0
     ) {
 
-      generated.push({
+      result.push({
 
         id:
-          'low-stock',
+          crypto.randomUUID(),
 
         type:
           'warning',
+
+        priority:
+          'high',
 
         icon:
           '📦',
 
         title:
-          'Stock bajo detectado',
+          'Productos con stock bajo',
 
         description:
-          `${lowStock.length} producto(s) tienen 5 unidades o menos disponibles. Revisa el inventario antes de impulsar campañas sobre estos productos.`,
+          `${lowStock.length} producto(s) tienen 5 unidades o menos disponibles.`,
+
+        evidence:
+          'Evita promocionar productos con disponibilidad limitada antes de revisar inventario.',
 
         action:
           'Revisar productos',
 
-        route:
-          'products'
-
+        targetType:
+          'inventory'
       });
-
     }
 
 
     this.insights =
-      generated;
-
+      result;
   }
 
 
   /* ============================
-     NAVIGATION
+     ACTION
   ============================ */
 
   executeInsight(
     insight: Insight
   ): void {
 
-    switch (
-      insight.route
+    if (
+      insight.action ===
+      'Crear campaña'
     ) {
 
-      case 'products':
+      this.createCampaignFromInsight(
+        insight
+      );
 
-        this.router.navigate([
-          '/dashboard/products'
-        ]);
-
-        break;
-
-
-      case 'clients':
-
-        this.router.navigate([
-          '/dashboard/clients'
-        ]);
-
-        break;
-
-
-      case 'campaigns':
-
-        this.router.navigate([
-          '/dashboard/campaigns'
-        ]);
-
-        break;
-
-
-      case 'sales':
-
-        this.router.navigate([
-          '/dashboard/sales'
-        ]);
-
-        break;
-
+      return;
     }
 
+
+    if (
+      insight.targetType ===
+      'inventory'
+    ) {
+
+      this.router.navigate([
+        '/dashboard/products'
+      ]);
+
+      return;
+    }
+
+
+    if (
+      insight.targetType ===
+      'sales'
+    ) {
+
+      this.router.navigate([
+        '/dashboard/clients'
+      ]);
+    }
   }
 
 
-  goToCampaigns(): void {
+  /* ============================
+     CAMPAIGN BRIDGE
+  ============================ */
+
+  private createCampaignFromInsight(
+    insight: Insight
+  ): void {
+
+    const campaignDraft = {
+
+      source:
+        'marketing-ai',
+
+      insightId:
+        insight.id,
+
+      insightType:
+        insight.type,
+
+      title:
+        insight.title,
+
+      description:
+        insight.description,
+
+      targetType:
+        insight.targetType,
+
+      targetId:
+        insight.targetId || null,
+
+      targetName:
+        insight.targetName || null,
+
+      createdAt:
+        new Date().toISOString()
+    };
+
+
+    localStorage.setItem(
+      'wisepick_campaign_draft',
+      JSON.stringify(
+        campaignDraft
+      )
+    );
+
 
     this.router.navigate([
       '/dashboard/campaigns'
     ]);
-
   }
+  /* ============================
+   GO TO CAMPAIGNS
+============================ */
 
+goToCampaigns(): void {
+
+  this.router.navigate([
+    '/dashboard/campaigns'
+  ]);
+
+}
 }
