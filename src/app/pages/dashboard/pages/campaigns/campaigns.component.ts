@@ -3,7 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 
+/* ============================
+   INTERFACES
+============================ */
+
 interface CampaignDraft {
+
   source: string;
 
   insightId?: string;
@@ -77,6 +82,7 @@ interface CampaignForm {
 }
 
 
+
 @Component({
   selector: 'app-campaigns',
   standalone: true,
@@ -89,10 +95,24 @@ interface CampaignForm {
 })
 export class CampaignsComponent implements OnInit {
 
+
+  /* ============================
+     STATE
+  ============================ */
+
   campaigns: Campaign[] = [];
 
   campaignDraft:
     CampaignDraft | null = null;
+
+
+  editingCampaignId:
+    string | null = null;
+
+
+  selectedCampaign:
+    Campaign | null = null;
+
 
   showForm = false;
 
@@ -103,6 +123,7 @@ export class CampaignsComponent implements OnInit {
   searchTerm = '';
 
   statusFilter = 'all';
+
 
 
   campaignForm: CampaignForm = {
@@ -128,6 +149,11 @@ export class CampaignsComponent implements OnInit {
   };
 
 
+
+  /* ============================
+     INIT
+  ============================ */
+
   ngOnInit(): void {
 
     this.loadCampaigns();
@@ -137,8 +163,9 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
   /* ============================
-     LOAD
+     LOAD CAMPAIGNS
   ============================ */
 
   private loadCampaigns(): void {
@@ -152,6 +179,11 @@ export class CampaignsComponent implements OnInit {
 
   }
 
+
+
+  /* ============================
+     LOAD CAMPAIGN DRAFT
+  ============================ */
 
   private loadCampaignDraft(): void {
 
@@ -194,6 +226,7 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
   /* ============================
      FROM MARKETING IA
   ============================ */
@@ -201,6 +234,17 @@ export class CampaignsComponent implements OnInit {
   private openFromInsight(
     draft: CampaignDraft
   ): void {
+
+    /*
+      Si venimos desde Marketing IA,
+      no estamos editando una campaña
+      existente.
+    */
+
+    this.editingCampaignId = null;
+
+    this.selectedCampaign = null;
+
 
     this.campaignForm = {
 
@@ -251,13 +295,31 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
   /* ============================
      NEW CAMPAIGN
   ============================ */
 
   openNewCampaign(): void {
 
+    /*
+      IMPORTANTE:
+      aquí estaba el método que
+      te faltaba.
+    */
+
+    this.editingCampaignId = null;
+
+    this.selectedCampaign = null;
+
     this.campaignDraft = null;
+
+
+    /*
+      Si crea una campaña manual,
+      ya no necesitamos un draft
+      anterior de Marketing IA.
+    */
 
     localStorage.removeItem(
       'wisepick_campaign_draft'
@@ -294,6 +356,91 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
+  /* ============================
+     EDIT CAMPAIGN
+  ============================ */
+
+  editCampaign(
+    campaign: Campaign
+  ): void {
+
+    this.editingCampaignId =
+      campaign.id;
+
+
+    this.selectedCampaign = null;
+
+
+    this.campaignForm = {
+
+      name:
+        campaign.name,
+
+      objective:
+        campaign.objective,
+
+      audience:
+        campaign.audience,
+
+      channel:
+        campaign.channel,
+
+      message:
+        campaign.message,
+
+      source:
+        campaign.source,
+
+      targetType:
+        campaign.targetType || null,
+
+      targetId:
+        campaign.targetId || null,
+
+      targetName:
+        campaign.targetName || null
+
+    };
+
+
+    this.showErrors = false;
+
+    this.showForm = true;
+
+  }
+
+
+
+  /* ============================
+     VIEW CAMPAIGN
+  ============================ */
+
+  viewCampaign(
+    campaign: Campaign
+  ): void {
+
+    this.selectedCampaign =
+      campaign;
+
+    this.showForm = false;
+
+  }
+
+
+
+  /* ============================
+     CLOSE DETAIL
+  ============================ */
+
+  closeDetail(): void {
+
+    this.selectedCampaign = null;
+
+  }
+
+
+
   /* ============================
      MESSAGE GENERATOR
   ============================ */
@@ -316,9 +463,9 @@ export class CampaignsComponent implements OnInit {
 
 
     /*
-      SIMULACIÓN TEMPORAL DE IA.
+      SIMULACIÓN TEMPORAL DE IA
 
-      Luego este bloque será sustituido
+      Luego sustituiremos esta lógica
       por una llamada al AI Service.
     */
 
@@ -333,12 +480,14 @@ export class CampaignsComponent implements OnInit {
         this.campaignForm.objective
       ) {
 
+
         case 'increase-sales':
 
           this.campaignForm.message =
             `¡Tenemos una oportunidad especial para ti! Descubre ${product} y encuentra opciones pensadas para ti. Visítanos y conoce más.`;
 
           break;
+
 
 
         case 'loyalty':
@@ -349,6 +498,7 @@ export class CampaignsComponent implements OnInit {
           break;
 
 
+
         case 'reactivation':
 
           this.campaignForm.message =
@@ -357,12 +507,14 @@ export class CampaignsComponent implements OnInit {
           break;
 
 
+
         case 'promotion':
 
           this.campaignForm.message =
             `Aprovecha nuestra promoción especial por tiempo limitado. Descubre nuestros productos y encuentra tu próxima opción favorita.`;
 
           break;
+
 
 
         default:
@@ -379,6 +531,7 @@ export class CampaignsComponent implements OnInit {
     }, 1000);
 
   }
+
 
 
   /* ============================
@@ -404,8 +557,9 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
   /* ============================
-     SAVE
+     SAVE / UPDATE CAMPAIGN
   ============================ */
 
   saveCampaign(): void {
@@ -420,59 +574,139 @@ export class CampaignsComponent implements OnInit {
     }
 
 
-    const campaign:
-      Campaign = {
 
-      id:
-        crypto.randomUUID(),
+    /* ============================
+       EDIT EXISTING CAMPAIGN
+    ============================ */
 
-      name:
-        this.campaignForm.name,
+    if (this.editingCampaignId) {
 
-      objective:
-        this.campaignForm.objective,
-
-      audience:
-        this.campaignForm.audience,
-
-      channel:
-        this.campaignForm.channel,
-
-      message:
-        this.campaignForm.message,
-
-      source:
-        this.campaignForm.source,
-
-      targetType:
-        this.campaignForm.targetType,
-
-      targetId:
-        this.campaignForm.targetId,
-
-      targetName:
-        this.campaignForm.targetName,
-
-      status:
-        'draft',
-
-      createdAt:
-        new Date()
-          .toISOString()
-
-    };
+      const index =
+        this.campaigns.findIndex(
+          campaign =>
+            campaign.id ===
+            this.editingCampaignId
+        );
 
 
-    this.campaigns.unshift(
-      campaign
-    );
+      if (index !== -1) {
 
+        this.campaigns[index] = {
+
+          /*
+            Conservamos:
+            id
+            status
+            createdAt
+          */
+
+          ...this.campaigns[index],
+
+
+          name:
+            this.campaignForm.name,
+
+          objective:
+            this.campaignForm.objective,
+
+          audience:
+            this.campaignForm.audience,
+
+          channel:
+            this.campaignForm.channel,
+
+          message:
+            this.campaignForm.message,
+
+          source:
+            this.campaignForm.source,
+
+          targetType:
+            this.campaignForm.targetType,
+
+          targetId:
+            this.campaignForm.targetId,
+
+          targetName:
+            this.campaignForm.targetName
+
+        };
+
+      }
+
+    }
+
+
+
+    /* ============================
+       CREATE NEW CAMPAIGN
+    ============================ */
+
+    else {
+
+      const campaign:
+        Campaign = {
+
+        id:
+          crypto.randomUUID(),
+
+        name:
+          this.campaignForm.name,
+
+        objective:
+          this.campaignForm.objective,
+
+        audience:
+          this.campaignForm.audience,
+
+        channel:
+          this.campaignForm.channel,
+
+        message:
+          this.campaignForm.message,
+
+        source:
+          this.campaignForm.source,
+
+        targetType:
+          this.campaignForm.targetType,
+
+        targetId:
+          this.campaignForm.targetId,
+
+        targetName:
+          this.campaignForm.targetName,
+
+        status:
+          'draft',
+
+        createdAt:
+          new Date()
+            .toISOString()
+
+      };
+
+
+      this.campaigns.unshift(
+        campaign
+      );
+
+    }
+
+
+
+    /*
+      Guardamos tanto para CREATE
+      como para EDIT.
+    */
 
     this.persistCampaigns();
 
 
+
     /*
-      El borrador de Marketing IA
+      Si existía un borrador
+      procedente de Marketing IA,
       ya fue consumido.
     */
 
@@ -483,6 +717,10 @@ export class CampaignsComponent implements OnInit {
 
     this.campaignDraft = null;
 
+    this.editingCampaignId = null;
+
+    this.selectedCampaign = null;
+
     this.showForm = false;
 
     this.showErrors = false;
@@ -490,8 +728,9 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
   /* ============================
-     STATUS
+     ACTIVATE
   ============================ */
 
   activateCampaign(
@@ -507,6 +746,11 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
+  /* ============================
+     COMPLETE
+  ============================ */
+
   completeCampaign(
     campaign: Campaign
   ): void {
@@ -518,6 +762,7 @@ export class CampaignsComponent implements OnInit {
     this.persistCampaigns();
 
   }
+
 
 
   /* ============================
@@ -548,9 +793,26 @@ export class CampaignsComponent implements OnInit {
       );
 
 
+    /*
+      Si justo estábamos viendo
+      la campaña eliminada,
+      cerramos el detalle.
+    */
+
+    if (
+      this.selectedCampaign?.id ===
+      campaign.id
+    ) {
+
+      this.selectedCampaign = null;
+
+    }
+
+
     this.persistCampaigns();
 
   }
+
 
 
   /* ============================
@@ -582,12 +844,14 @@ export class CampaignsComponent implements OnInit {
             .includes(term);
 
 
+
         const statusMatches =
 
           this.statusFilter === 'all' ||
 
           campaign.status ===
             this.statusFilter;
+
 
 
         return (
@@ -601,6 +865,7 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
   /* ============================
      KPIs
   ============================ */
@@ -612,6 +877,7 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
   get activeCampaigns(): number {
 
     return this.campaigns.filter(
@@ -620,6 +886,7 @@ export class CampaignsComponent implements OnInit {
     ).length;
 
   }
+
 
 
   get aiCampaigns(): number {
@@ -633,6 +900,7 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
   get draftCampaigns(): number {
 
     return this.campaigns.filter(
@@ -643,8 +911,9 @@ export class CampaignsComponent implements OnInit {
   }
 
 
+
   /* ============================
-     LABELS
+     OBJECTIVE LABEL
   ============================ */
 
   getObjectiveLabel(
@@ -654,24 +923,38 @@ export class CampaignsComponent implements OnInit {
     switch (objective) {
 
       case 'increase-sales':
+
         return 'Incrementar ventas';
 
+
       case 'loyalty':
+
         return 'Fidelización';
 
+
       case 'reactivation':
+
         return 'Reactivación';
 
+
       case 'promotion':
+
         return 'Promoción';
 
+
       default:
+
         return objective;
 
     }
 
   }
 
+
+
+  /* ============================
+     AUDIENCE LABEL
+  ============================ */
 
   getAudienceLabel(
     audience: string
@@ -680,23 +963,33 @@ export class CampaignsComponent implements OnInit {
     switch (audience) {
 
       case 'all':
+
         return 'Todos los clientes';
 
+
       case 'recurring':
+
         return 'Clientes frecuentes';
 
+
       case 'new':
+
         return 'Clientes nuevos';
 
+
       case 'inactive':
+
         return 'Clientes inactivos';
 
+
       default:
+
         return audience;
 
     }
 
   }
+
 
 
   /* ============================
@@ -706,17 +999,21 @@ export class CampaignsComponent implements OnInit {
   private persistCampaigns(): void {
 
     localStorage.setItem(
+
       'wisepick_campaigns',
+
       JSON.stringify(
         this.campaigns
       )
+
     );
 
   }
 
 
+
   /* ============================
-     CLOSE
+     CLOSE FORM
   ============================ */
 
   closeForm(): void {
@@ -725,14 +1022,7 @@ export class CampaignsComponent implements OnInit {
 
     this.showErrors = false;
 
-
-    /*
-      NO borramos automáticamente
-      campaign_draft aquí.
-
-      Si cancela y vuelve,
-      podemos conservar el contexto.
-    */
+    this.editingCampaignId = null;
 
   }
 

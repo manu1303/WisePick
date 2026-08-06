@@ -31,7 +31,7 @@
       <button
         type="button"
         class="primary-button"
-        *ngIf="!showForm"
+        *ngIf="!showForm && !selectedCampaign"
         (click)="openNewCampaign()"
       >
         + Nueva campaña
@@ -63,17 +63,24 @@
             <span class="eyebrow">
 
               {{
-                campaignForm.source ===
-                  'marketing-ai'
-                  ? 'CAMPAÑA DESDE MARKETING IA'
-                  : 'NUEVA CAMPAÑA'
+                editingCampaignId
+                  ? 'EDITAR CAMPAÑA'
+                  : campaignForm.source === 'marketing-ai'
+                    ? 'CAMPAÑA DESDE MARKETING IA'
+                    : 'NUEVA CAMPAÑA'
               }}
 
             </span>
 
 
             <h2>
-              Configura tu campaña
+
+              {{
+                editingCampaignId
+                  ? 'Editar campaña'
+                  : 'Configura tu campaña'
+              }}
+
             </h2>
 
 
@@ -103,7 +110,8 @@
           class="ai-context"
           *ngIf="
             campaignForm.source ===
-            'marketing-ai'
+            'marketing-ai' &&
+            campaignDraft
           "
         >
 
@@ -283,9 +291,11 @@
                 "
               >
                 💬
+
                 <span>
                   WhatsApp
                 </span>
+
               </button>
 
 
@@ -301,9 +311,11 @@
                 "
               >
                 ✉️
+
                 <span>
                   Email
                 </span>
+
               </button>
 
 
@@ -319,9 +331,11 @@
                 "
               >
                 📱
+
                 <span>
                   Redes sociales
                 </span>
+
               </button>
 
 
@@ -413,6 +427,8 @@
 
 
 
+        <!-- FORM ACTIONS -->
+
         <div class="form-actions">
 
 
@@ -430,7 +446,13 @@
             class="primary-button"
             (click)="saveCampaign()"
           >
-            Guardar campaña
+
+            {{
+              editingCampaignId
+                ? 'Guardar cambios'
+                : 'Guardar campaña'
+            }}
+
           </button>
 
 
@@ -441,7 +463,9 @@
 
 
 
-      <!-- PREVIEW -->
+      <!-- =========================
+           PREVIEW
+      ========================== -->
 
       <aside class="campaign-preview">
 
@@ -504,12 +528,11 @@
                 !campaignForm.message
               "
             >
-
               Tu mensaje aparecerá aquí...
-
             </p>
 
           </div>
+
 
 
           <div
@@ -537,6 +560,7 @@
         </div>
 
 
+
         <div class="preview-note">
 
           <span>
@@ -560,11 +584,192 @@
 
 
     <!-- =========================
+         CAMPAIGN DETAIL
+    ========================== -->
+
+    <div
+      class="campaign-detail-card"
+      *ngIf="selectedCampaign"
+    >
+
+
+      <div class="detail-header">
+
+        <div>
+
+          <span class="eyebrow">
+            DETALLE DE CAMPAÑA
+          </span>
+
+          <h2>
+            {{ selectedCampaign.name }}
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeDetail()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+
+      <div class="detail-grid">
+
+
+        <div>
+
+          <span>
+            Objetivo
+          </span>
+
+          <strong>
+
+            {{
+              getObjectiveLabel(
+                selectedCampaign.objective
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <div>
+
+          <span>
+            Audiencia
+          </span>
+
+          <strong>
+
+            {{
+              getAudienceLabel(
+                selectedCampaign.audience
+              )
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <div>
+
+          <span>
+            Canal
+          </span>
+
+          <strong>
+            {{ selectedCampaign.channel }}
+          </strong>
+
+        </div>
+
+
+
+        <div>
+
+          <span>
+            Estado
+          </span>
+
+          <strong>
+
+            {{
+              selectedCampaign.status ===
+                'draft'
+                ? 'Borrador'
+                : selectedCampaign.status ===
+                  'active'
+                  ? 'Activa'
+                  : 'Finalizada'
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <div>
+
+          <span>
+            Origen
+          </span>
+
+          <strong>
+
+            {{
+              selectedCampaign.source ===
+                'marketing-ai'
+                ? 'Marketing IA'
+                : 'Manual'
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <div>
+
+          <span>
+            Creada
+          </span>
+
+          <strong>
+
+            {{
+              selectedCampaign.createdAt
+              | date:'dd/MM/yyyy'
+            }}
+
+          </strong>
+
+        </div>
+
+
+      </div>
+
+
+
+      <div class="detail-message">
+
+        <span>
+          Mensaje
+        </span>
+
+        <p>
+          {{ selectedCampaign.message }}
+        </p>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
          CAMPAIGNS LIST
     ========================== -->
 
     <ng-container
-      *ngIf="!showForm"
+      *ngIf="
+        !showForm &&
+        !selectedCampaign
+      "
     >
 
 
@@ -613,6 +818,8 @@
 
 
 
+      <!-- CAMPAIGNS -->
+
       <ng-container
         *ngIf="
           campaigns.length > 0
@@ -620,7 +827,9 @@
       >
 
 
-        <!-- KPIS -->
+        <!-- =========================
+             KPIS
+        ========================== -->
 
         <div class="kpi-grid">
 
@@ -700,7 +909,9 @@
 
 
 
-        <!-- LIST CARD -->
+        <!-- =========================
+             LIST CARD
+        ========================== -->
 
         <div class="campaign-list-card">
 
@@ -764,6 +975,10 @@
 
 
 
+          <!-- =========================
+               TABLE
+          ========================== -->
+
           <div class="campaign-table-wrapper">
 
 
@@ -819,6 +1034,8 @@
                 >
 
 
+                  <!-- CAMPAIGN -->
+
                   <td>
 
                     <div class="campaign-name">
@@ -840,9 +1057,11 @@
                             campaign.targetName
                           "
                         >
+
                           {{
                             campaign.targetName
                           }}
+
                         </span>
 
                       </div>
@@ -852,6 +1071,8 @@
                   </td>
 
 
+
+                  <!-- OBJECTIVE -->
 
                   <td>
 
@@ -865,6 +1086,8 @@
 
 
 
+                  <!-- AUDIENCE -->
+
                   <td>
 
                     {{
@@ -876,6 +1099,8 @@
                   </td>
 
 
+
+                  <!-- CHANNEL -->
 
                   <td>
 
@@ -890,6 +1115,8 @@
                   </td>
 
 
+
+                  <!-- SOURCE -->
 
                   <td>
 
@@ -913,6 +1140,8 @@
                   </td>
 
 
+
+                  <!-- STATUS -->
 
                   <td>
 
@@ -939,10 +1168,44 @@
 
 
 
+                  <!-- ACTIONS -->
+
                   <td>
 
                     <div class="row-actions">
 
+
+                      <!-- VER -->
+
+                      <button
+                        type="button"
+                        (click)="
+                          viewCampaign(
+                            campaign
+                          )
+                        "
+                      >
+                        Ver
+                      </button>
+
+
+
+                      <!-- EDITAR -->
+
+                      <button
+                        type="button"
+                        (click)="
+                          editCampaign(
+                            campaign
+                          )
+                        "
+                      >
+                        Editar
+                      </button>
+
+
+
+                      <!-- ACTIVAR -->
 
                       <button
                         type="button"
@@ -960,6 +1223,9 @@
                       </button>
 
 
+
+                      <!-- FINALIZAR -->
+
                       <button
                         type="button"
                         *ngIf="
@@ -975,6 +1241,9 @@
                         Finalizar
                       </button>
 
+
+
+                      <!-- ELIMINAR -->
 
                       <button
                         type="button"
