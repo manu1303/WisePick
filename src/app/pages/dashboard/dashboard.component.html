@@ -1,103 +1,934 @@
-<div class="layout" [class.collapsed]="isSidebarCollapsed">
-  <!-- Sidebar -->
+<div
+  class="layout"
+  [class.collapsed]="
+    isSidebarCollapsed
+  "
+>
+
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+
   <aside class="sidebar">
-    <a class="brand" routerLink="/">
-      <img class="brand-logo" src="/assets/wisepicklogo.svg" alt="WisePick" />
-    </a>
 
-    <p class="section-title">Navegación principal</p>
+
+    <!-- BRAND -->
+
+    <!-- BRAND -->
+    <a
+      class="brand"
+      routerLink="/"
+      title="Volver al inicio de WisePick"
+    >
+      <!-- Logo completo -->
+      <img
+        class="brand-logo brand-logo-full"
+        src="/assets/wisepicklogo.png"
+        alt="WisePick"
+    />
+
+    <!-- Solo W -->
+    <img
+      class="brand-logo brand-logo-mini"
+      src="/assets/wisepicklogocorto.png"
+      alt="WisePick"
+    />
+  </a>
+
+
+
+    <!-- MAIN NAVIGATION -->
+
+    <p class="section-title">
+      Navegación principal
+    </p>
+
+
     <nav class="menu">
-      <a class="item" routerLink="/dashboard/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <img class="ico" src="/assets/homepickicon.svg" alt="" />
-        <span>Inicio</span>
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{
+          exact: true
+        }"
+        title="Inicio"
+      >
+
+        <img
+          class="ico"
+          src="/assets/homepickicon.svg"
+          alt=""
+        >
+
+        <span>
+          Inicio
+        </span>
+
       </a>
-      <a class="item" routerLink="/dashboard/company" routerLinkActive="active">
-        <img class="ico" src="/assets/folderpick.svg" alt="" />
-        <span>Mi Empresa</span>
+
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/company"
+        routerLinkActive="active"
+        title="Mi Empresa"
+      >
+
+        <img
+          class="ico"
+          src="/assets/folderpick.svg"
+          alt=""
+        >
+
+        <span>
+          Mi Empresa
+        </span>
+
       </a>
-      <a class="item" routerLink="/dashboard/sales" routerLinkActive="active">
-        <img class="ico" src="/assets/chartpick.svg" alt="" />
-        <span>Ventas</span>
+
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/sales"
+        routerLinkActive="active"
+        title="Ventas"
+      >
+
+        <img
+          class="ico"
+          src="/assets/chartpick.svg"
+          alt=""
+        >
+
+        <span>
+          Ventas
+        </span>
+
       </a>
-      <a class="item" routerLink="/dashboard/products" routerLinkActive="active">
-        <img class="ico" src="/assets/lockerpick.svg" alt="" />
-        <span>Productos</span>
+
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/products"
+        routerLinkActive="active"
+        title="Productos"
+      >
+
+        <img
+          class="ico"
+          src="/assets/lockerpick.svg"
+          alt=""
+        >
+
+        <span>
+          Productos
+        </span>
+
       </a>
-      <a class="item" routerLink="/dashboard/clients" routerLinkActive="active">
-        <img class="ico" src="/assets/clienticon.svg" alt="" />
-        <span>Clientes</span>
+
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/clients"
+        routerLinkActive="active"
+        title="Clientes"
+      >
+
+        <img
+          class="ico"
+          src="/assets/clienticon.svg"
+          alt=""
+        >
+
+        <span>
+          Clientes
+        </span>
+
       </a>
-      <a class="item" routerLink="/dashboard/dash" routerLinkActive="active">
-        <img class="ico" src="/assets/dashboardpick.svg" alt="" />
-        <span>Dashboard</span>
+
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/dash"
+        routerLinkActive="active"
+        title="Dashboard"
+      >
+
+        <img
+          class="ico"
+          src="/assets/dashboardpick.svg"
+          alt=""
+        >
+
+        <span>
+          Dashboard
+        </span>
+
       </a>
-        <a class="item" routerLink="/dashboard/marketing-ia"routerLinkActive="active">
-        <img class="ico" src="/assets/roboticon.svg" alt="" />
-        <span>Marketing IA</span>
+
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/marketing-ia"
+        routerLinkActive="active"
+        title="Marketing IA"
+      >
+
+        <img
+          class="ico"
+          src="/assets/roboticon.svg"
+          alt=""
+        >
+
+        <span>
+          Marketing IA
+        </span>
+
       </a>
-        <a class="item" routerLink="/dashboard/campaigns"routerLinkActive="active">
-        <img class="ico" src="/assets/campaignpickicon.svg" alt="" />
-        <span>Campañas</span>
+
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/campaigns"
+        routerLinkActive="active"
+        title="Campañas"
+      >
+
+        <img
+          class="ico"
+          src="/assets/campaignpickicon.svg"
+          alt=""
+        >
+
+        <span>
+          Campañas
+        </span>
+
       </a>
-      
-      
+
+
     </nav>
 
-    <p class="section-title">Gestión</p>
+
+
+    <!-- MANAGEMENT -->
+
+    <p class="section-title">
+      Gestión
+    </p>
+
+
     <nav class="menu">
-      <a class="item" routerLink="/dashboard/reports" routerLinkActive="active">
-        <img class="ico" src="/assets/docpick.svg" alt="" />
-        <span>Reportes</span>
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/reports"
+        routerLinkActive="active"
+        title="Reportes"
+      >
+
+        <img
+          class="ico"
+          src="/assets/docpick.svg"
+          alt=""
+        >
+
+        <span>
+          Reportes
+        </span>
+
       </a>
+
+
     </nav>
 
-    <p class="section-title">Configuración</p>
+
+
+    <!-- SETTINGS -->
+
+    <p class="section-title">
+      Configuración
+    </p>
+
+
     <nav class="menu">
-      <a class="item" routerLink="/dashboard/settings" routerLinkActive="active">
-        <img class="ico" src="/assets/helppick.svg" alt="" />
-        <span>Configuración</span>
+
+
+      <a
+        class="item"
+        routerLink="/dashboard/settings"
+        routerLinkActive="active"
+        title="Configuración"
+      >
+
+        <img
+          class="ico"
+          src="/assets/helppick.svg"
+          alt=""
+        >
+
+        <span>
+          Configuración
+        </span>
+
       </a>
+
+
     </nav>
 
-    <div class="user">
-      <div class="avatar">JP</div>
-      <div class="info">
-        <b>Pao JP</b>
-        <small>paojp@mail.com</small>
+
+
+    <!-- =========================
+         USER / DEMO
+    ========================== -->
+
+    <div class="sidebar-user">
+
+
+      <div class="avatar">
+
+        {{ userInitials }}
+
       </div>
+
+
+      <div
+        class="info"
+        *ngIf="
+          !isSidebarCollapsed
+        "
+      >
+
+
+        <ng-container
+          *ngIf="
+            currentUser.isAuthenticated
+          "
+        >
+
+          <strong>
+            {{ currentUser.name }}
+          </strong>
+
+          <small>
+            {{ currentUser.email }}
+          </small>
+
+        </ng-container>
+
+
+
+        <ng-container
+          *ngIf="
+            !currentUser.isAuthenticated
+          "
+        >
+
+          <strong>
+            Modo demo
+          </strong>
+
+          <small>
+            Explorando WisePick
+          </small>
+
+        </ng-container>
+
+
+      </div>
+
+
     </div>
+
+
   </aside>
 
-  <!-- Topbar -->
- <header class="topbar">
-  <!-- LADO IZQUIERDO: toggle de sidebar -->
-  <div class="left">
-    <button class="icon-btn" type="button" (click)="toggleSidebar()" aria-label="Ocultar/mostrar menú">
-      <img src="/assets/panelpick.svg" alt="" />
-    </button>
-  </div>
 
-  <!-- CENTRO: buscador al 50% -->
-  <div class="center">
-    <input class="search" type="text" placeholder="🔍 Search" />
-  </div>
 
-  <!-- DERECHA: acciones -->
-  <div class="right">
-    <button class="btn primary" type="button">+ Nuevo Proyecto</button>
-    <button class="icon-btn" type="button" aria-label="Notificaciones">
-      <img src="/assets/ringpick.svg" alt="" />
-    </button>
-    <button class="icon-btn" type="button" aria-label="Usuario">
-      <img class="avatar-ico" src="/assets/userpick.svg" alt="" />
-    </button>
-  </div>
-</header>
+  <!-- =========================
+       TOPBAR
+  ========================== -->
 
-  <!-- Área de trabajo -->
-  <main class="content">
-    <router-outlet></router-outlet>
+  <header class="topbar">
+
+
+    <!-- LEFT -->
+
+    <div class="left">
+
+
+      <button
+        class="topbar-icon-button"
+        type="button"
+        (click)="toggleSidebar()"
+        aria-label="Ocultar o mostrar menú"
+        [title]="
+          isSidebarCollapsed
+            ? 'Expandir menú'
+            : 'Contraer menú'
+        "
+      >
+
+        <img
+          src="/assets/panelpick.svg"
+          alt=""
+        >
+
+      </button>
+
+
+    </div>
+
+
+
+    <!-- CENTER -->
+
+    <div class="center">
+
+
+      <div class="search-wrapper">
+
+
+        <span class="search-icon">
+          🔍
+        </span>
+
+
+        <input
+          class="search"
+          type="text"
+          placeholder="Buscar en WisePick..."
+          aria-label="Buscar en WisePick"
+        >
+
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- RIGHT -->
+
+    <div class="right">
+
+
+      <!-- =====================
+           ADD DATA
+      ====================== -->
+
+      <div class="topbar-dropdown-container">
+
+
+        <button
+          class="add-data-button"
+          type="button"
+          (click)="toggleAddMenu()"
+        >
+
+          <span class="plus">
+            +
+          </span>
+
+          Agregar datos
+
+          <span class="chevron">
+            ▾
+          </span>
+
+        </button>
+
+
+
+        <div
+          class="dropdown-menu add-menu"
+          *ngIf="showAddMenu"
+        >
+
+
+          <div class="dropdown-heading">
+
+            <span>
+              AGREGAR DATOS
+            </span>
+
+            <strong>
+              ¿Qué deseas registrar?
+            </strong>
+
+          </div>
+
+
+
+          <button
+            type="button"
+            (click)="
+              navigateTo(
+                '/dashboard/sales/manual'
+              )
+            "
+          >
+
+            <span class="dropdown-icon">
+              ✍️
+            </span>
+
+            <div>
+
+              <strong>
+                Registrar venta
+              </strong>
+
+              <small>
+                Ingreso manual rápido
+              </small>
+
+            </div>
+
+          </button>
+
+
+
+          <button
+            type="button"
+            (click)="
+              navigateTo(
+                '/dashboard/sales/import'
+              )
+            "
+          >
+
+            <span class="dropdown-icon">
+              📊
+            </span>
+
+            <div>
+
+              <strong>
+                Importar ventas
+              </strong>
+
+              <small>
+                Excel, factura o fotografía
+              </small>
+
+            </div>
+
+          </button>
+
+
+
+          <button
+            type="button"
+            (click)="
+              navigateTo(
+                '/dashboard/products'
+              )
+            "
+          >
+
+            <span class="dropdown-icon">
+              📦
+            </span>
+
+            <div>
+
+              <strong>
+                Agregar producto
+              </strong>
+
+              <small>
+                Actualiza tu catálogo
+              </small>
+
+            </div>
+
+          </button>
+
+
+
+          <button
+            type="button"
+            (click)="
+              navigateTo(
+                '/dashboard/clients'
+              )
+            "
+          >
+
+            <span class="dropdown-icon">
+              👥
+            </span>
+
+            <div>
+
+              <strong>
+                Agregar cliente
+              </strong>
+
+              <small>
+                Amplía tu base de clientes
+              </small>
+
+            </div>
+
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- =====================
+           NOTIFICATIONS
+      ====================== -->
+
+      <div class="topbar-dropdown-container">
+
+
+        <button
+          class="topbar-icon-button notification-button"
+          type="button"
+          aria-label="Notificaciones"
+          title="Notificaciones"
+          (click)="toggleNotifications()"
+        >
+
+          <img
+            src="/assets/ringpick.svg"
+            alt=""
+          >
+
+
+          <span
+            class="notification-dot"
+            *ngIf="
+              notifications.length > 0
+            "
+          >
+
+            {{
+              notifications.length
+            }}
+
+          </span>
+
+
+        </button>
+
+
+
+        <div
+          class="dropdown-menu notification-menu"
+          *ngIf="
+            showNotifications
+          "
+        >
+
+
+          <div class="dropdown-heading notification-heading">
+
+            <div>
+
+              <span>
+                NOTIFICACIONES
+              </span>
+
+              <strong>
+                Actividad reciente
+              </strong>
+
+            </div>
+
+
+            <span
+              class="notification-count"
+              *ngIf="
+                notifications.length > 0
+              "
+            >
+
+              {{
+                notifications.length
+              }}
+
+            </span>
+
+          </div>
+
+
+
+          <div
+            class="notification-empty"
+            *ngIf="
+              notifications.length === 0
+            "
+          >
+
+            <span>
+              ✓
+            </span>
+
+            <strong>
+              Todo está al día
+            </strong>
+
+            <small>
+              No tienes alertas pendientes.
+            </small>
+
+          </div>
+
+
+
+          <button
+            class="notification-item"
+            type="button"
+            *ngFor="
+              let notification
+              of notifications
+            "
+            (click)="
+              navigateTo(
+                notification.route
+              )
+            "
+          >
+
+
+            <span
+              class="notification-icon"
+              [attr.data-type]="
+                notification.type
+              "
+            >
+
+              {{
+                notification.icon
+              }}
+
+            </span>
+
+
+            <div>
+
+              <strong>
+                {{ notification.title }}
+              </strong>
+
+              <small>
+                {{ notification.description }}
+              </small>
+
+            </div>
+
+
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- =====================
+           USER
+      ====================== -->
+
+      <div class="topbar-dropdown-container">
+
+
+        <button
+          class="topbar-user-button"
+          type="button"
+          aria-label="Menú de usuario"
+          (click)="toggleUserMenu()"
+        >
+
+          {{ userInitials }}
+
+        </button>
+
+
+
+        <div
+          class="dropdown-menu user-menu"
+          *ngIf="
+            showUserMenu
+          "
+        >
+
+
+          <!-- AUTHENTICATED -->
+
+          <ng-container
+            *ngIf="
+              currentUser.isAuthenticated
+            "
+          >
+
+
+            <div class="user-menu-header">
+
+              <div class="user-menu-avatar">
+                {{ userInitials }}
+              </div>
+
+
+              <div>
+
+                <strong>
+                  {{ currentUser.name }}
+                </strong>
+
+                <small>
+                  {{ currentUser.email }}
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              (click)="
+                navigateTo(
+                  '/dashboard/settings'
+                )
+              "
+            >
+
+              <span>
+                👤
+              </span>
+
+              Mi cuenta
+
+            </button>
+
+
+            <button
+              type="button"
+              (click)="
+                navigateTo(
+                  '/dashboard/settings'
+                )
+              "
+            >
+
+              <span>
+                ⚙️
+              </span>
+
+              Configuración
+
+            </button>
+
+
+          </ng-container>
+
+
+
+          <!-- DEMO -->
+
+          <ng-container
+            *ngIf="
+              !currentUser.isAuthenticated
+            "
+          >
+
+
+            <div class="demo-menu-header">
+
+              <div class="user-menu-avatar">
+                DE
+              </div>
+
+
+              <div>
+
+                <strong>
+                  Modo demo
+                </strong>
+
+                <small>
+                  Explorando WisePick
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="demo-message">
+
+              Tus datos actuales se almacenan
+              temporalmente en este navegador.
+
+            </div>
+
+
+            <button
+              type="button"
+              class="login-action"
+              (click)="goToLanding()"
+            >
+
+              Iniciar sesión →
+
+            </button>
+
+
+          </ng-container>
+
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </header>
+
+
+
+  <!-- =========================
+       WORKSPACE
+  ========================== -->
+
+  <main
+    class="content"
+    (click)="closeMenus()"
+  >
+
+    <router-outlet>
+    </router-outlet>
+
   </main>
+
+
 </div>
 
 

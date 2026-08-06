@@ -1,229 +1,1000 @@
-<!-- NAVBAR -->
+<!-- =========================
+     NAVBAR
+========================== -->
+
 <header class="nav">
+
   <div class="container">
-    <a class="brand" routerLink="/">
-      <img src="assets/wisepicklogo.png" alt= "" />
+
+    <a
+      class="brand"
+      routerLink="/"
+      aria-label="WisePick"
+    >
+      <img
+        src="assets/wisepicklogo.png"
+        alt="WisePick"
+      >
     </a>
 
-    <input id="menu-toggle" type="checkbox" />
-    <label for="menu-toggle" class="hamburger" aria-label="Menú">☰</label>
+
+    <input
+      id="menu-toggle"
+      type="checkbox"
+    >
+
+    <label
+      for="menu-toggle"
+      class="hamburger"
+      aria-label="Menú"
+    >
+      ☰
+    </label>
+
 
     <nav class="links">
-      <a href="#home">Inicio</a>
-      <a href="#products">Productos</a>
-      <a href="#pricing">Planes</a>
-      <a href="#about">Nosotros</a>
+
+      <a href="#home">
+        Inicio
+      </a>
+
+      <a href="#features">
+        Funciones
+      </a>
+
+      <a href="#how-it-works">
+        Cómo funciona
+      </a>
+
+      <a href="#wise-ai">
+        WisePick IA
+      </a>
+
     </nav>
 
+
     <div class="actions">
-      <a class="btn ghost" routerLink="/login">Iniciar sesión</a>
-      <a class="btn primary" routerLink="/dashboard" href="#cta">Probar Gratis</a>
+
+      <a
+        class="btn ghost"
+        routerLink="/login"
+      >
+        Iniciar sesión
+      </a>
+
+      <a
+        class="btn primary"
+        routerLink="/dashboard"
+      >
+        Probar Gratis
+      </a>
+
     </div>
+
   </div>
+
 </header>
 
+
+
 <main id="home">
-  <!-- HERO -->
+
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
   <section class="hero">
+
     <div class="container">
+
+
       <div class="col text">
-        <h1>Tú empresa más <b>ÁGIL</b><br /><span>Tus ventas más ALTAS!</span></h1>
+
+        <span class="hero-eyebrow">
+          ANALIZA · ENTIENDE · DECIDE
+        </span>
+
+
+        <h1>
+
+          Convierte los datos
+          de tu negocio en
+
+          <span>
+            mejores decisiones
+          </span>
+
+        </h1>
+
+
         <p class="lead">
-          Gestiona inventario, analiza tu negocio y vende más con campañas efectivas.
-          Digitaliza tu negocio y hazlo crecer con análisis, inventario y marketing
-          inteligente.
+
+          WisePick centraliza tus ventas,
+          productos y clientes para ayudarte
+          a entender qué está pasando en tu
+          negocio y encontrar oportunidades
+          para crecer.
+
         </p>
-        <div class="cta">
-          <a class="btn primary" routerLink="/dashboard" href="#cta">Empieza gratis !</a>
-          <small class="note">Ahora!</small>
+
+
+        <div class="hero-actions">
+
+          <a
+            class="btn primary hero-primary"
+            routerLink="/dashboard"
+          >
+            Probar WisePick gratis →
+          </a>
+
+
+          <a
+            class="btn secondary"
+            href="#how-it-works"
+          >
+            Ver cómo funciona
+          </a>
+
         </div>
+
+
+        <div class="hero-note">
+
+          <span>✓</span>
+          Sin tarjeta de crédito
+
+          <span>✓</span>
+          Empieza en pocos minutos
+
+        </div>
+
       </div>
+
+
 
       <div class="col art">
-        <img src="assets/bussinesvision.png" alt="Ilustración hero" />
+
+        <div class="hero-art-wrapper">
+
+          <img
+            src="assets/bussinesvision.png"
+            alt="Análisis comercial con WisePick"
+          >
+
+
+          <div class="floating-card floating-sales">
+
+            <span>
+              Ventas
+            </span>
+
+            <strong>
+              ↑ Datos centralizados
+            </strong>
+
+          </div>
+
+
+          <div class="floating-card floating-ai">
+
+            <span>
+              ✦ WisePick IA
+            </span>
+
+            <strong>
+              Oportunidades detectadas
+            </strong>
+
+          </div>
+
+        </div>
+
       </div>
+
+
     </div>
-    <div class="curve"></div>
+
   </section>
 
-  <!-- ¿QUÉ PUEDES HACER? -->
-  <section class="section center">
+
+
+  <!-- =========================
+       TRUST / VALUE
+  ========================== -->
+
+  <section class="value-strip">
+
     <div class="container">
-      <h2>¿Qué puedes hacer con WisePick?</h2>
-      <p class="muted">Impulsa tu negocio con herramientas inteligentes.</p>
+
+      <div>
+        <strong>
+          4 formas
+        </strong>
+        <span>
+          de registrar ventas
+        </span>
+      </div>
+
+      <div>
+        <strong>
+          Un solo lugar
+        </strong>
+        <span>
+          para tus datos
+        </span>
+      </div>
+
+      <div>
+        <strong>
+          Insights
+        </strong>
+        <span>
+          basados en tu negocio
+        </span>
+      </div>
+
+      <div>
+        <strong>
+          Acción
+        </strong>
+        <span>
+          convierte insights en campañas
+        </span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       FEATURES
+  ========================== -->
+
+  <section
+    id="features"
+    class="section features-section"
+  >
+
+    <div class="container">
+
+
+      <div class="section-heading">
+
+        <span class="section-eyebrow">
+          TODO EN UN SOLO LUGAR
+        </span>
+
+        <h2>
+          ¿Qué puedes hacer con WisePick?
+        </h2>
+
+        <p>
+          Herramientas pensadas para que una
+          pequeña empresa pueda convertir sus
+          datos diarios en información útil.
+        </p>
+
+      </div>
+
+
 
       <div class="features-grid">
-        <article class="card">
-          <img src="assets/charticon.png" alt="" />
-          <h3>Análisis de datos</h3>
-          <p>Analiza ventas, clientes y productos para descubrir patrones y tendencias.</p>
-        </article>
+
+
+        <!-- SALES -->
 
         <article class="card">
-          <img src="assets/brainicon.png" alt="" />
-          <h3>Recomendaciones personalizadas</h3>
-          <p>Algoritmos que sugieren productos y campañas adaptadas a cada cliente.</p>
+
+          <div class="feature-icon">
+            📊
+          </div>
+
+          <h3>
+            Registra tus ventas
+          </h3>
+
+          <p>
+            Ingresa información manualmente,
+            importa archivos Excel o utiliza
+            factura y fotografía como métodos
+            de carga.
+          </p>
+
+          <span class="feature-link">
+            Ventas →
+          </span>
+
         </article>
 
-        <article class="card">
-          <img src="assets/dashboardicon.png" alt="" />
-          <h3>Dashboard interactivo</h3>
-          <p>Visualiza métricas en tiempo real con un panel claro y simple.</p>
-        </article>
+
+
+        <!-- PRODUCTS -->
 
         <article class="card">
-          <img src="assets/features/automation.svg" alt="" />
-          <h3>Automatización de marketing</h3>
-          <p>Segmenta clientes y lanza campañas automáticas que fidelizan.</p>
+
+          <div class="feature-icon">
+            📦
+          </div>
+
+          <h3>
+            Productos e inventario
+          </h3>
+
+          <p>
+            Administra productos, precios,
+            costos y stock para conocer mejor
+            el rendimiento de tu catálogo.
+          </p>
+
+          <span class="feature-link">
+            Inventario →
+          </span>
+
         </article>
 
+
+
+        <!-- CLIENTS -->
+
         <article class="card">
-          <img src="assets/cloudicon.png" alt="" />
-          <h3>Escalabilidad en la nube</h3>
-          <p>Arquitectura moderna basada en microservicios, segura y accesible.</p>
+
+          <div class="feature-icon">
+            👥
+          </div>
+
+          <h3>
+            Conoce a tus clientes
+          </h3>
+
+          <p>
+            Identifica quién compra,
+            descubre clientes recurrentes
+            y prepara mejores acciones
+            comerciales.
+          </p>
+
+          <span class="feature-link">
+            Clientes →
+          </span>
+
         </article>
+
+
+
+        <!-- DASHBOARD -->
+
+        <article class="card">
+
+          <div class="feature-icon">
+            ▦
+          </div>
+
+          <h3>
+            Dashboard analítico
+          </h3>
+
+          <p>
+            Consulta ingresos, ventas,
+            productos destacados, margen,
+            clientes recurrentes y más.
+          </p>
+
+          <span class="feature-link">
+            Analytics →
+          </span>
+
+        </article>
+
+
+
+        <!-- IA -->
+
+        <article class="card feature-highlight">
+
+          <div class="feature-icon ai">
+            ✦
+          </div>
+
+          <h3>
+            Marketing IA
+          </h3>
+
+          <p>
+            WisePick analiza tus datos y
+            presenta oportunidades acompañadas
+            de evidencia para ayudarte a decidir.
+          </p>
+
+          <span class="feature-link">
+            Insights →
+          </span>
+
+        </article>
+
+
+
+        <!-- CAMPAIGNS -->
+
+        <article class="card">
+
+          <div class="feature-icon">
+            🎯
+          </div>
+
+          <h3>
+            Crea campañas
+          </h3>
+
+          <p>
+            Convierte una oportunidad detectada
+            por WisePick en una campaña dirigida
+            a clientes o productos.
+          </p>
+
+          <span class="feature-link">
+            Campañas →
+          </span>
+
+        </article>
+
+
       </div>
 
-      <div class="center mt-24">
-        <a class="btn primary" href="#cta">Suscríbete gratis ahora</a>
-      </div>
     </div>
+
   </section>
 
-  <!-- ECOSISTEMA -->
-  <section class="ecosystem">
-    <div class="container eco-grid">
-      <div class="eco-graphic">
-        <img src="assets/ecosystem/ring.png" alt="Ecosistema" />
-      </div>
-      <div class="eco-copy">
-        <span class="pill purple">For Product Teams</span>
-        <h3>Conéctate con el mejor ecosistema</h3>
-        <p>
-          WisePick integra datos de venta, clientes e inventario desde múltiples fuentes
-          en una sola plataforma. Stack cloud con microservicios para máxima velocidad y
-          seguridad.
-        </p>
-      </div>
-    </div>
-  </section>
 
-  <!-- PIPELINES -->
-  <section class="pipelines">
-    <div class="container pipes-grid">
-      <div class="pipes-copy">
-        <span class="pill indigo">For Engineering Teams</span>
-        <h3>Data-driven pipelines in minutes</h3>
-        <p>
-          Maintenance-free data pipelines with quick set-up powered by a modern & scalable
-          platform.
-        </p>
-      </div>
-      <div class="pipes-graphic">
-        <img src="assets/ecosystem/stack.png" alt="Diagrama stack" />
-      </div>
-    </div>
-  </section>
 
-  <!-- TESTIMONIO -->
-  <section class="testimonial">
+  <!-- =========================
+       HOW IT WORKS
+  ========================== -->
+
+  <section
+    id="how-it-works"
+    class="how-section"
+  >
+
     <div class="container">
-      <blockquote>
-        “What I love about Qubly is the easy way we can collaborate even if there is a lot
-        of people involved in the process”
-      </blockquote>
-      <div class="person">
-        <img src="assets/people/testimonial.jpg" alt="Guillaume Cabane" />
-        <div>
-          <b>Guillaume Cabane</b>
-          <span>CTO @ BigSpring</span>
-        </div>
+
+
+      <div class="section-heading">
+
+        <span class="section-eyebrow">
+          SIMPLE DESDE EL PRIMER DÍA
+        </span>
+
+        <h2>
+          De tus datos a una decisión
+          en tres pasos
+        </h2>
+
+        <p>
+          No necesitas comenzar con sistemas
+          complejos para entender mejor
+          tu negocio.
+        </p>
+
       </div>
 
-      <div class="logos">
-        <img src="assets/logos/tonkean.svg" alt="Tonkean" />
-        <img src="assets/logos/bigspring.svg" alt="BigSpring" />
-        <img src="assets/logos/clearbit.svg" alt="Clearbit" />
-        <img src="assets/logos/mine.svg" alt="Mine" />
-        <img src="assets/logos/shake.svg" alt="Shake" />
+
+
+      <div class="steps-grid">
+
+
+        <article class="step-card">
+
+          <span class="step-number">
+            01
+          </span>
+
+          <div class="step-icon">
+            ↥
+          </div>
+
+          <h3>
+            Ingresa tus datos
+          </h3>
+
+          <p>
+            Registra ventas, productos y
+            clientes utilizando el método
+            que mejor se adapte a tu negocio.
+          </p>
+
+        </article>
+
+
+
+        <div class="step-line">
+          →
+        </div>
+
+
+
+        <article class="step-card">
+
+          <span class="step-number">
+            02
+          </span>
+
+          <div class="step-icon">
+            ◫
+          </div>
+
+          <h3>
+            WisePick analiza
+          </h3>
+
+          <p>
+            Tus datos se convierten en
+            indicadores, rankings y patrones
+            de comportamiento.
+          </p>
+
+        </article>
+
+
+
+        <div class="step-line">
+          →
+        </div>
+
+
+
+        <article class="step-card">
+
+          <span class="step-number">
+            03
+          </span>
+
+          <div class="step-icon">
+            ✦
+          </div>
+
+          <h3>
+            Decide y actúa
+          </h3>
+
+          <p>
+            Recibe recomendaciones y
+            conviértelas en acciones
+            comerciales y campañas.
+          </p>
+
+        </article>
+
+
       </div>
+
     </div>
+
   </section>
 
-  <!-- CTA FINAL -->
-  <!--section id="cta" class="cta">
+
+
+  <!-- =========================
+       WISEPICK IA
+  ========================== -->
+
+  <section
+    id="wise-ai"
+    class="ai-section"
+  >
+
+    <div class="container ai-grid">
+
+
+      <div class="ai-visual">
+
+
+        <div class="ai-demo-card">
+
+          <div class="ai-demo-header">
+
+            <div class="ai-symbol">
+              ✦
+            </div>
+
+            <div>
+
+              <span>
+                WISEPICK IA
+              </span>
+
+              <strong>
+                Oportunidad detectada
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <span class="insight-tag">
+            PRODUCTO DESTACADO
+          </span>
+
+
+          <h3>
+            Uno de tus productos está
+            liderando las ventas
+          </h3>
+
+
+          <p>
+            WisePick detecta productos,
+            clientes y situaciones que
+            merecen tu atención.
+          </p>
+
+
+          <div class="evidence-box">
+
+            <span>
+              ¿Por qué WisePick recomienda esto?
+            </span>
+
+            <strong>
+              Basado en tus ventas registradas.
+            </strong>
+
+          </div>
+
+
+          <button type="button">
+            Crear campaña →
+          </button>
+
+        </div>
+
+
+      </div>
+
+
+
+      <div class="ai-copy">
+
+        <span class="section-eyebrow">
+          INTELIGENCIA PARA PEQUEÑOS NEGOCIOS
+        </span>
+
+        <h2>
+          WisePick no solo muestra datos.
+          Te ayuda a interpretarlos.
+        </h2>
+
+
+        <p>
+
+          A partir de tus ventas,
+          productos y clientes, WisePick
+          identifica situaciones relevantes
+          y te explica por qué pueden ser
+          importantes.
+
+        </p>
+
+
+        <ul>
+
+          <li>
+            <span>✓</span>
+            Productos con mejor desempeño.
+          </li>
+
+          <li>
+            <span>✓</span>
+            Clientes con comportamiento recurrente.
+          </li>
+
+          <li>
+            <span>✓</span>
+            Oportunidades de mejorar tus datos.
+          </li>
+
+          <li>
+            <span>✓</span>
+            Alertas relacionadas con inventario.
+          </li>
+
+          <li>
+            <span>✓</span>
+            Creación de campañas desde insights.
+          </li>
+
+        </ul>
+
+
+        <a
+          class="btn primary"
+          routerLink="/dashboard"
+        >
+          Probar Marketing IA →
+        </a>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       ECOSYSTEM / FLOW
+  ========================== -->
+
+  <section class="business-flow">
+
     <div class="container">
-      <form class="cta-form" (submit)="$event.preventDefault()">
-        <label>Subscribe</label>
-        <div class="row">
-          <input type="email" required placeholder="Enter your email address" />
-          <button class="btn primary" type="submit">Subscribe</button>
+
+
+      <div class="section-heading">
+
+        <span class="section-eyebrow">
+          UN SISTEMA CONECTADO
+        </span>
+
+        <h2>
+          Toda la información de tu negocio
+          trabajando junta
+        </h2>
+
+      </div>
+
+
+
+      <div class="flow-grid">
+
+
+        <div class="flow-item">
+          <span>📊</span>
+          <strong>Ventas</strong>
         </div>
-      </form>
+
+        <div class="flow-arrow">
+          →
+        </div>
+
+        <div class="flow-item">
+          <span>📦</span>
+          <strong>Productos</strong>
+        </div>
+
+        <div class="flow-arrow">
+          →
+        </div>
+
+        <div class="flow-item">
+          <span>👥</span>
+          <strong>Clientes</strong>
+        </div>
+
+        <div class="flow-arrow">
+          →
+        </div>
+
+        <div class="flow-item highlighted">
+          <span>✦</span>
+          <strong>WisePick IA</strong>
+        </div>
+
+        <div class="flow-arrow">
+          →
+        </div>
+
+        <div class="flow-item">
+          <span>🎯</span>
+          <strong>Campañas</strong>
+        </div>
+
+        <div class="flow-arrow">
+          →
+        </div>
+
+        <div class="flow-item">
+          <span>📄</span>
+          <strong>Reportes</strong>
+        </div>
+
+
+      </div>
+
     </div>
+
   </section>
-</main>-->
+
+
+
+  <!-- =========================
+       FINAL CTA
+  ========================== -->
+
+  <section
+    id="cta"
+    class="final-cta"
+  >
+
+    <div class="container">
+
+
+      <div>
+
+        <span class="section-eyebrow">
+          EMPIEZA HOY
+        </span>
+
+        <h2>
+          Tus datos ya tienen algo que decirte.
+        </h2>
+
+        <p>
+          Empieza a organizar tu información
+          y descubre qué está pasando
+          realmente en tu negocio.
+        </p>
+
+      </div>
+
+
+      <a
+        class="btn primary final-button"
+        routerLink="/dashboard"
+      >
+        Probar WisePick gratis →
+      </a>
+
+
+    </div>
+
+  </section>
+
+
+</main>
+
+
+
+<!-- =========================
+     FOOTER
+========================== -->
 
 <footer class="footer">
-  <div class="container grid">
-    <!-- Columna de suscripción -->
-    <div class="footer-subscribe">
-      <h5>Subscribe</h5>
-      <form class="cta-form" (submit)="$event.preventDefault()">
-        <div class="row">
-          <input type="email" required placeholder="Enter your email Address" />
-          <button class="btn primary" type="submit">Subscribe</button>
-        </div>
-      </form>
+
+
+  <div class="container footer-grid">
+
+
+    <!-- BRAND -->
+
+    <div class="footer-brand">
+
+      <a
+        class="brand"
+        routerLink="/"
+      >
+
+        <img
+          src="assets/wisepicklogo.png"
+          alt="WisePick"
+        >
+
+      </a>
+
+
+      <p>
+        Convierte los datos de tu negocio
+        en decisiones comerciales más claras.
+      </p>
+
     </div>
 
-    <!-- Product -->
+
+
+    <!-- PRODUCT -->
+
     <div>
-      <h5>Product</h5>
-      <a href="#">Landing Page</a>
-      <a href="#">Popup Builder</a>
-      <a href="#">Web-design</a>
-      <a href="#">Content</a>
-      <a href="#">Integrations</a>
+
+      <h5>
+        Producto
+      </h5>
+
+      <a href="#features">
+        Funciones
+      </a>
+
+      <a href="#how-it-works">
+        Cómo funciona
+      </a>
+
+      <a href="#wise-ai">
+        Marketing IA
+      </a>
+
+      <a routerLink="/dashboard">
+        Dashboard
+      </a>
+
     </div>
 
-    <!-- Use Cases -->
+
+
+    <!-- SOLUTION -->
+
     <div>
-      <h5>Use Cases</h5>
-      <a href="#">Web-designers</a>
-      <a href="#">Marketers</a>
-      <a href="#">Small Business</a>
-      <a href="#">Website Builder</a>
+
+      <h5>
+        WisePick
+      </h5>
+
+      <a href="#features">
+        Ventas
+      </a>
+
+      <a href="#features">
+        Productos
+      </a>
+
+      <a href="#features">
+        Clientes
+      </a>
+
+      <a href="#features">
+        Campañas
+      </a>
+
+      <a href="#features">
+        Reportes
+      </a>
+
     </div>
 
-    <!-- Resources -->
+
+
+    <!-- PROJECT -->
+
     <div>
-      <h5>Resources</h5>
-      <a href="#">Academy</a>
-      <a href="#">Blog</a>
-      <a href="#">Themes</a>
-      <a href="#">Hosting</a>
-      <a href="#">Developers</a>
-      <a href="#">Support</a>
+
+      <h5>
+        Plataforma
+      </h5>
+
+      <a routerLink="/login">
+        Iniciar sesión
+      </a>
+
+      <a routerLink="/dashboard">
+        Probar gratis
+      </a>
+
+      <a href="#home">
+        Inicio
+      </a>
+
     </div>
 
-    <!-- Company -->
-    <div>
-      <h5>Company</h5>
-      <a href="#">About Us</a>
-      <a href="#">Careers</a>
-      <a href="#">FAQs</a>
-      <a href="#">Teams</a>
-      <a href="#">Contact Us</a>
-    </div>
+
   </div>
 
-  <div class="footer-bottom">
-    <a class="brand" routerLink="/">
-      <img src="assets/logo/wisepicklogo.png" alt="" />
-      <span>WisePick</span>
-    </a>
-    <small>© {{ year }} All Rights Reserved</small>
+
+
+  <div class="container footer-bottom">
+
+    <span>
+      © {{ year }} WisePick.
+      Todos los derechos reservados.
+    </span>
+
+    <span>
+      Datos · Análisis · Decisiones
+    </span>
+
   </div>
+
+
 </footer>
 
