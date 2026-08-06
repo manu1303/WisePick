@@ -24,7 +24,7 @@ export const routes: Routes = [
       { path: 'products',     loadComponent: () => import('./pages/dashboard/pages/products/products.component').then(m => m.ProductsComponent) },
       { path: 'clients',      loadComponent: () => import('./pages/dashboard/pages/clients/clients.component').then(m => m.ClientsComponent) },
       { path: 'reports',      loadComponent: () => import('./pages/dashboard/pages/reports/reports.component').then(m => m.ReportsComponent) },
-      { path: 'support',      loadComponent: () => import('./pages/dashboard/pages/support/support.component').then(m => m.SupportComponent) },
+      { path: 'settings',     loadComponent: () => import('./pages/dashboard/pages/settings/settings.component').then(m => m.SettingsComponent) },
       { path: 'marketing-ia', loadComponent: () => import('./pages/dashboard/pages/marketing-ai/marketing-ai.component').then(m => m.MarketingAiComponent) },
       { path: 'campaigns',    loadComponent: () => import('./pages/dashboard/pages/campaigns/campaigns.component').then(m => m.CampaignsComponent) },
     ],
