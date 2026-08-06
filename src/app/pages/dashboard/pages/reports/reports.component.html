@@ -1,5 +1,1193 @@
-<div class="panel">
-  <h2>Reportes</h2>
-  <p>Bienvenido a tu área de trabajo de WisePick.</p>
-</div>
+<div class="reports-page">
 
+  <div class="reports-container">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          REPORTES
+        </span>
+
+        <h1>
+          Centro de reportes
+        </h1>
+
+        <p>
+          Consulta información consolidada de
+          ventas, productos, clientes y campañas
+          para apoyar la toma de decisiones.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="exportReport()"
+      >
+        ↓ Exportar reporte
+      </button>
+
+    </div>
+
+
+
+    <!-- EXPORT MESSAGE -->
+
+    <div
+      class="export-message"
+      *ngIf="exportMessage"
+    >
+      ℹ {{ exportMessage }}
+    </div>
+
+
+
+    <!-- =========================
+         FILTER
+    ========================== -->
+
+    <div class="report-filter-card">
+
+      <div>
+
+        <span class="filter-label">
+          PERÍODO DEL REPORTE
+        </span>
+
+        <h2>
+          Selecciona el período
+        </h2>
+
+      </div>
+
+
+      <div class="period-options">
+
+
+        <button
+          type="button"
+          [class.selected]="
+            period === 'all'
+          "
+          (click)="period = 'all'"
+        >
+          Todo
+        </button>
+
+
+        <button
+          type="button"
+          [class.selected]="
+            period === '7days'
+          "
+          (click)="period = '7days'"
+        >
+          Últimos 7 días
+        </button>
+
+
+        <button
+          type="button"
+          [class.selected]="
+            period === '30days'
+          "
+          (click)="period = '30days'"
+        >
+          Últimos 30 días
+        </button>
+
+
+        <button
+          type="button"
+          [class.selected]="
+            period === 'month'
+          "
+          (click)="period = 'month'"
+        >
+          Este mes
+        </button>
+
+
+        <button
+          type="button"
+          [class.selected]="
+            period === 'custom'
+          "
+          (click)="period = 'custom'"
+        >
+          Personalizado
+        </button>
+
+      </div>
+
+
+      <div
+        class="custom-dates"
+        *ngIf="
+          period === 'custom'
+        "
+      >
+
+        <div>
+
+          <label>
+            Desde
+          </label>
+
+          <input
+            type="date"
+            [(ngModel)]="
+              customStartDate
+            "
+          >
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Hasta
+          </label>
+
+          <input
+            type="date"
+            [(ngModel)]="
+              customEndDate
+            "
+          >
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         REPORT TYPES
+    ========================== -->
+
+    <div class="report-tabs">
+
+
+      <button
+        type="button"
+        [class.active]="
+          selectedReport ===
+          'executive'
+        "
+        (click)="
+          selectReport(
+            'executive'
+          )
+        "
+      >
+        Resumen ejecutivo
+      </button>
+
+
+      <button
+        type="button"
+        [class.active]="
+          selectedReport ===
+          'sales'
+        "
+        (click)="
+          selectReport(
+            'sales'
+          )
+        "
+      >
+        Ventas
+      </button>
+
+
+      <button
+        type="button"
+        [class.active]="
+          selectedReport ===
+          'products'
+        "
+        (click)="
+          selectReport(
+            'products'
+          )
+        "
+      >
+        Productos
+      </button>
+
+
+      <button
+        type="button"
+        [class.active]="
+          selectedReport ===
+          'clients'
+        "
+        (click)="
+          selectReport(
+            'clients'
+          )
+        "
+      >
+        Clientes
+      </button>
+
+
+      <button
+        type="button"
+        [class.active]="
+          selectedReport ===
+          'campaigns'
+        "
+        (click)="
+          selectReport(
+            'campaigns'
+          )
+        "
+      >
+        Campañas
+      </button>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         EMPTY SALES
+    ========================== -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        filteredSales.length === 0
+      "
+    >
+
+      <div class="empty-icon">
+        📄
+      </div>
+
+      <span class="empty-label">
+        SIN DATOS
+      </span>
+
+      <h2>
+        No existen ventas para este período
+      </h2>
+
+      <p>
+        Cambia el período seleccionado
+        o registra nuevas ventas.
+      </p>
+
+    </div>
+
+
+
+    <ng-container
+      *ngIf="
+        filteredSales.length > 0
+      "
+    >
+
+
+      <!-- =========================
+           EXECUTIVE
+      ========================== -->
+
+      <ng-container
+        *ngIf="
+          selectedReport ===
+          'executive'
+        "
+      >
+
+
+        <div class="report-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              REPORTE EJECUTIVO
+            </span>
+
+            <h2>
+              Resumen del negocio
+            </h2>
+
+            <p>
+              Principales resultados del período
+              seleccionado.
+            </p>
+
+          </div>
+
+
+          <span class="report-status">
+            Datos consolidados
+          </span>
+
+        </div>
+
+
+
+        <!-- KPIs -->
+
+        <div class="kpi-grid">
+
+
+          <div class="kpi-card">
+
+            <span>
+              INGRESOS
+            </span>
+
+            <strong>
+              ${{
+                totalRevenue
+                | number:'1.2-2'
+              }}
+            </strong>
+
+            <small>
+              Ventas registradas
+            </small>
+
+          </div>
+
+
+          <div class="kpi-card">
+
+            <span>
+              VENTAS
+            </span>
+
+            <strong>
+              {{ totalTransactions }}
+            </strong>
+
+            <small>
+              Transacciones
+            </small>
+
+          </div>
+
+
+          <div class="kpi-card">
+
+            <span>
+              TICKET PROMEDIO
+            </span>
+
+            <strong>
+              ${{
+                averageTicket
+                | number:'1.2-2'
+              }}
+            </strong>
+
+            <small>
+              Promedio por venta
+            </small>
+
+          </div>
+
+
+          <div class="kpi-card">
+
+            <span>
+              GANANCIA EST.
+            </span>
+
+            <strong>
+              ${{
+                estimatedGrossProfit
+                | number:'1.2-2'
+              }}
+            </strong>
+
+            <small>
+              Margen:
+              {{
+                estimatedMargin
+                | number:'1.0-1'
+              }}%
+            </small>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- EXECUTIVE GRID -->
+
+        <div class="executive-grid">
+
+
+          <!-- TOP PRODUCTS -->
+
+          <div class="report-card">
+
+            <div class="card-header">
+
+              <div>
+
+                <span class="card-label">
+                  PRODUCTOS
+                </span>
+
+                <h3>
+                  Productos destacados
+                </h3>
+
+              </div>
+
+            </div>
+
+
+            <div class="ranking-list">
+
+
+              <div
+                class="ranking-item"
+                *ngFor="
+                  let product
+                  of topProducts;
+                  let i = index
+                "
+              >
+
+                <div class="position">
+                  {{ i + 1 }}
+                </div>
+
+
+                <div class="ranking-info">
+
+                  <strong>
+                    {{ product.name }}
+                  </strong>
+
+                  <span>
+                    {{ product.units }}
+                    unidades
+                  </span>
+
+                </div>
+
+
+                <strong class="ranking-total">
+
+                  ${{
+                    product.revenue
+                    | number:'1.2-2'
+                  }}
+
+                </strong>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+
+
+          <!-- CLIENTS -->
+
+          <div class="report-card">
+
+            <div class="card-header">
+
+              <div>
+
+                <span class="card-label">
+                  CLIENTES
+                </span>
+
+                <h3>
+                  Relación con clientes
+                </h3>
+
+              </div>
+
+            </div>
+
+
+            <div class="customer-report">
+
+              <div class="big-percentage">
+
+                {{
+                  identifiedSalesPercentage
+                  | number:'1.0-0'
+                }}%
+
+              </div>
+
+              <p>
+                de las ventas tienen
+                cliente identificado.
+              </p>
+
+
+              <div class="mini-stats">
+
+                <div>
+
+                  <span>
+                    Recurrentes
+                  </span>
+
+                  <strong>
+                    {{ recurringClients }}
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    Identificadas
+                  </span>
+
+                  <strong>
+                    {{ identifiedSales }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- FINDINGS -->
+
+        <div class="findings-card">
+
+          <div class="findings-icon">
+            ✦
+          </div>
+
+
+          <div>
+
+            <span class="eyebrow">
+              HALLAZGOS WISEPICK
+            </span>
+
+            <h2>
+              Principales observaciones
+            </h2>
+
+
+            <div class="findings-list">
+
+              <div
+                *ngFor="
+                  let finding
+                  of businessFindings
+                "
+              >
+                <span>
+                  ✓
+                </span>
+
+                <p>
+                  {{ finding }}
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </ng-container>
+
+
+
+      <!-- =========================
+           SALES REPORT
+      ========================== -->
+
+      <ng-container
+        *ngIf="
+          selectedReport ===
+          'sales'
+        "
+      >
+
+        <div class="report-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              REPORTE DE VENTAS
+            </span>
+
+            <h2>
+              Resultados comerciales
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="kpi-grid">
+
+
+          <div class="kpi-card">
+
+            <span>
+              INGRESOS
+            </span>
+
+            <strong>
+              ${{
+                totalRevenue
+                | number:'1.2-2'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="kpi-card">
+
+            <span>
+              TRANSACCIONES
+            </span>
+
+            <strong>
+              {{ totalTransactions }}
+            </strong>
+
+          </div>
+
+
+          <div class="kpi-card">
+
+            <span>
+              UNIDADES
+            </span>
+
+            <strong>
+              {{ totalUnits }}
+            </strong>
+
+          </div>
+
+
+          <div class="kpi-card">
+
+            <span>
+              TICKET PROM.
+            </span>
+
+            <strong>
+              ${{
+                averageTicket
+                | number:'1.2-2'
+              }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="report-table-card">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Fecha
+                </th>
+
+                <th>
+                  Producto
+                </th>
+
+                <th>
+                  Cliente
+                </th>
+
+                <th>
+                  Cantidad
+                </th>
+
+                <th>
+                  Pago
+                </th>
+
+                <th>
+                  Total
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let sale
+                  of filteredSales
+                "
+              >
+
+                <td>
+                  {{ sale.saleDate }}
+                </td>
+
+                <td>
+                  {{ sale.productName }}
+                </td>
+
+                <td>
+                  {{ sale.customerName }}
+                </td>
+
+                <td>
+                  {{ sale.quantity }}
+                </td>
+
+                <td>
+                  {{ sale.paymentMethod }}
+                </td>
+
+                <td>
+
+                  <strong>
+                    ${{
+                      sale.total
+                      | number:'1.2-2'
+                    }}
+                  </strong>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+      </ng-container>
+
+
+
+      <!-- =========================
+           PRODUCTS REPORT
+      ========================== -->
+
+      <ng-container
+        *ngIf="
+          selectedReport ===
+          'products'
+        "
+      >
+
+        <div class="report-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              REPORTE DE PRODUCTOS
+            </span>
+
+            <h2>
+              Rendimiento del catálogo
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="report-table-card">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Producto
+                </th>
+
+                <th>
+                  Unidades vendidas
+                </th>
+
+                <th>
+                  Ingresos
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let product
+                  of productRanking
+                "
+              >
+
+                <td>
+                  {{ product.name }}
+                </td>
+
+                <td>
+                  {{ product.units }}
+                </td>
+
+                <td>
+
+                  <strong>
+                    ${{
+                      product.revenue
+                      | number:'1.2-2'
+                    }}
+                  </strong>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+      </ng-container>
+
+
+
+      <!-- =========================
+           CLIENTS REPORT
+      ========================== -->
+
+      <ng-container
+        *ngIf="
+          selectedReport ===
+          'clients'
+        "
+      >
+
+        <div class="report-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              REPORTE DE CLIENTES
+            </span>
+
+            <h2>
+              Comportamiento de clientes
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="report-table-card">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Cliente
+                </th>
+
+                <th>
+                  Compras
+                </th>
+
+                <th>
+                  Total gastado
+                </th>
+
+                <th>
+                  Tipo
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let client
+                  of clientRanking
+                "
+              >
+
+                <td>
+                  {{ client.name }}
+                </td>
+
+                <td>
+                  {{ client.purchases }}
+                </td>
+
+                <td>
+
+                  <strong>
+                    ${{
+                      client.total
+                      | number:'1.2-2'
+                    }}
+                  </strong>
+
+                </td>
+
+                <td>
+
+                  <span
+                    class="client-badge"
+                    [class.recurring]="
+                      client.purchases >= 2
+                    "
+                  >
+
+                    {{
+                      client.purchases >= 2
+                        ? 'Recurrente'
+                        : 'Ocasional'
+                    }}
+
+                  </span>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+      </ng-container>
+
+
+
+      <!-- =========================
+           CAMPAIGNS REPORT
+      ========================== -->
+
+      <ng-container
+        *ngIf="
+          selectedReport ===
+          'campaigns'
+        "
+      >
+
+        <div class="report-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              REPORTE DE CAMPAÑAS
+            </span>
+
+            <h2>
+              Actividad comercial
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="kpi-grid campaign-kpis">
+
+
+          <div class="kpi-card">
+
+            <span>
+              TOTAL
+            </span>
+
+            <strong>
+              {{ campaigns.length }}
+            </strong>
+
+          </div>
+
+
+          <div class="kpi-card">
+
+            <span>
+              ACTIVAS
+            </span>
+
+            <strong>
+              {{ activeCampaigns }}
+            </strong>
+
+          </div>
+
+
+          <div class="kpi-card">
+
+            <span>
+              FINALIZADAS
+            </span>
+
+            <strong>
+              {{ completedCampaigns }}
+            </strong>
+
+          </div>
+
+
+          <div class="kpi-card">
+
+            <span>
+              DESDE IA
+            </span>
+
+            <strong>
+              {{ aiCampaigns }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="report-table-card">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Campaña
+                </th>
+
+                <th>
+                  Canal
+                </th>
+
+                <th>
+                  Origen
+                </th>
+
+                <th>
+                  Estado
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let campaign
+                  of campaigns
+                "
+              >
+
+                <td>
+                  {{ campaign.name }}
+                </td>
+
+                <td>
+                  {{ campaign.channel }}
+                </td>
+
+                <td>
+
+                  {{
+                    campaign.source ===
+                      'marketing-ai'
+                      ? 'Marketing IA'
+                      : 'Manual'
+                  }}
+
+                </td>
+
+                <td>
+                  {{ campaign.status }}
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+      </ng-container>
+
+
+    </ng-container>
+
+
+  </div>
+
+</div>
