@@ -1,4 +1,1020 @@
-<div class="panel">
-  <h2>Campañas</h2>
-  <p>Bienvenido a tu área de trabajo de WisePick.</p>
+<div class="campaigns-page">
+
+  <div class="campaigns-container">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          CAMPAÑAS
+        </span>
+
+        <h1>
+          Convierte oportunidades en acciones
+        </h1>
+
+        <p>
+          Crea y administra campañas comerciales
+          utilizando tus productos, clientes
+          y recomendaciones de WisePick.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        *ngIf="!showForm"
+        (click)="openNewCampaign()"
+      >
+        + Nueva campaña
+      </button>
+
+    </div>
+
+
+
+    <!-- =========================
+         FORM
+    ========================== -->
+
+    <div
+      class="campaign-form-layout"
+      *ngIf="showForm"
+    >
+
+
+      <!-- FORMULARIO -->
+
+      <div class="campaign-form-card">
+
+
+        <div class="form-header">
+
+          <div>
+
+            <span class="eyebrow">
+
+              {{
+                campaignForm.source ===
+                  'marketing-ai'
+                  ? 'CAMPAÑA DESDE MARKETING IA'
+                  : 'NUEVA CAMPAÑA'
+              }}
+
+            </span>
+
+
+            <h2>
+              Configura tu campaña
+            </h2>
+
+
+            <p>
+              Define el objetivo, audiencia,
+              canal y mensaje que utilizarás.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="closeForm()"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+
+        <!-- CONTEXTO IA -->
+
+        <div
+          class="ai-context"
+          *ngIf="
+            campaignForm.source ===
+            'marketing-ai'
+          "
+        >
+
+          <div class="ai-context-icon">
+            ✦
+          </div>
+
+
+          <div>
+
+            <span>
+              RECOMENDACIÓN WISEPICK
+            </span>
+
+
+            <strong>
+
+              {{
+                campaignDraft?.title
+              }}
+
+            </strong>
+
+
+            <p>
+
+              {{
+                campaignDraft?.description
+              }}
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="form-grid">
+
+
+          <!-- NAME -->
+
+          <div class="form-group full">
+
+            <label>
+              Nombre de campaña *
+            </label>
+
+
+            <input
+              type="text"
+              placeholder="Ej. Campaña clientes frecuentes"
+              [(ngModel)]="
+                campaignForm.name
+              "
+            >
+
+
+            <small
+              class="error-message"
+              *ngIf="
+                showErrors &&
+                !campaignForm.name
+              "
+            >
+              Ingresa un nombre para la campaña.
+            </small>
+
+          </div>
+
+
+
+          <!-- OBJECTIVE -->
+
+          <div class="form-group">
+
+            <label>
+              Objetivo *
+            </label>
+
+
+            <select
+              [(ngModel)]="
+                campaignForm.objective
+              "
+            >
+
+              <option value="">
+                Selecciona un objetivo
+              </option>
+
+              <option value="increase-sales">
+                Incrementar ventas
+              </option>
+
+              <option value="loyalty">
+                Fidelizar clientes
+              </option>
+
+              <option value="reactivation">
+                Reactivar clientes
+              </option>
+
+              <option value="promotion">
+                Promocionar producto
+              </option>
+
+            </select>
+
+          </div>
+
+
+
+          <!-- AUDIENCE -->
+
+          <div class="form-group">
+
+            <label>
+              Audiencia *
+            </label>
+
+
+            <select
+              [(ngModel)]="
+                campaignForm.audience
+              "
+            >
+
+              <option value="">
+                Selecciona una audiencia
+              </option>
+
+              <option value="all">
+                Todos los clientes
+              </option>
+
+              <option value="recurring">
+                Clientes frecuentes
+              </option>
+
+              <option value="new">
+                Clientes nuevos
+              </option>
+
+              <option value="inactive">
+                Clientes inactivos
+              </option>
+
+            </select>
+
+          </div>
+
+
+
+          <!-- CHANNEL -->
+
+          <div class="form-group full">
+
+            <label>
+              Canal *
+            </label>
+
+
+            <div class="channel-options">
+
+
+              <button
+                type="button"
+                [class.selected]="
+                  campaignForm.channel ===
+                  'whatsapp'
+                "
+                (click)="
+                  campaignForm.channel =
+                  'whatsapp'
+                "
+              >
+                💬
+                <span>
+                  WhatsApp
+                </span>
+              </button>
+
+
+              <button
+                type="button"
+                [class.selected]="
+                  campaignForm.channel ===
+                  'email'
+                "
+                (click)="
+                  campaignForm.channel =
+                  'email'
+                "
+              >
+                ✉️
+                <span>
+                  Email
+                </span>
+              </button>
+
+
+              <button
+                type="button"
+                [class.selected]="
+                  campaignForm.channel ===
+                  'social'
+                "
+                (click)="
+                  campaignForm.channel =
+                  'social'
+                "
+              >
+                📱
+                <span>
+                  Redes sociales
+                </span>
+              </button>
+
+
+            </div>
+
+
+            <small
+              class="error-message"
+              *ngIf="
+                showErrors &&
+                !campaignForm.channel
+              "
+            >
+              Selecciona un canal.
+            </small>
+
+          </div>
+
+
+
+          <!-- MESSAGE -->
+
+          <div class="form-group full">
+
+
+            <div class="message-header">
+
+              <label>
+                Mensaje *
+              </label>
+
+
+              <button
+                type="button"
+                class="ai-generate-button"
+                [disabled]="
+                  generatingMessage
+                "
+                (click)="
+                  generateMessage()
+                "
+              >
+
+                <span
+                  *ngIf="
+                    !generatingMessage
+                  "
+                >
+                  ✦ Generar con WisePick IA
+                </span>
+
+
+                <span
+                  *ngIf="
+                    generatingMessage
+                  "
+                >
+                  Generando...
+                </span>
+
+              </button>
+
+            </div>
+
+
+            <textarea
+              rows="6"
+              placeholder="Escribe el mensaje de tu campaña o genera una sugerencia con WisePick..."
+              [(ngModel)]="
+                campaignForm.message
+              "
+            ></textarea>
+
+
+            <small
+              class="error-message"
+              *ngIf="
+                showErrors &&
+                !campaignForm.message
+              "
+            >
+              Ingresa o genera un mensaje.
+            </small>
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="form-actions">
+
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="closeForm()"
+          >
+            Cancelar
+          </button>
+
+
+          <button
+            type="button"
+            class="primary-button"
+            (click)="saveCampaign()"
+          >
+            Guardar campaña
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- PREVIEW -->
+
+      <aside class="campaign-preview">
+
+
+        <span class="eyebrow">
+          VISTA PREVIA
+        </span>
+
+
+        <h2>
+          Así se verá tu mensaje
+        </h2>
+
+
+
+        <div class="phone-preview">
+
+
+          <div class="phone-header">
+
+            <div class="brand-avatar">
+              W
+            </div>
+
+
+            <div>
+
+              <strong>
+                Tu Empresa
+              </strong>
+
+              <span>
+                WisePick Campaign
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="message-preview">
+
+            <p
+              *ngIf="
+                campaignForm.message
+              "
+            >
+
+              {{
+                campaignForm.message
+              }}
+
+            </p>
+
+
+            <p
+              class="message-placeholder"
+              *ngIf="
+                !campaignForm.message
+              "
+            >
+
+              Tu mensaje aparecerá aquí...
+
+            </p>
+
+          </div>
+
+
+          <div
+            class="target-preview"
+            *ngIf="
+              campaignForm.targetName
+            "
+          >
+
+            <span>
+              Producto relacionado
+            </span>
+
+            <strong>
+
+              {{
+                campaignForm.targetName
+              }}
+
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="preview-note">
+
+          <span>
+            ✦
+          </span>
+
+          <p>
+            Antes de enviar una campaña,
+            podrás revisar y modificar
+            el contenido generado.
+          </p>
+
+        </div>
+
+
+      </aside>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         CAMPAIGNS LIST
+    ========================== -->
+
+    <ng-container
+      *ngIf="!showForm"
+    >
+
+
+      <!-- EMPTY -->
+
+      <div
+        class="empty-state"
+        *ngIf="
+          campaigns.length === 0
+        "
+      >
+
+
+        <div class="empty-icon">
+          🎯
+        </div>
+
+
+        <span class="empty-label">
+          AÚN NO HAY CAMPAÑAS
+        </span>
+
+
+        <h2>
+          Convierte tus insights en acciones
+        </h2>
+
+
+        <p>
+          Crea campañas desde cero
+          o utiliza las recomendaciones
+          generadas por Marketing IA.
+        </p>
+
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="openNewCampaign()"
+        >
+          + Crear mi primera campaña
+        </button>
+
+
+      </div>
+
+
+
+      <ng-container
+        *ngIf="
+          campaigns.length > 0
+        "
+      >
+
+
+        <!-- KPIS -->
+
+        <div class="kpi-grid">
+
+
+          <div class="kpi-card">
+
+            <span>
+              CAMPAÑAS
+            </span>
+
+            <strong>
+              {{ totalCampaigns }}
+            </strong>
+
+            <small>
+              Total creadas
+            </small>
+
+          </div>
+
+
+
+          <div class="kpi-card">
+
+            <span>
+              ACTIVAS
+            </span>
+
+            <strong>
+              {{ activeCampaigns }}
+            </strong>
+
+            <small>
+              En ejecución
+            </small>
+
+          </div>
+
+
+
+          <div class="kpi-card">
+
+            <span>
+              BORRADORES
+            </span>
+
+            <strong>
+              {{ draftCampaigns }}
+            </strong>
+
+            <small>
+              Pendientes
+            </small>
+
+          </div>
+
+
+
+          <div class="kpi-card">
+
+            <span>
+              DESDE IA
+            </span>
+
+            <strong>
+              {{ aiCampaigns }}
+            </strong>
+
+            <small>
+              Originadas por insights
+            </small>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- LIST CARD -->
+
+        <div class="campaign-list-card">
+
+
+          <div class="list-header">
+
+            <div>
+
+              <span class="eyebrow">
+                HISTORIAL
+              </span>
+
+              <h2>
+                Tus campañas
+              </h2>
+
+            </div>
+
+
+
+            <div class="list-tools">
+
+
+              <input
+                type="text"
+                placeholder="Buscar campaña..."
+                [(ngModel)]="
+                  searchTerm
+                "
+              >
+
+
+              <select
+                [(ngModel)]="
+                  statusFilter
+                "
+              >
+
+                <option value="all">
+                  Todos los estados
+                </option>
+
+                <option value="draft">
+                  Borrador
+                </option>
+
+                <option value="active">
+                  Activa
+                </option>
+
+                <option value="completed">
+                  Finalizada
+                </option>
+
+              </select>
+
+
+            </div>
+
+          </div>
+
+
+
+          <div class="campaign-table-wrapper">
+
+
+            <table>
+
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Campaña
+                  </th>
+
+                  <th>
+                    Objetivo
+                  </th>
+
+                  <th>
+                    Audiencia
+                  </th>
+
+                  <th>
+                    Canal
+                  </th>
+
+                  <th>
+                    Origen
+                  </th>
+
+                  <th>
+                    Estado
+                  </th>
+
+                  <th>
+                    Acciones
+                  </th>
+
+                </tr>
+
+              </thead>
+
+
+
+              <tbody>
+
+
+                <tr
+                  *ngFor="
+                    let campaign
+                    of filteredCampaigns
+                  "
+                >
+
+
+                  <td>
+
+                    <div class="campaign-name">
+
+                      <div class="campaign-avatar">
+                        🎯
+                      </div>
+
+
+                      <div>
+
+                        <strong>
+                          {{ campaign.name }}
+                        </strong>
+
+
+                        <span
+                          *ngIf="
+                            campaign.targetName
+                          "
+                        >
+                          {{
+                            campaign.targetName
+                          }}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                  </td>
+
+
+
+                  <td>
+
+                    {{
+                      getObjectiveLabel(
+                        campaign.objective
+                      )
+                    }}
+
+                  </td>
+
+
+
+                  <td>
+
+                    {{
+                      getAudienceLabel(
+                        campaign.audience
+                      )
+                    }}
+
+                  </td>
+
+
+
+                  <td>
+
+                    <span class="channel-badge">
+
+                      {{
+                        campaign.channel
+                      }}
+
+                    </span>
+
+                  </td>
+
+
+
+                  <td>
+
+                    <span
+                      class="source-badge"
+                      [class.ai]="
+                        campaign.source ===
+                        'marketing-ai'
+                      "
+                    >
+
+                      {{
+                        campaign.source ===
+                          'marketing-ai'
+                          ? '✦ Marketing IA'
+                          : 'Manual'
+                      }}
+
+                    </span>
+
+                  </td>
+
+
+
+                  <td>
+
+                    <span
+                      class="status-badge"
+                      [attr.data-status]="
+                        campaign.status
+                      "
+                    >
+
+                      {{
+                        campaign.status ===
+                          'draft'
+                          ? 'Borrador'
+                          : campaign.status ===
+                            'active'
+                            ? 'Activa'
+                            : 'Finalizada'
+                      }}
+
+                    </span>
+
+                  </td>
+
+
+
+                  <td>
+
+                    <div class="row-actions">
+
+
+                      <button
+                        type="button"
+                        *ngIf="
+                          campaign.status ===
+                          'draft'
+                        "
+                        (click)="
+                          activateCampaign(
+                            campaign
+                          )
+                        "
+                      >
+                        Activar
+                      </button>
+
+
+                      <button
+                        type="button"
+                        *ngIf="
+                          campaign.status ===
+                          'active'
+                        "
+                        (click)="
+                          completeCampaign(
+                            campaign
+                          )
+                        "
+                      >
+                        Finalizar
+                      </button>
+
+
+                      <button
+                        type="button"
+                        class="delete-button"
+                        (click)="
+                          deleteCampaign(
+                            campaign
+                          )
+                        "
+                      >
+                        ×
+                      </button>
+
+
+                    </div>
+
+                  </td>
+
+
+                </tr>
+
+
+              </tbody>
+
+
+            </table>
+
+
+          </div>
+
+
+        </div>
+
+
+      </ng-container>
+
+
+    </ng-container>
+
+
+  </div>
+
 </div>
