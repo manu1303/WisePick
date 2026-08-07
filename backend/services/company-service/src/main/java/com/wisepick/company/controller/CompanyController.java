@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/companies")
 public class CompanyController {
@@ -79,4 +81,17 @@ public class CompanyController {
                 )
         );
     }
+
+    @GetMapping
+        public ResponseEntity<List<CompanyResponse>> getAll() {
+
+        return ResponseEntity.ok(
+            companyService.getAll()
+        );
+        }
+
+
+
+
+
 }

@@ -3,20 +3,33 @@ package com.wisepick.company.service;
 import com.wisepick.company.dto.CompanyRequest;
 import com.wisepick.company.dto.CompanyResponse;
 import com.wisepick.company.entity.Company;
+import com.wisepick.company.repository.CompanyRepository;
 
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+
+import java.util.List;
+
 
 @Service
 public class CompanyService {
 
-    private final Map<String, Company> companies =
-            new ConcurrentHashMap<>();
+    private final CompanyRepository companyRepository;
 
+
+    public CompanyService(
+            CompanyRepository companyRepository
+    ) {
+        this.companyRepository =
+                companyRepository;
+    }
+
+
+    /* ============================
+       CREATE
+    ============================ */
 
     public CompanyResponse create(
             CompanyRequest request
@@ -24,6 +37,7 @@ public class CompanyService {
 
         String id =
                 UUID.randomUUID().toString();
+
 
         LocalDateTime now =
                 LocalDateTime.now();
@@ -42,33 +56,35 @@ public class CompanyService {
                 );
 
 
-        companies.put(
-                id,
-                company
-        );
+        Company savedCompany =
+                companyRepository.save(
+                        company
+                );
 
 
         return toResponse(
-                company
+                savedCompany
         );
     }
 
+
+    /* ============================
+       GET
+    ============================ */
 
     public CompanyResponse getById(
             String id
     ) {
 
         Company company =
-                companies.get(id);
-
-
-        if (company == null) {
-
-            throw new RuntimeException(
-                    "Empresa no encontrada"
-            );
-
-        }
+                companyRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new RuntimeException(
+                                                "Empresa no encontrada"
+                                        )
+                        );
 
 
         return toResponse(
@@ -76,6 +92,10 @@ public class CompanyService {
         );
     }
 
+
+    /* ============================
+       UPDATE
+    ============================ */
 
     public CompanyResponse update(
             String id,
@@ -83,16 +103,14 @@ public class CompanyService {
     ) {
 
         Company company =
-                companies.get(id);
-
-
-        if (company == null) {
-
-            throw new RuntimeException(
-                    "Empresa no encontrada"
-            );
-
-        }
+                companyRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new RuntimeException(
+                                                "Empresa no encontrada"
+                                        )
+                        );
 
 
         company.setName(
@@ -120,17 +138,33 @@ public class CompanyService {
         );
 
 
-        companies.put(
-                id,
-                company
-        );
+        Company updatedCompany =
+                companyRepository.save(
+                        company
+                );
 
 
         return toResponse(
-                company
+                updatedCompany
         );
     }
 
+    public List<CompanyResponse> getAll() {
+
+    return companyRepository
+            .findAll()
+            .stream()
+            .map(this::toResponse)
+            .toList();
+        }
+
+
+
+
+
+    /* ============================
+       MAPPER
+    ============================ */
 
     private CompanyResponse toResponse(
             Company company
@@ -146,5 +180,6 @@ public class CompanyService {
                 company.getCreatedAt(),
                 company.getUpdatedAt()
         );
+
     }
 }

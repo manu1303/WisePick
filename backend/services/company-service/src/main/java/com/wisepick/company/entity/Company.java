@@ -1,17 +1,42 @@
 package com.wisepick.company.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.time.LocalDateTime;
 
+
+@Entity
+@Table(name = "companies")
 public class Company {
 
+    @Id
     private String id;
+
+
+    @Column(nullable = false)
     private String name;
+
+
     private String industry;
+
+
     private String city;
+
+
     private String country;
+
+
     private String employees;
 
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
 
