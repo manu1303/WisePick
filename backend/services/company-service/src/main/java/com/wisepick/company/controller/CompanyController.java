@@ -90,6 +90,19 @@ public class CompanyController {
         );
         }
 
+    @DeleteMapping("/{id}")
+        public ResponseEntity<Void> delete(
+        @PathVariable
+        String id
+    ) {
+
+        companyService.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 
 
 

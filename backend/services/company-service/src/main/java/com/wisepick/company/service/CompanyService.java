@@ -3,6 +3,7 @@ package com.wisepick.company.service;
 import com.wisepick.company.dto.CompanyRequest;
 import com.wisepick.company.dto.CompanyResponse;
 import com.wisepick.company.entity.Company;
+import com.wisepick.company.exception.CompanyNotFoundException;
 import com.wisepick.company.repository.CompanyRepository;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import java.util.List;
+
+import com.wisepick.company.exception.CompanyNotFoundException;
 
 
 @Service
@@ -77,14 +80,14 @@ public class CompanyService {
     ) {
 
         Company company =
-                companyRepository
-                        .findById(id)
-                        .orElseThrow(
-                                () ->
-                                        new RuntimeException(
-                                                "Empresa no encontrada"
-                                        )
-                        );
+        companyRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new CompanyNotFoundException(
+                                        "Empresa no encontrada"
+                                )
+                );
 
 
         return toResponse(
@@ -103,13 +106,14 @@ public class CompanyService {
     ) {
 
         Company company =
-                companyRepository
-                        .findById(id)
-                        .orElseThrow(
-                                () ->
-                                        new RuntimeException(
-                                                "Empresa no encontrada"
-                                        )
+        companyRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new CompanyNotFoundException(
+                                        "Empresa no encontrada"
+                                )
+                
                         );
 
 
@@ -147,7 +151,33 @@ public class CompanyService {
         return toResponse(
                 updatedCompany
         );
+
+
+
+
     }
+
+    /* ============================
+       DELETE
+    ============================ */
+
+    public void delete(String id) {
+
+    Company company =
+            companyRepository
+                    .findById(id)
+                    .orElseThrow(
+                            () ->
+                                    new CompanyNotFoundException(
+                                            "Empresa no encontrada"
+                                    )
+                    );
+
+    companyRepository.delete(company);
+        }
+
+
+
 
     public List<CompanyResponse> getAll() {
 
@@ -161,7 +191,7 @@ public class CompanyService {
 
 
 
-
+    
     /* ============================
        MAPPER
     ============================ */
