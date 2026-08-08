@@ -9,15 +9,16 @@ import com.wisepick.company.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
-
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import com.wisepick.company.exception.CompanyNotFoundException;
+import java.util.UUID;
 
 
 @Service
 public class CompanyService {
+
+    private static final String LIST_SEPARATOR = "|";
 
     private final CompanyRepository companyRepository;
 
@@ -25,8 +26,10 @@ public class CompanyService {
     public CompanyService(
             CompanyRepository companyRepository
     ) {
+
         this.companyRepository =
                 companyRepository;
+
     }
 
 
@@ -39,7 +42,8 @@ public class CompanyService {
     ) {
 
         String id =
-                UUID.randomUUID().toString();
+                UUID.randomUUID()
+                        .toString();
 
 
         LocalDateTime now =
@@ -54,6 +58,18 @@ public class CompanyService {
                         request.getCity(),
                         request.getCountry(),
                         request.getEmployees(),
+                        listToString(
+                                request.getCategories()
+                        ),
+                        request.getDailySalesRange(),
+                        request.getSalesRecordMethod(),
+                        listToString(
+                                request.getSalesChannels()
+                        ),
+                        listToString(
+                                request.getObjectives()
+                        ),
+                        request.getPreferredDataSource(),
                         now,
                         now
                 );
@@ -72,7 +88,23 @@ public class CompanyService {
 
 
     /* ============================
-       GET
+       GET ALL
+    ============================ */
+
+    public List<CompanyResponse> getAll() {
+
+        return companyRepository
+                .findAll()
+                .stream()
+                .map(
+                        this::toResponse
+                )
+                .toList();
+    }
+
+
+    /* ============================
+       GET BY ID
     ============================ */
 
     public CompanyResponse getById(
@@ -80,14 +112,14 @@ public class CompanyService {
     ) {
 
         Company company =
-        companyRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new CompanyNotFoundException(
-                                        "Empresa no encontrada"
-                                )
-                );
+                companyRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new CompanyNotFoundException(
+                                                "Empresa no encontrada"
+                                        )
+                        );
 
 
         return toResponse(
@@ -106,14 +138,13 @@ public class CompanyService {
     ) {
 
         Company company =
-        companyRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new CompanyNotFoundException(
-                                        "Empresa no encontrada"
-                                )
-                
+                companyRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new CompanyNotFoundException(
+                                                "Empresa no encontrada"
+                                        )
                         );
 
 
@@ -121,21 +152,62 @@ public class CompanyService {
                 request.getName()
         );
 
+
         company.setIndustry(
                 request.getIndustry()
         );
+
 
         company.setCity(
                 request.getCity()
         );
 
+
         company.setCountry(
                 request.getCountry()
         );
 
+
         company.setEmployees(
                 request.getEmployees()
         );
+
+
+        company.setCategories(
+                listToString(
+                        request.getCategories()
+                )
+        );
+
+
+        company.setDailySalesRange(
+                request.getDailySalesRange()
+        );
+
+
+        company.setSalesRecordMethod(
+                request.getSalesRecordMethod()
+        );
+
+
+        company.setSalesChannels(
+                listToString(
+                        request.getSalesChannels()
+                )
+        );
+
+
+        company.setObjectives(
+                listToString(
+                        request.getObjectives()
+                )
+        );
+
+
+        company.setPreferredDataSource(
+                request.getPreferredDataSource()
+        );
+
 
         company.setUpdatedAt(
                 LocalDateTime.now()
@@ -151,49 +223,36 @@ public class CompanyService {
         return toResponse(
                 updatedCompany
         );
-
-
-
-
     }
+
 
     /* ============================
        DELETE
     ============================ */
 
-    public void delete(String id) {
+    public void delete(
+            String id
+    ) {
 
-    Company company =
-            companyRepository
-                    .findById(id)
-                    .orElseThrow(
-                            () ->
-                                    new CompanyNotFoundException(
-                                            "Empresa no encontrada"
-                                    )
-                    );
-
-    companyRepository.delete(company);
-        }
-
+        Company company =
+                companyRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new CompanyNotFoundException(
+                                                "Empresa no encontrada"
+                                        )
+                        );
 
 
-
-    public List<CompanyResponse> getAll() {
-
-    return companyRepository
-            .findAll()
-            .stream()
-            .map(this::toResponse)
-            .toList();
-        }
+        companyRepository.delete(
+                company
+        );
+    }
 
 
-
-
-    
     /* ============================
-       MAPPER
+       ENTITY → RESPONSE
     ============================ */
 
     private CompanyResponse toResponse(
@@ -207,9 +266,69 @@ public class CompanyService {
                 company.getCity(),
                 company.getCountry(),
                 company.getEmployees(),
+                stringToList(
+                        company.getCategories()
+                ),
+                company.getDailySalesRange(),
+                company.getSalesRecordMethod(),
+                stringToList(
+                        company.getSalesChannels()
+                ),
+                stringToList(
+                        company.getObjectives()
+                ),
+                company.getPreferredDataSource(),
                 company.getCreatedAt(),
                 company.getUpdatedAt()
         );
+    }
 
+
+    /* ============================
+       LIST → STRING
+    ============================ */
+
+    private String listToString(
+            List<String> values
+    ) {
+
+        if (
+                values == null ||
+                values.isEmpty()
+        ) {
+
+            return "";
+
+        }
+
+
+        return String.join(
+                LIST_SEPARATOR,
+                values
+        );
+    }
+
+
+    /* ============================
+       STRING → LIST
+    ============================ */
+
+    private List<String> stringToList(
+            String value
+    ) {
+
+        if (
+                value == null ||
+                value.isBlank()
+        ) {
+
+            return Collections.emptyList();
+
+        }
+
+
+        return Arrays.asList(
+                value.split("\\|")
+        );
     }
 }
