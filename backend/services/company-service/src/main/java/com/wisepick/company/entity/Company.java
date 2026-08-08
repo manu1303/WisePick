@@ -14,6 +14,9 @@ public class Company {
     @Id
     private String id;
 
+    @Column(name = "owner_uid")
+    private String ownerUid;
+
     @Column(nullable = false)
     private String name;
 
@@ -56,6 +59,7 @@ public class Company {
 
     public Company(
             String id,
+            String ownerUid,
             String name,
             String industry,
             String city,
@@ -72,6 +76,7 @@ public class Company {
     ) {
 
         this.id = id;
+        this.ownerUid = ownerUid;
         this.name = name;
         this.industry = industry;
         this.city = city;
@@ -95,6 +100,14 @@ public class Company {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getOwnerUid() {
+        return ownerUid;
+    }
+
+    public void setOwnerUid(String ownerUid) {
+        this.ownerUid = ownerUid;
     }
 
 

@@ -7,6 +7,8 @@ public class CompanyResponse {
 
     private String id;
 
+    private String ownerUid;
+
     private String name;
 
     private String industry;
@@ -40,6 +42,7 @@ public class CompanyResponse {
 
     public CompanyResponse(
             String id,
+            String ownerUid,
             String name,
             String industry,
             String city,
@@ -56,6 +59,7 @@ public class CompanyResponse {
     ) {
 
         this.id = id;
+        this.ownerUid = ownerUid;
         this.name = name;
         this.industry = industry;
         this.city = city;
@@ -79,6 +83,14 @@ public class CompanyResponse {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getOwnerUid() {
+        return ownerUid;
+    }
+
+    public void setOwnerUid(String ownerUid) {
+        this.ownerUid = ownerUid;
     }
 
 

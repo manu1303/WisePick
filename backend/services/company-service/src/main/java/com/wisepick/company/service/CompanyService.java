@@ -38,7 +38,8 @@ public class CompanyService {
     ============================ */
 
     public CompanyResponse create(
-            CompanyRequest request
+            CompanyRequest request,
+            String ownerUid
     ) {
 
         String id =
@@ -53,6 +54,7 @@ public class CompanyService {
         Company company =
                 new Company(
                         id,
+                        ownerUid,
                         request.getName(),
                         request.getIndustry(),
                         request.getCity(),
@@ -261,6 +263,7 @@ public class CompanyService {
 
         return new CompanyResponse(
                 company.getId(),
+                company.getOwnerUid(),
                 company.getName(),
                 company.getIndustry(),
                 company.getCity(),
@@ -331,4 +334,37 @@ public class CompanyService {
                 value.split("\\|")
         );
     }
+
+    /* ============================
+       OWNER UID → COMPANY
+    ============================ */
+    public CompanyResponse getByOwnerUid(
+        String ownerUid
+        ) {
+
+        Company company =
+                companyRepository
+                        .findByOwnerUid(
+                                ownerUid
+                        )
+                        .orElseThrow(
+                                () ->
+                                        new CompanyNotFoundException(
+                                                "Empresa no encontrada para el usuario autenticado"
+                                        )
+                        );
+
+
+        return toResponse(
+                company
+        );
+
+     }
+
+
+
+
+
+
+
 }

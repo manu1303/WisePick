@@ -75,6 +75,14 @@ target/
 
 
 # ==========================================
+# FIREBASE ADMIN CREDENTIALS
+# ==========================================
+
+# Firebase Admin credentials
+backend/credentials/
+**/*service-account*.json
+
+# ==========================================
 # TEST / COVERAGE
 # ==========================================
 

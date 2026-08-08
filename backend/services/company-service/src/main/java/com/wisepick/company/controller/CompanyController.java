@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
 @RestController
 @RequestMapping("/api/companies")
 public class CompanyController {
@@ -28,15 +30,22 @@ public class CompanyController {
 
 
     @PostMapping
-    public ResponseEntity<CompanyResponse> create(
-            @Valid
-            @RequestBody
-            CompanyRequest request
-    ) {
+        public ResponseEntity<CompanyResponse> create(
+                @Valid
+                @RequestBody
+                CompanyRequest request,
+
+                Authentication authentication
+        ) {
+
+        String ownerUid =
+                authentication.getName();
+
 
         CompanyResponse response =
                 companyService.create(
-                        request
+                        request,
+                        ownerUid
                 );
 
 
@@ -47,7 +56,8 @@ public class CompanyController {
                 .body(
                         response
                 );
-    }
+
+        }
 
 
     @GetMapping("/{id}")
@@ -100,6 +110,24 @@ public class CompanyController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/me")
+        public ResponseEntity<CompanyResponse> getMyCompany(
+                Authentication authentication
+        ) {
+
+        String ownerUid =
+                authentication.getName();
+
+
+        return ResponseEntity.ok(
+                companyService
+                        .getByOwnerUid(
+                                ownerUid
+                        )
+        );
+
+        }
 
 
 

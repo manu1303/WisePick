@@ -7,6 +7,9 @@ import java.util.List;
 public class CompanyRequest {
 
     @NotBlank(message = "El nombre de la empresa es obligatorio")
+
+  
+
     private String name;
 
     private String industry;
