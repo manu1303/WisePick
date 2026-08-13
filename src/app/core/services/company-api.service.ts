@@ -1,18 +1,7 @@
-import {
-  Injectable
-} from '@angular/core';
-
-import {
-  HttpClient
-} from '@angular/common/http';
-
-import {
-  Observable
-} from 'rxjs';
-
-import {
-  Company
-} from '../models/company.model';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Company} from '../models/company.model';
 
 
 @Injectable({
@@ -101,6 +90,20 @@ export class CompanyApiService {
 
     return this.http.delete<void>(
       `${this.apiUrl}/${id}`
+    );
+
+  }
+
+
+  /* ==========================
+     GET MY COMPANY
+  ========================== */
+
+  getMyCompany():
+    Observable<Company> {
+
+    return this.http.get<Company>(
+      `${this.apiUrl}/me`
     );
 
   }

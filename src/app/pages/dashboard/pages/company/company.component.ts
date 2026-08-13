@@ -112,67 +112,35 @@ export class CompanyComponent
 
   private loadCompany(): void {
 
-    const savedCompanyId =
-      localStorage.getItem(
-        'wisepick_company_id'
-      );
+    this.companyApi
+      .getMyCompany()
+      .subscribe({
 
+        next: (
+          company
+        ) => {
 
-    /*
-     * Si ya conocemos el ID,
-     * buscamos directamente
-     * esa empresa.
-     */
-
-    if (savedCompanyId) {
-
-      this.companyApi
-        .getCompanyById(
-          savedCompanyId
-        )
-        .subscribe({
-
-          next: (
+          this.setCompany(
             company
-          ) => {
+          );
 
-            this.setCompany(
-              company
-            );
+        },
 
-          },
+        error: (
+          error
+        ) => {
 
-          error: () => {
+          console.error(
+            'Error cargando empresa:',
+            error
+          );
 
-            /*
-             * Si el ID guardado
-             * ya no existe,
-             * buscamos las empresas
-             * disponibles.
-             */
+          this.loading =
+            false;
 
-            localStorage.removeItem(
-              'wisepick_company_id'
-            );
+        }
 
-            this.loadFirstCompany();
-
-          }
-
-        });
-
-      return;
-
-    }
-
-
-    /*
-     * Mientras todavía no tenemos
-     * autenticación asociada a empresa,
-     * recuperamos la primera empresa.
-     */
-
-    this.loadFirstCompany();
+      });
 
   }
 

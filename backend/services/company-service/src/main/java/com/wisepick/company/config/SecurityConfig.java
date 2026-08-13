@@ -15,6 +15,12 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
 
 @Configuration
 public class SecurityConfig {
@@ -42,6 +48,22 @@ public class SecurityConfig {
 
 
         http
+
+                /*
+                 * CORS
+                 *
+                 * Permite que Angular
+                 * localhost:4200
+                 * consuma esta API.
+                 */
+
+                .cors(
+                        cors ->
+                                cors.configurationSource(
+                                        corsConfigurationSource()
+                                )
+                )
+
 
                 /*
                  * Nuestra API REST no usa
@@ -86,6 +108,19 @@ public class SecurityConfig {
 
 
                                         /*
+                                         * Las peticiones OPTIONS
+                                         * son necesarias para
+                                         * el preflight CORS.
+                                         */
+
+                                        .requestMatchers(
+                                                HttpMethod.OPTIONS,
+                                                "/**"
+                                        )
+                                        .permitAll()
+
+
+                                        /*
                                          * Todo Company requiere
                                          * Firebase Auth.
                                          */
@@ -120,6 +155,87 @@ public class SecurityConfig {
 
 
         return http.build();
+
+    }
+
+
+    /*
+     * ============================
+     * CORS CONFIGURATION
+     * ============================
+     */
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration =
+                new CorsConfiguration();
+
+
+        /*
+         * Frontend Angular
+         */
+
+        configuration.setAllowedOrigins(
+                List.of(
+                        "http://localhost:4200"
+                )
+        );
+
+
+        /*
+         * Métodos HTTP permitidos
+         */
+
+        configuration.setAllowedMethods(
+                List.of(
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                )
+        );
+
+
+        /*
+         * Headers permitidos.
+         *
+         * Esto incluye Authorization
+         * con el token de Firebase.
+         */
+
+        configuration.setAllowedHeaders(
+                List.of("*")
+        );
+
+
+        /*
+         * Permitimos credenciales
+         * desde el frontend.
+         */
+
+        configuration.setAllowCredentials(
+                true
+        );
+
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+
+
+        /*
+         * Aplicamos CORS a toda
+         * nuestra API.
+         */
+
+        source.registerCorsConfiguration(
+                "/api/**",
+                configuration
+        );
+
+
+        return source;
 
     }
 

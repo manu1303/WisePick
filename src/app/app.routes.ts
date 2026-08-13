@@ -2,9 +2,19 @@ import { Routes } from '@angular/router';
 import { LandingComponent } from './pages/landing/landing.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
+import {LoginComponent} from './pages/dashboard/pages/auth/login/login.component';
+
+import {RegisterComponent} from './pages/dashboard/pages/auth/register/register.component';
+
 export const routes: Routes = [
   // Landing por defecto
   { path: '', component: LandingComponent, title: 'WisePick | Marketing inteligente para pymes' },
+
+  //login y registro de usuarios//
+  {path: 'login',component: LoginComponent},
+
+  {path: 'register',component: RegisterComponent},
+
 
   // Área de trabajo con subrutas
   {

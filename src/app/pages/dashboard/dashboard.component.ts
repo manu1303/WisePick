@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+
+import {
+  CommonModule
+} from '@angular/common';
 
 import {
   Router,
@@ -7,6 +13,12 @@ import {
   RouterLinkActive,
   RouterOutlet
 } from '@angular/router';
+
+import {
+  Auth,
+  onAuthStateChanged,
+  signOut
+} from '@angular/fire/auth';
 
 
 interface CurrentUser {
@@ -70,7 +82,7 @@ interface Campaign {
   ],
 })
 export class DashboardComponent
-implements OnInit {
+  implements OnInit {
 
 
   /* ============================
@@ -98,17 +110,9 @@ implements OnInit {
   currentUser:
     CurrentUser = {
 
-    /*
-      Temporalmente trabajamos
-      en modo demo.
+      isAuthenticated: false
 
-      Firebase Auth sustituirá
-      este objeto posteriormente.
-    */
-
-    isAuthenticated: false
-
-  };
+    };
 
 
   /* ============================
@@ -120,13 +124,82 @@ implements OnInit {
 
 
   constructor(
-    private router: Router
+
+    private router:
+      Router,
+
+    private auth:
+      Auth
+
   ) {}
 
 
   ngOnInit(): void {
 
+    this.listenAuthState();
+
     this.generateNotifications();
+
+  }
+
+
+  /* ============================
+     FIREBASE AUTH
+  ============================ */
+
+  private listenAuthState(): void {
+
+    onAuthStateChanged(
+      this.auth,
+      user => {
+
+        if (user) {
+
+          this.currentUser = {
+
+            isAuthenticated:
+              true,
+
+            name:
+              user.displayName ||
+              'Usuario WisePick',
+
+            email:
+              user.email ||
+              ''
+
+          };
+
+        } else {
+
+          this.currentUser = {
+
+            isAuthenticated:
+              false
+
+          };
+
+        }
+
+      }
+    );
+
+  }
+
+
+  async logout(): Promise<void> {
+
+    this.closeMenus();
+
+
+    await signOut(
+      this.auth
+    );
+
+
+    await this.router.navigate([
+      '/login'
+    ]);
 
   }
 
@@ -228,6 +301,7 @@ implements OnInit {
 
     this.closeMenus();
 
+
     this.router.navigate([
       route
     ]);
@@ -238,6 +312,7 @@ implements OnInit {
   goToLanding(): void {
 
     this.closeMenus();
+
 
     this.router.navigate([
       '/'
@@ -428,13 +503,18 @@ implements OnInit {
 
     const name =
       this.currentUser.name ||
+      this.currentUser.email ||
       'Usuario';
 
 
     const parts =
       name
         .trim()
-        .split(' ');
+        .split(' ')
+        .filter(
+          part =>
+            part.length > 0
+        );
 
 
     return parts

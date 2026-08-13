@@ -1,0 +1,255 @@
+<div class="auth-page">
+
+  <a
+    class="back-home"
+    routerLink="/"
+  >
+    ← Volver a WisePick
+  </a>
+
+
+  <div class="auth-wrapper">
+
+    <section class="auth-brand">
+
+      <a
+        class="brand"
+        routerLink="/"
+      >
+        <img
+          src="/assets/wisepicklogo.png"
+          alt="WisePick"
+        />
+      </a>
+
+
+      <div class="brand-content">
+
+        <span class="eyebrow">
+          EMPIEZA GRATIS
+        </span>
+
+        <h1>
+          Conoce mejor tu negocio desde hoy.
+        </h1>
+
+        <p>
+          Crea tu espacio en WisePick,
+          registra tu empresa y comienza
+          a transformar tus datos en
+          decisiones comerciales.
+        </p>
+
+
+        <div class="feature-list">
+
+          <div>
+            <span>01</span>
+
+            <p>
+              <strong>
+                Crea tu cuenta
+              </strong>
+
+              Solo necesitas unos segundos.
+            </p>
+          </div>
+
+
+          <div>
+            <span>02</span>
+
+            <p>
+              <strong>
+                Configura tu empresa
+              </strong>
+
+              WisePick conocerá tu negocio.
+            </p>
+          </div>
+
+
+          <div>
+            <span>03</span>
+
+            <p>
+              <strong>
+                Agrega tus datos
+              </strong>
+
+              Empieza a obtener análisis.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="auth-card">
+
+      <div class="form-header">
+
+        <span class="eyebrow">
+          NUEVA CUENTA
+        </span>
+
+        <h2>
+          Crear cuenta
+        </h2>
+
+        <p>
+          Empieza a utilizar WisePick.
+        </p>
+
+      </div>
+
+
+      <form
+        (ngSubmit)="register()"
+      >
+
+        <div class="form-group">
+
+          <label>
+            Nombre
+          </label>
+
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="name"
+            autocomplete="name"
+            placeholder="Tu nombre"
+            required
+          />
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Correo electrónico
+          </label>
+
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            autocomplete="email"
+            placeholder="nombre@empresa.com"
+            required
+          />
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Contraseña
+          </label>
+
+          <div class="password-field">
+
+            <input
+              [type]="
+                showPassword
+                  ? 'text'
+                  : 'password'
+              "
+              name="password"
+              [(ngModel)]="password"
+              autocomplete="new-password"
+              placeholder="Mínimo 6 caracteres"
+              required
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="togglePassword()"
+            >
+              {{
+                showPassword
+                  ? 'Ocultar'
+                  : 'Ver'
+              }}
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Confirmar contraseña
+          </label>
+
+          <input
+            [type]="
+              showPassword
+                ? 'text'
+                : 'password'
+            "
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            autocomplete="new-password"
+            placeholder="Repite tu contraseña"
+            required
+          />
+
+        </div>
+
+
+        <div
+          class="error-message"
+          *ngIf="errorMessage"
+        >
+          {{ errorMessage }}
+        </div>
+
+
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="loading"
+        >
+
+          {{
+            loading
+              ? 'Creando cuenta...'
+              : 'Crear cuenta gratis'
+          }}
+
+          <span *ngIf="!loading">
+            →
+          </span>
+
+        </button>
+
+      </form>
+
+
+      <div class="auth-footer">
+
+        <span>
+          ¿Ya tienes una cuenta?
+        </span>
+
+        <a routerLink="/login">
+          Iniciar sesión
+        </a>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>

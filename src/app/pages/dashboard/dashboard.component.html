@@ -5,7 +5,6 @@
   "
 >
 
-
   <!-- =========================
        SIDEBAR
   ========================== -->
@@ -15,27 +14,27 @@
 
     <!-- BRAND -->
 
-    <!-- BRAND -->
     <a
       class="brand"
       routerLink="/"
       title="Volver al inicio de WisePick"
     >
+
       <!-- Logo completo -->
       <img
         class="brand-logo brand-logo-full"
         src="/assets/wisepicklogo.png"
         alt="WisePick"
-    />
+      />
 
-    <!-- Solo W -->
-    <img
-      class="brand-logo brand-logo-mini"
-      src="/assets/wisepicklogocorto.png"
-      alt="WisePick"
-    />
-  </a>
+      <!-- Solo W -->
+      <img
+        class="brand-logo brand-logo-mini"
+        src="/assets/wisepicklogocorto.png"
+        alt="WisePick"
+      />
 
+    </a>
 
 
     <!-- MAIN NAVIGATION -->
@@ -71,7 +70,6 @@
       </a>
 
 
-
       <a
         class="item"
         routerLink="/dashboard/company"
@@ -90,7 +88,6 @@
         </span>
 
       </a>
-
 
 
       <a
@@ -113,7 +110,6 @@
       </a>
 
 
-
       <a
         class="item"
         routerLink="/dashboard/products"
@@ -132,7 +128,6 @@
         </span>
 
       </a>
-
 
 
       <a
@@ -155,7 +150,6 @@
       </a>
 
 
-
       <a
         class="item"
         routerLink="/dashboard/dash"
@@ -176,7 +170,6 @@
       </a>
 
 
-
       <a
         class="item"
         routerLink="/dashboard/marketing-ia"
@@ -195,7 +188,6 @@
         </span>
 
       </a>
-
 
 
       <a
@@ -221,7 +213,6 @@
     </nav>
 
 
-
     <!-- MANAGEMENT -->
 
     <p class="section-title">
@@ -230,7 +221,6 @@
 
 
     <nav class="menu">
-
 
       <a
         class="item"
@@ -251,9 +241,7 @@
 
       </a>
 
-
     </nav>
-
 
 
     <!-- SETTINGS -->
@@ -264,7 +252,6 @@
 
 
     <nav class="menu">
-
 
       <a
         class="item"
@@ -285,13 +272,11 @@
 
       </a>
 
-
     </nav>
 
 
-
     <!-- =========================
-         USER / DEMO
+         USER
     ========================== -->
 
     <div class="sidebar-user">
@@ -329,7 +314,6 @@
         </ng-container>
 
 
-
         <ng-container
           *ngIf="
             !currentUser.isAuthenticated
@@ -356,7 +340,6 @@
   </aside>
 
 
-
   <!-- =========================
        TOPBAR
   ========================== -->
@@ -367,7 +350,6 @@
     <!-- LEFT -->
 
     <div class="left">
-
 
       <button
         class="topbar-icon-button"
@@ -388,23 +370,18 @@
 
       </button>
 
-
     </div>
-
 
 
     <!-- CENTER -->
 
     <div class="center">
 
-
       <div class="search-wrapper">
-
 
         <span class="search-icon">
           🔍
         </span>
-
 
         <input
           class="search"
@@ -413,12 +390,9 @@
           aria-label="Buscar en WisePick"
         >
 
-
       </div>
 
-
     </div>
-
 
 
     <!-- RIGHT -->
@@ -452,7 +426,6 @@
         </button>
 
 
-
         <div
           class="dropdown-menu add-menu"
           *ngIf="showAddMenu"
@@ -470,7 +443,6 @@
             </strong>
 
           </div>
-
 
 
           <button
@@ -501,7 +473,6 @@
           </button>
 
 
-
           <button
             type="button"
             (click)="
@@ -530,7 +501,6 @@
           </button>
 
 
-
           <button
             type="button"
             (click)="
@@ -557,7 +527,6 @@
             </div>
 
           </button>
-
 
 
           <button
@@ -594,7 +563,6 @@
       </div>
 
 
-
       <!-- =====================
            NOTIFICATIONS
       ====================== -->
@@ -629,9 +597,7 @@
 
           </span>
 
-
         </button>
-
 
 
         <div
@@ -673,7 +639,6 @@
           </div>
 
 
-
           <div
             class="notification-empty"
             *ngIf="
@@ -694,7 +659,6 @@
             </small>
 
           </div>
-
 
 
           <button
@@ -748,7 +712,6 @@
       </div>
 
 
-
       <!-- =====================
            USER
       ====================== -->
@@ -766,7 +729,6 @@
           {{ userInitials }}
 
         </button>
-
 
 
         <div
@@ -844,8 +806,22 @@
             </button>
 
 
-          </ng-container>
+            <button
+              type="button"
+              class="login-action"
+              (click)="logout()"
+            >
 
+              <span>
+                ↪
+              </span>
+
+              Cerrar sesión
+
+            </button>
+
+
+          </ng-container>
 
 
           <!-- DEMO -->
@@ -890,7 +866,9 @@
             <button
               type="button"
               class="login-action"
-              (click)="goToLanding()"
+              (click)="
+                navigateTo('/login')
+              "
             >
 
               Iniciar sesión →
@@ -911,7 +889,6 @@
 
 
   </header>
-
 
 
   <!-- =========================

@@ -65,18 +65,15 @@ interface CompanyForm {
 export class CompanySetupComponent
   implements OnInit {
 
-
   currentStep = 1;
 
   totalSteps = 5;
-
 
   saving = false;
 
   loading = true;
 
   errorMessage = '';
-
 
   companyId:
     string | null = null;
@@ -131,25 +128,8 @@ export class CompanySetupComponent
 
   private loadExistingCompany(): void {
 
-    const savedCompanyId =
-      localStorage.getItem(
-        'wisepick_company_id'
-      );
-
-
-    if (!savedCompanyId) {
-
-      this.loading = false;
-
-      return;
-
-    }
-
-
     this.companyApi
-      .getCompanyById(
-        savedCompanyId
-      )
+      .getMyCompany()
       .subscribe({
 
         next: (
@@ -176,31 +156,63 @@ export class CompanySetupComponent
             company.employees;
 
 
-          this.loading = false;
-
           this.company.categories =
             company.categories ?? [];
+
 
           this.company.dailySalesRange =
             company.dailySalesRange ?? '';
 
+
           this.company.salesRecordMethod =
             company.salesRecordMethod ?? '';
+
 
           this.company.salesChannels =
             company.salesChannels ?? [];
 
+
           this.company.objectives =
             company.objectives ?? [];
+
 
           this.company.preferredDataSource =
             company.preferredDataSource ?? '';
 
+
+          this.loading = false;
+
         },
+
 
         error: (
           error
         ) => {
+
+          /*
+           * 404 = usuario autenticado
+           * pero todavía no tiene empresa.
+           *
+           * Eso es normal para una
+           * cuenta recién creada.
+           */
+
+          if (
+            error.status === 404
+          ) {
+
+            this.companyId =
+              null;
+
+
+            this.loading =
+              false;
+
+
+            return;
+
+          }
+
 
           console.error(
             'Error cargando empresa:',
@@ -208,16 +220,12 @@ export class CompanySetupComponent
           );
 
 
-          localStorage.removeItem(
-            'wisepick_company_id'
-          );
+          this.errorMessage =
+            'No fue posible consultar tu empresa.';
 
 
-          this.companyId =
-            null;
-
-
-          this.loading = false;
+          this.loading =
+            false;
 
         }
 
@@ -273,7 +281,9 @@ export class CompanySetupComponent
         );
 
 
-    if (index >= 0) {
+    if (
+      index >= 0
+    ) {
 
       this.company
         .categories
@@ -307,7 +317,9 @@ export class CompanySetupComponent
         );
 
 
-    if (index >= 0) {
+    if (
+      index >= 0
+    ) {
 
       this.company
         .salesChannels
@@ -341,7 +353,9 @@ export class CompanySetupComponent
         );
 
 
-    if (index >= 0) {
+    if (
+      index >= 0
+    ) {
 
       this.company
         .objectives
@@ -388,23 +402,22 @@ export class CompanySetupComponent
       this.errorMessage =
         'Ingresa el nombre de la empresa.';
 
+
       return;
 
     }
 
 
-    this.saving = true;
+    this.saving =
+      true;
 
-    this.errorMessage = '';
+
+    this.errorMessage =
+      '';
 
 
-    /*
-     * Mapeamos el formulario
-     * actual al modelo que
-     * entiende company-service.
-     */
-
-    const request: Company = {
+    const request:
+      Company = {
 
       name:
         this.company.name,
@@ -443,11 +456,11 @@ export class CompanySetupComponent
 
 
     /*
-     * Si existe un ID:
-     * UPDATE.
+     * Si el usuario ya tiene empresa,
+     * hacemos UPDATE.
      *
-     * Si no:
-     * CREATE.
+     * Si todavía no tiene,
+     * hacemos CREATE.
      */
 
     if (
@@ -487,19 +500,14 @@ export class CompanySetupComponent
           company
         ) => {
 
-          if (
-            company.id
-          ) {
-
-            localStorage.setItem(
-              'wisepick_company_id',
-              company.id
-            );
-
-          }
+          console.log(
+            'Empresa creada:',
+            company
+          );
 
 
-          this.saving = false;
+          this.saving =
+            false;
 
 
           this.router.navigate([
@@ -507,6 +515,7 @@ export class CompanySetupComponent
           ]);
 
         },
+
 
         error: (
           error
@@ -522,7 +531,8 @@ export class CompanySetupComponent
             'No fue posible guardar la empresa.';
 
 
-          this.saving = false;
+          this.saving =
+            false;
 
         }
 
@@ -555,9 +565,18 @@ export class CompanySetupComponent
       )
       .subscribe({
 
-        next: () => {
+        next: (
+          company
+        ) => {
 
-          this.saving = false;
+          console.log(
+            'Empresa actualizada:',
+            company
+          );
+
+
+          this.saving =
+            false;
 
 
           this.router.navigate([
@@ -565,6 +584,7 @@ export class CompanySetupComponent
           ]);
 
         },
+
 
         error: (
           error
@@ -580,7 +600,8 @@ export class CompanySetupComponent
             'No fue posible actualizar la empresa.';
 
 
-          this.saving = false;
+          this.saving =
+            false;
 
         }
 
