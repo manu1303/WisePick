@@ -1,11 +1,216 @@
 <div class="home-page">
 
   <!-- =========================
-       NUEVO USUARIO
+     MODO DEMO
   ========================== -->
+
   <section
     class="welcome-section"
-    *ngIf="homeState === 'NEW_USER'"
+    *ngIf="
+      !loading &&
+      homeState === 'DEMO'
+    "
+  >
+
+    <div class="welcome-card">
+
+      <div class="welcome-content">
+
+        <span class="eyebrow">
+          MODO DEMO
+        </span>
+
+        <h1>
+          Explora WisePick
+        </h1>
+
+        <p class="welcome-description">
+          Conoce cómo WisePick puede ayudarte a organizar,
+          analizar y aprovechar mejor los datos de tu negocio.
+        </p>
+
+        <p class="welcome-helper">
+          Puedes recorrer el sistema, registrar información
+          de prueba y explorar sus principales funcionalidades
+          sin crear una cuenta.
+        </p>
+
+
+        <div class="setup-info">
+
+          <span class="setup-icon">
+            ✦
+          </span>
+
+          <div>
+
+            <strong>
+              Explora libremente
+            </strong>
+
+            <span>
+              Los datos de esta demostración se almacenan
+              temporalmente en tu navegador.
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="startDemo()"
+        >
+
+          Comenzar demostración
+
+          <span class="arrow">
+            →
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <div class="welcome-visual">
+
+        <div class="ai-card">
+
+          <div class="ai-icon">
+            ✦
+          </div>
+
+          <span class="ai-label">
+            WisePick IA
+          </span>
+
+          <p>
+            Prueba cómo WisePick utiliza tus datos
+            para identificar patrones y oportunidades.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="journey-card">
+
+      <div class="journey-header">
+
+        <div>
+
+          <span class="eyebrow">
+            RECORRE WISEPICK
+          </span>
+
+          <h2>
+            Descubre cómo funciona
+          </h2>
+
+        </div>
+
+        <span class="progress-label">
+          Demo
+        </span>
+
+      </div>
+
+
+      <div class="journey-steps">
+
+
+        <div class="journey-step active">
+
+          <div class="step-number">
+            1
+          </div>
+
+          <div class="step-content">
+
+            <h3>
+              Configura una empresa
+            </h3>
+
+            <p>
+              Simula la configuración inicial de un negocio.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="step-line"></div>
+
+
+        <div class="journey-step">
+
+          <div class="step-number">
+            2
+          </div>
+
+          <div class="step-content">
+
+            <h3>
+              Agrega datos
+            </h3>
+
+            <p>
+              Prueba ventas, productos, clientes e importaciones.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="step-line"></div>
+
+
+        <div class="journey-step">
+
+          <div class="step-number">
+            3
+          </div>
+
+          <div class="step-content">
+
+            <h3>
+              Explora la IA
+            </h3>
+
+            <p>
+              Revisa análisis, oportunidades y campañas.
+            </p>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       NUEVO USUARIO
+  ========================== -->
+
+  <section
+    class="welcome-section"
+    *ngIf="
+      !loading &&
+      homeState === 'NEW_USER'
+    "
   >
 
     <div class="welcome-card">
@@ -32,12 +237,23 @@
         </p>
 
         <div class="setup-info">
-          <span class="setup-icon">⏱</span>
+
+          <span class="setup-icon">
+            ⏱
+          </span>
 
           <div>
-            <strong>Configuración rápida</strong>
-            <span>Te tomará aproximadamente 2 minutos.</span>
+
+            <strong>
+              Configuración rápida
+            </strong>
+
+            <span>
+              Te tomará aproximadamente 2 minutos.
+            </span>
+
           </div>
+
         </div>
 
         <button
@@ -45,18 +261,22 @@
           class="primary-button"
           (click)="startCompanySetup()"
         >
+
           Configurar mi empresa
 
           <span class="arrow">
             →
           </span>
+
         </button>
 
       </div>
 
+
       <div class="welcome-visual">
 
         <div class="ai-card">
+
           <div class="ai-icon">
             ✦
           </div>
@@ -69,6 +289,7 @@
             Conoceremos tu negocio para ofrecerte recomendaciones
             personalizadas.
           </p>
+
         </div>
 
       </div>
@@ -83,7 +304,9 @@
     <div class="journey-card">
 
       <div class="journey-header">
+
         <div>
+
           <span class="eyebrow">
             TU RECORRIDO
           </span>
@@ -91,17 +314,21 @@
           <h2>
             Empieza a obtener valor de tus datos
           </h2>
+
         </div>
 
         <span class="progress-label">
           Paso 1 de 3
         </span>
+
       </div>
 
 
       <div class="journey-steps">
 
+
         <!-- PASO 1 -->
+
         <div class="journey-step active">
 
           <div class="step-number">
@@ -109,11 +336,15 @@
           </div>
 
           <div class="step-content">
-            <h3>Configura tu empresa</h3>
+
+            <h3>
+              Configura tu empresa
+            </h3>
 
             <p>
               Cuéntanos cómo funciona tu negocio.
             </p>
+
           </div>
 
         </div>
@@ -123,6 +354,7 @@
 
 
         <!-- PASO 2 -->
+
         <div class="journey-step">
 
           <div class="step-number">
@@ -130,11 +362,15 @@
           </div>
 
           <div class="step-content">
-            <h3>Agrega tus datos</h3>
+
+            <h3>
+              Agrega tus datos
+            </h3>
 
             <p>
               Registra ventas, importa Excel o carga una factura.
             </p>
+
           </div>
 
         </div>
@@ -144,6 +380,7 @@
 
 
         <!-- PASO 3 -->
+
         <div class="journey-step">
 
           <div class="step-number">
@@ -151,11 +388,15 @@
           </div>
 
           <div class="step-content">
-            <h3>Descubre oportunidades</h3>
+
+            <h3>
+              Descubre oportunidades
+            </h3>
 
             <p>
               WisePick analizará tu negocio utilizando IA.
             </p>
+
           </div>
 
         </div>
@@ -165,5 +406,214 @@
     </div>
 
   </section>
+
+
+
+  <!-- =========================
+       EMPRESA CONFIGURADA
+  ========================== -->
+
+  <section
+    class="welcome-section"
+    *ngIf="
+      !loading &&
+      homeState === 'COMPANY_CONFIGURED'
+    "
+  >
+
+    <div class="welcome-card">
+
+      <div class="welcome-content">
+
+        <span class="eyebrow">
+          SIGUIENTE PASO
+        </span>
+
+        <h1>
+          Tu empresa ya está configurada
+        </h1>
+
+        <p class="welcome-description">
+          WisePick ya conoce el contexto inicial de tu negocio.
+        </p>
+
+        <p class="welcome-helper">
+          Ahora agrega tus primeros datos de ventas para comenzar
+          a generar indicadores, análisis y recomendaciones.
+        </p>
+
+
+        <div class="setup-info">
+
+          <span class="setup-icon">
+            📊
+          </span>
+
+          <div>
+
+            <strong>
+              Agrega tus primeros datos
+            </strong>
+
+            <span>
+              Puedes registrar ventas manualmente o importar un archivo Excel.
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="addFirstData()"
+        >
+
+          Agregar mis primeros datos
+
+          <span class="arrow">
+            →
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <div class="welcome-visual">
+
+        <div class="ai-card">
+
+          <div class="ai-icon">
+            ✦
+          </div>
+
+          <span class="ai-label">
+            WisePick IA
+          </span>
+
+          <p>
+            Con tus datos de ventas podremos detectar patrones,
+            tendencias y oportunidades para tu negocio.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         PROGRESO
+    ========================== -->
+
+    <div class="journey-card">
+
+      <div class="journey-header">
+
+        <div>
+
+          <span class="eyebrow">
+            TU RECORRIDO
+          </span>
+
+          <h2>
+            Empieza a obtener valor de tus datos
+          </h2>
+
+        </div>
+
+        <span class="progress-label">
+          Paso 2 de 3
+        </span>
+
+      </div>
+
+
+      <div class="journey-steps">
+
+
+        <!-- PASO 1 -->
+
+        <div class="journey-step active">
+
+          <div class="step-number">
+            ✓
+          </div>
+
+          <div class="step-content">
+
+            <h3>
+              Empresa configurada
+            </h3>
+
+            <p>
+              WisePick ya conoce tu negocio.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="step-line"></div>
+
+
+        <!-- PASO 2 -->
+
+        <div class="journey-step active">
+
+          <div class="step-number">
+            2
+          </div>
+
+          <div class="step-content">
+
+            <h3>
+              Agrega tus datos
+            </h3>
+
+            <p>
+              Registra ventas, importa Excel o carga una factura.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="step-line"></div>
+
+
+        <!-- PASO 3 -->
+
+        <div class="journey-step">
+
+          <div class="step-number">
+            3
+          </div>
+
+          <div class="step-content">
+
+            <h3>
+              Descubre oportunidades
+            </h3>
+
+            <p>
+              WisePick analizará tu negocio utilizando IA.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
 
 </div>

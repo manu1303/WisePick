@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/companies")
@@ -125,6 +126,33 @@ public class CompanyController {
                         .getByOwnerUid(
                                 ownerUid
                         )
+        );
+
+        }
+
+
+        @GetMapping("/me/exists")
+        public ResponseEntity<Map<String, Boolean>>
+                existsMyCompany(
+                        Authentication authentication
+                ) {
+
+        String ownerUid =
+                authentication.getName();
+
+
+        boolean exists =
+                companyService
+                        .existsByOwnerUid(
+                                ownerUid
+                        );
+
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "exists",
+                        exists
+                )
         );
 
         }

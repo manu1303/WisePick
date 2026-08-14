@@ -700,3 +700,158 @@ td {
   }
 
 }
+
+/* ==========================
+   TEMPLATE DOWNLOAD
+========================== */
+
+.format-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+
+.format-info {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* CARD DE DESCARGA */
+
+.template-download {
+  width: 360px;
+  min-width: 360px;
+  flex-shrink: 0;
+
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  background: #f7f8ff;
+  border: 1px solid #e7e9ff;
+  border-radius: 16px;
+}
+
+
+/* ICONO */
+
+.template-download-icon {
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 12px;
+
+  background: #eef0ff;
+
+  font-size: 17px;
+}
+
+
+/* TEXTO */
+
+.template-download-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  min-width: 0;
+}
+
+
+.template-download-info strong {
+  color: #1c2038;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+
+.template-download-info small {
+  color: #8a90a5;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+
+/* BOTÓN */
+
+.template-download-button {
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 0 14px;
+
+  border-radius: 10px;
+
+  background: #5b68f5;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.template-download-button:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 18px
+    rgba(91, 104, 245, 0.22);
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+
+  .format-card-header {
+    flex-direction: column;
+  }
+
+
+  .template-download {
+    width: 100%;
+    min-width: 0;
+
+    grid-template-columns: 44px 1fr auto;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .template-download {
+    grid-template-columns: 44px 1fr;
+  }
+
+
+  .template-download-button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+}

@@ -361,6 +361,17 @@ public class CompanyService {
 
      }
 
+     public boolean existsByOwnerUid(
+        String ownerUid
+        ) {
+
+        return companyRepository
+                .existsByOwnerUid(
+                        ownerUid
+                );
+
+        }
+
 
 
 

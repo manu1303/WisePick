@@ -8,6 +8,7 @@ import {
 } from '@angular/common';
 
 import {
+  ActivatedRoute,
   Router,
   RouterLink,
   RouterLinkActive,
@@ -86,6 +87,16 @@ export class DashboardComponent
 
 
   /* ============================
+     MODE
+  ============================ */
+
+  isDemoMode = false;
+
+  baseRoute =
+    '/dashboard';
+
+
+  /* ============================
      SIDEBAR
   ============================ */
 
@@ -128,6 +139,9 @@ export class DashboardComponent
     private router:
       Router,
 
+    private route:
+      ActivatedRoute,
+
     private auth:
       Auth
 
@@ -136,7 +150,52 @@ export class DashboardComponent
 
   ngOnInit(): void {
 
-    this.listenAuthState();
+    /*
+     * Determinamos si el Dashboard
+     * fue abierto desde:
+     *
+     * /demo
+     *
+     * o:
+     *
+     * /dashboard
+     */
+
+    this.isDemoMode =
+      this.route
+        .snapshot
+        .data['mode'] === 'demo';
+
+
+    this.baseRoute =
+      this.isDemoMode
+        ? '/demo'
+        : '/dashboard';
+
+
+    /*
+     * En modo demo ignoramos
+     * deliberadamente cualquier
+     * sesión Firebase existente.
+     */
+
+    if (
+      this.isDemoMode
+    ) {
+
+      this.currentUser = {
+
+        isAuthenticated:
+          false
+
+      };
+
+    } else {
+
+      this.listenAuthState();
+
+    }
+
 
     this.generateNotifications();
 
@@ -200,6 +259,19 @@ export class DashboardComponent
     await this.router.navigate([
       '/login'
     ]);
+
+  }
+
+
+  /* ============================
+     ROUTES
+  ============================ */
+
+  appRoute(
+    route: string
+  ): string {
+
+    return `${this.baseRoute}${route}`;
 
   }
 
@@ -302,6 +374,32 @@ export class DashboardComponent
     this.closeMenus();
 
 
+    /*
+     * Las rutas antiguas del
+     * componente siguen usando
+     * /dashboard.
+     *
+     * Si estamos en demo,
+     * las convertimos automáticamente
+     * a /demo.
+     */
+
+    if (
+      this.isDemoMode &&
+      route.startsWith(
+        '/dashboard'
+      )
+    ) {
+
+      route =
+        route.replace(
+          '/dashboard',
+          '/demo'
+        );
+
+    }
+
+
     this.router.navigate([
       route
     ]);
@@ -386,7 +484,7 @@ export class DashboardComponent
           `${lowStock.length} producto(s) tienen 5 unidades o menos.`,
 
         route:
-          '/dashboard/products',
+          `${this.baseRoute}/products`,
 
         type:
           'warning'
@@ -428,7 +526,7 @@ export class DashboardComponent
             `${anonymous} venta(s) no tienen cliente identificado.`,
 
           route:
-            '/dashboard/clients',
+            `${this.baseRoute}/clients`,
 
           type:
             'info'
@@ -469,7 +567,7 @@ export class DashboardComponent
           `${activeCampaigns.length} campaña(s) están actualmente activas.`,
 
         route:
-          '/dashboard/campaigns',
+          `${this.baseRoute}/campaigns`,
 
         type:
           'success'
@@ -490,6 +588,15 @@ export class DashboardComponent
   ============================ */
 
   get userInitials(): string {
+
+    if (
+      this.isDemoMode
+    ) {
+
+      return 'DE';
+
+    }
+
 
     if (
       !this.currentUser

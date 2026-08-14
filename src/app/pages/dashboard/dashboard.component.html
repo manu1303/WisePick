@@ -49,7 +49,7 @@
 
       <a
         class="item"
-        routerLink="/dashboard/home"
+        [routerLink]="appRoute('/home')"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{
           exact: true
@@ -70,9 +70,10 @@
       </a>
 
 
+
       <a
         class="item"
-        routerLink="/dashboard/company"
+        [routerLink]="appRoute('/company')"
         routerLinkActive="active"
         title="Mi Empresa"
       >
@@ -90,9 +91,10 @@
       </a>
 
 
+
       <a
         class="item"
-        routerLink="/dashboard/sales"
+        [routerLink]="appRoute('/sales')"
         routerLinkActive="active"
         title="Ventas"
       >
@@ -110,9 +112,10 @@
       </a>
 
 
+
       <a
         class="item"
-        routerLink="/dashboard/products"
+        [routerLink]="appRoute('/products')"
         routerLinkActive="active"
         title="Productos"
       >
@@ -130,9 +133,10 @@
       </a>
 
 
+
       <a
         class="item"
-        routerLink="/dashboard/clients"
+        [routerLink]="appRoute('/clients')"
         routerLinkActive="active"
         title="Clientes"
       >
@@ -150,9 +154,10 @@
       </a>
 
 
+
       <a
         class="item"
-        routerLink="/dashboard/dash"
+        [routerLink]="appRoute('/dash')"
         routerLinkActive="active"
         title="Dashboard"
       >
@@ -170,9 +175,10 @@
       </a>
 
 
+
       <a
         class="item"
-        routerLink="/dashboard/marketing-ia"
+        [routerLink]="appRoute('/marketing-ia')"
         routerLinkActive="active"
         title="Marketing IA"
       >
@@ -190,9 +196,10 @@
       </a>
 
 
+
       <a
         class="item"
-        routerLink="/dashboard/campaigns"
+        [routerLink]="appRoute('/campaigns')"
         routerLinkActive="active"
         title="Campañas"
       >
@@ -222,9 +229,10 @@
 
     <nav class="menu">
 
+
       <a
         class="item"
-        routerLink="/dashboard/reports"
+        [routerLink]="appRoute('/reports')"
         routerLinkActive="active"
         title="Reportes"
       >
@@ -241,6 +249,7 @@
 
       </a>
 
+
     </nav>
 
 
@@ -253,9 +262,10 @@
 
     <nav class="menu">
 
+
       <a
         class="item"
-        routerLink="/dashboard/settings"
+        [routerLink]="appRoute('/settings')"
         routerLinkActive="active"
         title="Configuración"
       >
@@ -271,6 +281,7 @@
         </span>
 
       </a>
+
 
     </nav>
 
@@ -297,8 +308,11 @@
       >
 
 
+        <!-- REAL USER -->
+
         <ng-container
           *ngIf="
+            !isDemoMode &&
             currentUser.isAuthenticated
           "
         >
@@ -314,9 +328,11 @@
         </ng-container>
 
 
+        <!-- DEMO -->
+
         <ng-container
           *ngIf="
-            !currentUser.isAuthenticated
+            isDemoMode
           "
         >
 
@@ -351,6 +367,7 @@
 
     <div class="left">
 
+
       <button
         class="topbar-icon-button"
         type="button"
@@ -370,6 +387,7 @@
 
       </button>
 
+
     </div>
 
 
@@ -377,11 +395,14 @@
 
     <div class="center">
 
+
       <div class="search-wrapper">
+
 
         <span class="search-icon">
           🔍
         </span>
+
 
         <input
           class="search"
@@ -390,7 +411,9 @@
           aria-label="Buscar en WisePick"
         >
 
+
       </div>
+
 
     </div>
 
@@ -426,6 +449,7 @@
         </button>
 
 
+
         <div
           class="dropdown-menu add-menu"
           *ngIf="showAddMenu"
@@ -443,6 +467,7 @@
             </strong>
 
           </div>
+
 
 
           <button
@@ -473,6 +498,7 @@
           </button>
 
 
+
           <button
             type="button"
             (click)="
@@ -501,6 +527,7 @@
           </button>
 
 
+
           <button
             type="button"
             (click)="
@@ -527,6 +554,7 @@
             </div>
 
           </button>
+
 
 
           <button
@@ -597,7 +625,9 @@
 
           </span>
 
+
         </button>
+
 
 
         <div
@@ -609,6 +639,7 @@
 
 
           <div class="dropdown-heading notification-heading">
+
 
             <div>
 
@@ -636,7 +667,9 @@
 
             </span>
 
+
           </div>
+
 
 
           <div
@@ -659,6 +692,7 @@
             </small>
 
           </div>
+
 
 
           <button
@@ -731,6 +765,7 @@
         </button>
 
 
+
         <div
           class="dropdown-menu user-menu"
           *ngIf="
@@ -739,10 +774,13 @@
         >
 
 
-          <!-- AUTHENTICATED -->
+          <!-- =====================
+               AUTHENTICATED
+          ====================== -->
 
           <ng-container
             *ngIf="
+              !isDemoMode &&
               currentUser.isAuthenticated
             "
           >
@@ -750,8 +788,11 @@
 
             <div class="user-menu-header">
 
+
               <div class="user-menu-avatar">
+
                 {{ userInitials }}
+
               </div>
 
 
@@ -767,7 +808,9 @@
 
               </div>
 
+
             </div>
+
 
 
             <button
@@ -788,6 +831,7 @@
             </button>
 
 
+
             <button
               type="button"
               (click)="
@@ -804,6 +848,7 @@
               Configuración
 
             </button>
+
 
 
             <button
@@ -824,16 +869,19 @@
           </ng-container>
 
 
-          <!-- DEMO -->
+          <!-- =====================
+               DEMO
+          ====================== -->
 
           <ng-container
             *ngIf="
-              !currentUser.isAuthenticated
+              isDemoMode
             "
           >
 
 
             <div class="demo-menu-header">
+
 
               <div class="user-menu-avatar">
                 DE
@@ -852,7 +900,9 @@
 
               </div>
 
+
             </div>
+
 
 
             <div class="demo-message">
@@ -861,6 +911,7 @@
               temporalmente en este navegador.
 
             </div>
+
 
 
             <button

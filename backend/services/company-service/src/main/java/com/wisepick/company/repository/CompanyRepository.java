@@ -15,4 +15,6 @@ public interface CompanyRepository
             String ownerUid
     );
 
+    boolean existsByOwnerUid(String ownerUid);
+
 }

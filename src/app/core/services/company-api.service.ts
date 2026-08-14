@@ -108,4 +108,20 @@ export class CompanyApiService {
 
   }
 
+
+  /* ==========================
+     CHECK MY COMPANY EXISTS
+  ========================== */
+  checkMyCompanyExists():
+    Observable<{ exists: boolean }> {
+
+    return this.http.get<{
+      exists: boolean
+    }>(
+      `${this.apiUrl}/me/exists`
+    );
+
+  }
+
+
 }
