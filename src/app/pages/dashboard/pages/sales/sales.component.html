@@ -513,14 +513,45 @@
 
                 <td class="actions-column">
 
-                  <button
-                    type="button"
-                    class="row-action"
-                    title="Eliminar venta"
-                    (click)="deleteSale(sale.id)"
-                  >
-                    ⋮
-                  </button>
+                  <div class="row-menu-wrapper">
+
+                    <button
+                      type="button"
+                      class="row-action"
+                      title="Opciones de venta"
+                      (click)="toggleSaleMenu(sale.id)"
+                    >
+                      ⋮
+                    </button>
+
+
+                    <div
+                      class="row-menu"
+                      *ngIf="openSaleMenuId === sale.id"
+                    >
+
+                      <button
+                        type="button"
+                        class="row-menu-item"
+                        (click)="editSale(sale.id)"
+                      >
+                        <span>✏️</span>
+                        Editar venta
+                      </button>
+
+
+                      <button
+                        type="button"
+                        class="row-menu-item danger"
+                        (click)="deleteSale(sale.id)"
+                      >
+                        <span>🗑️</span>
+                        Eliminar venta
+                      </button>
+
+                    </div>
+
+                  </div>
 
                 </td>
 

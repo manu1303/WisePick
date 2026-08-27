@@ -1,7 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+
 import * as XLSX from 'xlsx';
+
+import {
+  SalesApiService,
+  SaleImportResponse
+} from '../../../../../core/services/sales-api.service';
+
+import {
+  CompanyApiService
+} from '../../../../../core/services/company-api.service';
 
 
 interface ExcelSaleRow {
@@ -30,30 +40,62 @@ interface PreviewSale {
 @Component({
   selector: 'app-sales-excel',
   standalone: true,
+
   imports: [
     CommonModule
   ],
-  templateUrl: './sales-excel.component.html',
-  styleUrls: ['./sales-excel.component.scss']
+
+  templateUrl:
+    './sales-excel.component.html',
+
+  styleUrls: [
+    './sales-excel.component.scss'
+  ]
 })
 export class SalesExcelComponent {
 
-  selectedFile: File | null = null;
 
-  previewSales: PreviewSale[] = [];
+  selectedFile:
+    File | null = null;
+
+
+  previewSales:
+    PreviewSale[] = [];
+
 
   fileName = '';
 
+
   processing = false;
+
 
   fileProcessed = false;
 
+
   importCompleted = false;
+
+
+  importing = false;
+
 
   globalError = '';
 
+
+  importResult:
+    SaleImportResponse | null = null;
+
+
   constructor(
-    private router: Router
+
+    private router:
+      Router,
+
+    private salesApi:
+      SalesApiService,
+
+    private companyApi:
+      CompanyApiService  
+
   ) {}
 
 
@@ -61,25 +103,39 @@ export class SalesExcelComponent {
      SELECT FILE
   ============================== */
 
-  onFileSelected(event: Event): void {
+  onFileSelected(
+    event: Event
+  ): void {
+
 
     const input =
       event.target as HTMLInputElement;
+
 
     if (
       !input.files ||
       input.files.length === 0
     ) {
+
       return;
+
     }
+
 
     const file =
       input.files[0];
 
+
     this.resetPreview();
 
-    this.selectedFile = file;
-    this.fileName = file.name;
+
+    this.selectedFile =
+      file;
+
+
+    this.fileName =
+      file.name;
+
 
     const extension =
       file.name
@@ -93,44 +149,64 @@ export class SalesExcelComponent {
       extension !== 'xls'
     ) {
 
+
       this.globalError =
         'Selecciona un archivo Excel válido (.xlsx o .xls).';
 
-      this.selectedFile = null;
+
+      this.selectedFile =
+        null;
+
 
       return;
+
     }
 
 
-    this.readExcel(file);
-  }
+    this.readExcel(
+      file
+    );
 
+  }
 
 
   /* ==============================
      READ EXCEL
   ============================== */
 
-  private readExcel(file: File): void {
+  private readExcel(
+    file: File
+  ): void {
 
-    this.processing = true;
+
+    this.processing =
+      true;
+
 
     const reader =
       new FileReader();
 
 
     reader.onload =
-      (event: ProgressEvent<FileReader>) => {
+      (
+        event:
+          ProgressEvent<FileReader>
+      ) => {
+
 
         try {
+
 
           const data =
             event.target?.result;
 
+
           if (!data) {
+
             throw new Error(
               'No se pudo leer el archivo.'
             );
+
           }
 
 
@@ -155,65 +231,89 @@ export class SalesExcelComponent {
 
 
           const rows =
-            XLSX.utils.sheet_to_json<ExcelSaleRow>(
-              worksheet,
-              {
-                defval: ''
-              }
-            );
+            XLSX.utils
+              .sheet_to_json<ExcelSaleRow>(
+                worksheet,
+                {
+                  defval: ''
+                }
+              );
 
 
-          if (rows.length === 0) {
+          if (
+            rows.length === 0
+          ) {
+
 
             this.globalError =
               'El archivo no contiene registros.';
 
-            this.processing = false;
+
+            this.processing =
+              false;
+
 
             return;
+
           }
 
 
           this.previewSales =
             rows.map(
               row =>
-                this.normalizeRow(row)
+                this.normalizeRow(
+                  row
+                )
             );
 
 
-          this.fileProcessed = true;
+          this.fileProcessed =
+            true;
+
 
         } catch (error) {
+
 
           console.error(
             'Error procesando Excel:',
             error
           );
 
+
           this.globalError =
             'No pudimos procesar el archivo Excel.';
 
+
         } finally {
 
-          this.processing = false;
+
+          this.processing =
+            false;
 
         }
 
       };
 
 
-    reader.onerror = () => {
-
-      this.processing = false;
-
-      this.globalError =
-        'Ocurrió un error al leer el archivo.';
-    };
+    reader.onerror =
+      () => {
 
 
-    reader.readAsArrayBuffer(file);
+        this.processing =
+          false;
+
+
+        this.globalError =
+          'Ocurrió un error al leer el archivo.';
+
+      };
+
+
+    reader.readAsArrayBuffer(
+      file
+    );
+
   }
-
 
 
   /* ==============================
@@ -224,7 +324,9 @@ export class SalesExcelComponent {
     row: ExcelSaleRow
   ): PreviewSale {
 
-    const errors: string[] = [];
+
+    const errors:
+      string[] = [];
 
 
     const saleDate =
@@ -264,21 +366,24 @@ export class SalesExcelComponent {
       ).trim();
 
 
-
     /* VALIDATION */
 
 
     if (!saleDate) {
+
       errors.push(
         'Fecha inválida'
       );
+
     }
 
 
     if (!productName) {
+
       errors.push(
         'Producto requerido'
       );
+
     }
 
 
@@ -286,9 +391,11 @@ export class SalesExcelComponent {
       !quantity ||
       quantity <= 0
     ) {
+
       errors.push(
         'Cantidad inválida'
       );
+
     }
 
 
@@ -296,16 +403,20 @@ export class SalesExcelComponent {
       !unitPrice ||
       unitPrice <= 0
     ) {
+
       errors.push(
         'Precio inválido'
       );
+
     }
 
 
     if (!paymentMethod) {
+
       errors.push(
         'Método de pago requerido'
       );
+
     }
 
 
@@ -322,7 +433,8 @@ export class SalesExcelComponent {
       unitPrice,
 
       total:
-        quantity * unitPrice,
+        quantity *
+        unitPrice,
 
       paymentMethod,
 
@@ -330,9 +442,10 @@ export class SalesExcelComponent {
         errors.length === 0,
 
       errors
-    };
-  }
 
+    };
+
+  }
 
 
   /* ==============================
@@ -340,15 +453,25 @@ export class SalesExcelComponent {
   ============================== */
 
   private normalizeDate(
-    value: string | number | Date | undefined
+    value:
+      string |
+      number |
+      Date |
+      undefined
   ): string {
 
+
     if (!value) {
+
       return '';
+
     }
 
 
-    if (value instanceof Date) {
+    if (
+      value instanceof Date
+    ) {
+
 
       return value
         .toISOString()
@@ -361,14 +484,18 @@ export class SalesExcelComponent {
       typeof value === 'number'
     ) {
 
+
       const excelDate =
-        XLSX.SSF.parse_date_code(
-          value
-        );
+        XLSX.SSF
+          .parse_date_code(
+            value
+          );
 
 
       if (!excelDate) {
+
         return '';
+
       }
 
 
@@ -391,11 +518,14 @@ export class SalesExcelComponent {
 
 
       return `${excelDate.y}-${month}-${day}`;
+
     }
 
 
     const date =
-      new Date(value);
+      new Date(
+        value
+      );
 
 
     if (
@@ -403,64 +533,132 @@ export class SalesExcelComponent {
         date.getTime()
       )
     ) {
+
       return '';
+
     }
 
 
     return date
       .toISOString()
       .split('T')[0];
-  }
 
+  }
 
 
   /* ==============================
      KPI PREVIEW
   ============================== */
 
-  get validSales(): PreviewSale[] {
+  get validSales():
+    PreviewSale[] {
 
-    return this.previewSales.filter(
-      sale => sale.valid
-    );
+
+    return this.previewSales
+      .filter(
+        sale =>
+          sale.valid
+      );
+
   }
 
 
-  get invalidSales(): PreviewSale[] {
+  get invalidSales():
+    PreviewSale[] {
 
-    return this.previewSales.filter(
-      sale => !sale.valid
-    );
+
+    return this.previewSales
+      .filter(
+        sale =>
+          !sale.valid
+      );
+
   }
 
 
-  get totalRows(): number {
+  get totalRows():
+    number {
 
-    return this.previewSales.length;
+
+    return this.previewSales
+      .length;
+
   }
 
 
-  get totalValid(): number {
+  get totalValid():
+    number {
 
-    return this.validSales.length;
+
+    return this.validSales
+      .length;
+
   }
 
 
-  get totalInvalid(): number {
+  get totalInvalid():
+    number {
 
-    return this.invalidSales.length;
+
+    return this.invalidSales
+      .length;
+
   }
 
 
-  get totalAmount(): number {
+  get totalAmount():
+    number {
 
-    return this.validSales.reduce(
-      (sum, sale) =>
-        sum + sale.total,
-      0
-    );
+
+    return this.validSales
+      .reduce(
+
+        (
+          sum,
+          sale
+        ) =>
+          sum +
+          sale.total,
+
+        0
+
+      );
+
   }
 
+
+  /* ==============================
+     BACKEND RESULT
+  ============================== */
+
+  get importedRows():
+    number {
+
+
+    return this.importResult
+      ?.importedRows ?? 0;
+
+  }
+
+
+  get failedRows():
+    number {
+
+
+    return this.importResult
+      ?.failedRows ?? 0;
+
+  }
+
+
+  get backendErrors():
+    string[] {
+
+
+    return this.importResult
+      ?.errors ?? [];
+
+  }
 
 
   /* ==============================
@@ -469,84 +667,121 @@ export class SalesExcelComponent {
 
   importSales(): void {
 
-    if (
-      this.validSales.length === 0
-    ) {
-      return;
-    }
+  if (!this.selectedFile) {
 
+    this.globalError =
+      'Selecciona un archivo Excel.';
 
-    const normalizedSales =
-      this.validSales.map(
-        sale => ({
-
-          id:
-            crypto.randomUUID(),
-
-          saleDate:
-            sale.saleDate,
-
-          customerName:
-            sale.customerName,
-
-          productName:
-            sale.productName,
-
-          quantity:
-            sale.quantity,
-
-          unitPrice:
-            sale.unitPrice,
-
-          total:
-            sale.total,
-
-          paymentMethod:
-            sale.paymentMethod,
-
-          notes:
-            '',
-
-          source:
-            'excel',
-
-          createdAt:
-            new Date()
-              .toISOString()
-        })
-      );
-
-
-    const savedSales =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_sales'
-        ) || '[]'
-      );
-
-
-    savedSales.push(
-      ...normalizedSales
-    );
-
-
-    localStorage.setItem(
-      'wisepick_sales',
-      JSON.stringify(
-        savedSales
-      )
-    );
-
-
-    console.log(
-      'Ventas importadas:',
-      normalizedSales
-    );
-
-
-    this.importCompleted = true;
+    return;
   }
 
+
+  if (this.validSales.length === 0) {
+
+    this.globalError =
+      'No existen ventas válidas para importar.';
+
+    return;
+  }
+
+
+  this.importing = true;
+
+  this.globalError = '';
+
+  this.importResult = null;
+
+
+  /*
+   * Obtenemos la empresa real
+   * asociada al usuario Firebase.
+   */
+
+  this.companyApi
+    .getMyCompany()
+    .subscribe({
+
+      next: company => {
+
+        if (!company?.id) {
+
+          this.globalError =
+            'No se encontró una empresa configurada.';
+
+          this.importing =
+            false;
+
+          return;
+        }
+
+
+        /*
+         * Importamos usando
+         * el ID real de PostgreSQL.
+         */
+
+        this.salesApi
+          .importExcel(
+            company.id,
+            this.selectedFile!
+          )
+          .subscribe({
+
+            next: response => {
+
+              console.log(
+                'Resultado importación:',
+                response
+              );
+
+              this.importResult =
+                response;
+
+              this.importCompleted =
+                true;
+
+              this.importing =
+                false;
+
+            },
+
+            error: error => {
+
+              console.error(
+                'Error importando ventas:',
+                error
+              );
+
+              this.globalError =
+                'No fue posible importar las ventas. Intenta nuevamente.';
+
+              this.importing =
+                false;
+
+            }
+
+          });
+
+      },
+
+      error: error => {
+
+        console.error(
+          'Error obteniendo empresa:',
+          error
+        );
+
+        this.globalError =
+          'No se encontró una empresa configurada para este usuario.';
+
+        this.importing =
+          false;
+
+      }
+
+    });
+
+}
 
 
   /* ==============================
@@ -555,29 +790,62 @@ export class SalesExcelComponent {
 
   goToSales(): void {
 
+
     this.router.navigate([
       '/dashboard/sales'
     ]);
+
   }
 
 
   goBack(): void {
 
+
     this.router.navigate([
       '/dashboard/sales/import'
     ]);
+
   }
 
 
+  /* ==============================
+     RESET
+  ============================== */
+
   resetPreview(): void {
 
-    this.previewSales = [];
 
-    this.fileProcessed = false;
+    this.previewSales =
+      [];
 
-    this.importCompleted = false;
 
-    this.globalError = '';
+    this.selectedFile =
+      null;
+
+
+    this.fileName =
+      '';
+
+
+    this.fileProcessed =
+      false;
+
+
+    this.importCompleted =
+      false;
+
+
+    this.importing =
+      false;
+
+
+    this.importResult =
+      null;
+
+
+    this.globalError =
+      '';
+
   }
 
 }

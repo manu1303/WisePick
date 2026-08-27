@@ -664,9 +664,22 @@
             <button
               type="button"
               class="primary-button"
+              [disabled]="saving"
               (click)="saveSale()"
             >
-              Confirmar y guardar venta
+
+              <ng-container
+                *ngIf="!saving"
+              >
+                Confirmar y guardar venta
+              </ng-container>
+
+              <ng-container
+                *ngIf="saving"
+              >
+                Guardando venta...
+              </ng-container>
+
             </button>
 
           </div>

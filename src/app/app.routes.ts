@@ -307,6 +307,13 @@ export const routes: Routes = [
       },
 
       {
+        path: 'sales/edit/:id',
+        loadComponent: () =>
+          import('./pages/dashboard/pages/sales/manual/sales-manual.component')
+            .then(m => m.SalesManualComponent)
+      },
+
+      {
         path: 'sales/excel',
         loadComponent: () =>
           import(
