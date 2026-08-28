@@ -28,13 +28,38 @@
       </div>
 
 
-      <button
-        type="button"
-        class="primary-button"
-        (click)="exportReport()"
+      <div
+        class="export-actions"
+        data-html2canvas-ignore="true"
       >
-        ↓ Exportar reporte
-      </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="exportReport()"
+          [disabled]="exportingPdf"
+        >
+          {{
+            exportingPdf
+              ? 'Generando PDF...'
+              : '↓ Exportar PDF'
+          }}
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="exportPowerPoint()"
+          [disabled]="exportingPpt"
+        >
+          {{
+            exportingPpt
+              ? 'Generando PPT...'
+              : '↓ Exportar PowerPoint'
+          }}
+        </button>
+
+      </div>
 
     </div>
 

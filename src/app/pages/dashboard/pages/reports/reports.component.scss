@@ -799,3 +799,16 @@ td strong {
   }
 
 }
+
+
+.export-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.export-actions .primary-button {
+  margin: 0;
+}
