@@ -2,6 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import {
+  ClientsApiService,
+  ApiClient,
+  ClientRequest
+} from '../../../../core/services/clients-api.service';
+
+import {
+  CompanyApiService
+} from '../../../../core/services/company-api.service';
+
 
 interface Client {
 
@@ -73,6 +83,14 @@ export class ClientsComponent implements OnInit {
 
   showErrors = false;
 
+  loading = false;
+
+  saving = false;
+
+  globalError = '';
+
+  companyId: string | null = null;
+
 
   clientForm: ClientForm = {
 
@@ -87,11 +105,75 @@ export class ClientsComponent implements OnInit {
   };
 
 
+  constructor(
+    private clientsApi: ClientsApiService,
+    private companyApi: CompanyApiService
+  ) {}
+
+
   ngOnInit(): void {
 
-    this.loadClients();
+    this.loadCompany();
 
     this.loadSales();
+  }
+
+
+  /* ============================
+     LOAD COMPANY
+  ============================ */
+
+  private loadCompany(): void {
+
+    this.loading = true;
+
+    this.globalError = '';
+
+
+    this.companyApi
+      .getMyCompany()
+      .subscribe({
+
+        next: company => {
+
+          if (!company?.id) {
+
+            this.globalError =
+              'No se encontró una empresa configurada.';
+
+            this.loading = false;
+
+            return;
+          }
+
+
+          this.companyId =
+            company.id;
+
+
+          this.loadClients();
+
+        },
+
+
+        error: error => {
+
+          console.error(
+            'Error cargando empresa:',
+            error
+          );
+
+
+          this.globalError =
+            'No fue posible cargar la empresa.';
+
+
+          this.loading = false;
+
+        }
+
+      });
+
   }
 
 
@@ -101,12 +183,48 @@ export class ClientsComponent implements OnInit {
 
   loadClients(): void {
 
-    this.clients =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_clients'
-        ) || '[]'
-      );
+    this.loading = true;
+
+    this.globalError = '';
+
+
+    this.clientsApi
+      .getClients()
+      .subscribe({
+
+        next: clients => {
+
+          this.clients =
+            clients.map(
+              client =>
+                this.mapApiClient(
+                  client
+                )
+            );
+
+
+          this.loading = false;
+
+        },
+
+
+        error: error => {
+
+          console.error(
+            'Error cargando clientes:',
+            error
+          );
+
+
+          this.globalError =
+            'No fue posible cargar los clientes.';
+
+
+          this.loading = false;
+
+        }
+
+      });
 
   }
 
@@ -119,6 +237,44 @@ export class ClientsComponent implements OnInit {
           'wisepick_sales'
         ) || '[]'
       );
+
+  }
+
+
+  /* ============================
+     MAP API
+  ============================ */
+
+  private mapApiClient(
+    client: ApiClient
+  ): Client {
+
+    return {
+
+      id:
+        client.id,
+
+      name:
+        client.name,
+
+      phone:
+        client.phone || '',
+
+      email:
+        client.email || '',
+
+      city:
+        client.city || '',
+
+      status:
+        client.status === 'ACTIVE'
+          ? 'active'
+          : 'inactive',
+
+      createdAt:
+        client.createdAt
+
+    };
 
   }
 
@@ -334,6 +490,8 @@ export class ClientsComponent implements OnInit {
 
     this.showErrors = false;
 
+    this.globalError = '';
+
 
     this.clientForm = {
 
@@ -383,6 +541,8 @@ export class ClientsComponent implements OnInit {
 
     this.showErrors = false;
 
+    this.globalError = '';
+
     this.showClientForm = true;
   }
 
@@ -408,6 +568,8 @@ export class ClientsComponent implements OnInit {
 
     this.showErrors = true;
 
+    this.globalError = '';
+
 
     if (!this.isValid()) {
 
@@ -416,44 +578,112 @@ export class ClientsComponent implements OnInit {
     }
 
 
+    if (!this.companyId) {
+
+      this.globalError =
+        'No se encontró una empresa configurada.';
+
+      return;
+    }
+
+
+    this.saving = true;
+
+
+    const currentClient =
+      this.editingClientId
+        ? this.clients.find(
+            client =>
+              client.id ===
+              this.editingClientId
+          )
+        : null;
+
+
+    const request: ClientRequest = {
+
+      companyId:
+        this.companyId,
+
+      name:
+        this.clientForm.name.trim(),
+
+      phone:
+        this.clientForm.phone.trim(),
+
+      email:
+        this.clientForm.email.trim(),
+
+      city:
+        this.clientForm.city.trim(),
+
+      status:
+        currentClient?.status === 'inactive'
+          ? 'INACTIVE'
+          : 'ACTIVE'
+
+    };
+
+
     /*
       EDITAR
     */
 
     if (this.editingClientId) {
 
-      const index =
-        this.clients.findIndex(
+      this.clientsApi
+        .updateClient(
+          this.editingClientId,
+          request
+        )
+        .subscribe({
 
-          client =>
-            client.id ===
-            this.editingClientId
+          next: response => {
 
-        );
+            const index =
+              this.clients.findIndex(
+                client =>
+                  client.id === response.id
+              );
 
 
-      if (index !== -1) {
+            if (index !== -1) {
 
-        this.clients[index] = {
+              this.clients[index] =
+                this.mapApiClient(
+                  response
+                );
 
-          ...this.clients[index],
+            }
 
-          name:
-            this.clientForm.name,
 
-          phone:
-            this.clientForm.phone,
+            this.saving = false;
 
-          email:
-            this.clientForm.email,
+            this.closeForm();
 
-          city:
-            this.clientForm.city
+          },
 
-        };
 
-      }
+          error: error => {
 
+            console.error(
+              'Error actualizando cliente:',
+              error
+            );
+
+
+            this.globalError =
+              'No fue posible actualizar el cliente.';
+
+
+            this.saving = false;
+
+          }
+
+        });
+
+
+      return;
     }
 
 
@@ -461,45 +691,46 @@ export class ClientsComponent implements OnInit {
       CREAR
     */
 
-    else {
+    this.clientsApi
+      .createClient(
+        request
+      )
+      .subscribe({
 
-      const newClient: Client = {
+        next: response => {
 
-        id:
-          crypto.randomUUID(),
-
-        name:
-          this.clientForm.name,
-
-        phone:
-          this.clientForm.phone,
-
-        email:
-          this.clientForm.email,
-
-        city:
-          this.clientForm.city,
-
-        status:
-          'active',
-
-        createdAt:
-          new Date()
-            .toISOString()
-
-      };
+          this.clients.unshift(
+            this.mapApiClient(
+              response
+            )
+          );
 
 
-      this.clients.unshift(
-        newClient
-      );
+          this.saving = false;
 
-    }
+          this.closeForm();
+
+        },
 
 
-    this.persistClients();
+        error: error => {
 
-    this.closeForm();
+          console.error(
+            'Error creando cliente:',
+            error
+          );
+
+
+          this.globalError =
+            'No fue posible crear el cliente.';
+
+
+          this.saving = false;
+
+        }
+
+      });
+
   }
 
 
@@ -541,16 +772,43 @@ export class ClientsComponent implements OnInit {
     }
 
 
-    this.clients =
-      this.clients.filter(
-
-        item =>
-          item.id !== client.id
-
-      );
+    this.globalError = '';
 
 
-    this.persistClients();
+    this.clientsApi
+      .deleteClient(
+        client.id
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.clients =
+            this.clients.filter(
+
+              item =>
+                item.id !== client.id
+
+            );
+
+        },
+
+
+        error: error => {
+
+          console.error(
+            'Error eliminando cliente:',
+            error
+          );
+
+
+          this.globalError =
+            'No fue posible eliminar el cliente.';
+
+        }
+
+      });
+
   }
 
 
@@ -562,32 +820,86 @@ export class ClientsComponent implements OnInit {
     client: Client
   ): void {
 
-    client.status =
+    if (!this.companyId) {
 
+      this.globalError =
+        'No se encontró una empresa configurada.';
+
+      return;
+    }
+
+
+    const newStatus =
       client.status === 'active'
-        ? 'inactive'
-        : 'active';
+        ? 'INACTIVE'
+        : 'ACTIVE';
 
 
-    this.persistClients();
-  }
+    const request: ClientRequest = {
+
+      companyId:
+        this.companyId,
+
+      name:
+        client.name,
+
+      phone:
+        client.phone,
+
+      email:
+        client.email,
+
+      city:
+        client.city,
+
+      status:
+        newStatus
+
+    };
 
 
-  /* ============================
-     STORAGE
-  ============================ */
-
-  private persistClients(): void {
-
-    localStorage.setItem(
-
-      'wisepick_clients',
-
-      JSON.stringify(
-        this.clients
+    this.clientsApi
+      .updateClient(
+        client.id,
+        request
       )
+      .subscribe({
 
-    );
+        next: response => {
+
+          const index =
+            this.clients.findIndex(
+              item =>
+                item.id === client.id
+            );
+
+
+          if (index !== -1) {
+
+            this.clients[index] =
+              this.mapApiClient(
+                response
+              );
+
+          }
+
+        },
+
+
+        error: error => {
+
+          console.error(
+            'Error cambiando estado del cliente:',
+            error
+          );
+
+
+          this.globalError =
+            'No fue posible cambiar el estado del cliente.';
+
+        }
+
+      });
 
   }
 
@@ -604,6 +916,8 @@ export class ClientsComponent implements OnInit {
 
     this.showErrors = false;
 
+    this.saving = false;
+
   }
 
 
@@ -616,4 +930,3 @@ export class ClientsComponent implements OnInit {
   }
 
 }
-
