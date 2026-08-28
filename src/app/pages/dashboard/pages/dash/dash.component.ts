@@ -2,20 +2,39 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
+import {
+  SalesApiService
+} from '../../../../core/services/sales-api.service';
+
+import {
+  ProductsApiService,
+  ApiProduct
+} from '../../../../core/services/products-api.service';
+
+import {
+  ClientsApiService,
+  ApiClient
+} from '../../../../core/services/clients-api.service';
+
 
 interface Sale {
+
   id: string;
 
   saleDate: string;
 
   customerId?: string | null;
+
   customerName: string;
 
   productId?: string;
+
   productName: string;
 
   quantity: number;
+
   unitPrice: number;
+
   total: number;
 
   paymentMethod: string;
@@ -27,73 +46,151 @@ interface Sale {
     | 'demo';
 
   createdAt: string;
+
 }
 
 
 interface Product {
+
   id: string;
+
   name: string;
+
   category: string;
+
   stock: number;
+
   cost: number;
+
   price: number;
-  status: 'active' | 'inactive';
+
+  status:
+    | 'active'
+    | 'inactive';
+
 }
 
 
 interface Client {
+
   id: string;
+
   name: string;
-  status: 'active' | 'inactive';
+
+  status:
+    | 'active'
+    | 'inactive';
+
 }
 
 
 interface ProductRanking {
+
   productId?: string;
+
   productName: string;
+
   quantity: number;
+
   revenue: number;
+
 }
 
 
 interface DailySale {
+
   date: string;
+
   total: number;
+
   transactions: number;
+
 }
 
 
 interface DistributionItem {
+
   label: string;
+
   value: number;
+
   percentage: number;
+
 }
 
 
 @Component({
   selector: 'app-dash',
   standalone: true,
+
   imports: [
     CommonModule
   ],
-  templateUrl: './dash.component.html',
-  styleUrls: ['./dash.component.scss']
+
+  templateUrl:
+    './dash.component.html',
+
+  styleUrls: [
+    './dash.component.scss'
+  ]
 })
 export class DashComponent implements OnInit {
 
-  sales: Sale[] = [];
 
-  products: Product[] = [];
+  sales:
+    Sale[] = [];
 
-  clients: Client[] = [];
+
+  products:
+    Product[] = [];
+
+
+  clients:
+    Client[] = [];
+
+
+  loading =
+    false;
+
+
+  globalError =
+    '';
+
+
+  isDemoMode =
+    false;
 
 
   constructor(
-    private router: Router
+
+    private router:
+      Router,
+
+    private salesApi:
+      SalesApiService,
+
+    private productsApi:
+      ProductsApiService,
+
+    private clientsApi:
+      ClientsApiService
+
   ) {}
 
 
   ngOnInit(): void {
+
+
+    /*
+     * Detectamos si estamos
+     * trabajando en modo demo.
+     */
+
+    this.isDemoMode =
+      this.router.url.startsWith(
+        '/demo'
+      );
+
 
     this.loadData();
 
@@ -105,6 +202,57 @@ export class DashComponent implements OnInit {
   ============================ */
 
   private loadData(): void {
+
+
+    /*
+     * DEMO
+     *
+     * Conservamos localStorage
+     * únicamente para que el demo
+     * siga funcionando sin Firebase.
+     */
+
+    if (
+      this.isDemoMode
+    ) {
+
+      this.loadDemoData();
+
+      return;
+
+    }
+
+
+    /*
+     * USUARIO REAL
+     *
+     * Los datos vienen de los
+     * microservicios.
+     */
+
+    this.loading =
+      true;
+
+
+    this.globalError =
+      '';
+
+
+    this.loadSales();
+
+    this.loadProducts();
+
+    this.loadClients();
+
+  }
+
+
+  /* ============================
+     DEMO DATA
+  ============================ */
+
+  private loadDemoData(): void {
+
 
     this.sales =
       JSON.parse(
@@ -133,23 +281,344 @@ export class DashComponent implements OnInit {
 
 
   /* ============================
+     SALES API
+  ============================ */
+
+  private loadSales(): void {
+
+
+    this.salesApi
+      .getSales()
+      .subscribe({
+
+
+        next:
+          sales => {
+
+
+            this.sales =
+              sales.map(
+                sale =>
+                  this.mapApiSale(
+                    sale
+                  )
+              );
+
+
+            this.loading =
+              false;
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+              'Error cargando ventas del Dashboard:',
+              error
+            );
+
+
+            this.globalError =
+              'No fue posible cargar las ventas.';
+
+
+            this.loading =
+              false;
+
+          }
+
+      });
+
+  }
+
+
+  private mapApiSale(
+    sale: any
+  ): Sale {
+
+
+    return {
+
+      id:
+        sale.id,
+
+      saleDate:
+        sale.saleDate,
+
+      customerId:
+        sale.customerId || null,
+
+      customerName:
+        sale.customerName || '',
+
+      productId:
+        sale.productId || undefined,
+
+      productName:
+        sale.productName || '',
+
+      quantity:
+        Number(
+          sale.quantity || 0
+        ),
+
+      unitPrice:
+        Number(
+          sale.unitPrice || 0
+        ),
+
+      total:
+        Number(
+          sale.total || 0
+        ),
+
+      paymentMethod:
+        sale.paymentMethod || 'Otro',
+
+      source:
+        this.normalizeSource(
+          sale.source
+        ),
+
+      createdAt:
+        sale.createdAt || ''
+
+    };
+
+  }
+
+
+  /* ============================
+     PRODUCTS API
+  ============================ */
+
+  private loadProducts(): void {
+
+
+    this.productsApi
+      .getProducts()
+      .subscribe({
+
+
+        next:
+          products => {
+
+
+            this.products =
+              products.map(
+                product =>
+                  this.mapApiProduct(
+                    product
+                  )
+              );
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+              'Error cargando productos del Dashboard:',
+              error
+            );
+
+
+            this.globalError =
+              'No fue posible cargar los productos.';
+
+          }
+
+      });
+
+  }
+
+
+  private mapApiProduct(
+    product: ApiProduct
+  ): Product {
+
+
+    return {
+
+      id:
+        product.id,
+
+      name:
+        product.name,
+
+      category:
+        product.category || '',
+
+      stock:
+        Number(
+          product.stock || 0
+        ),
+
+      cost:
+        Number(
+          product.cost || 0
+        ),
+
+      price:
+        Number(
+          product.price || 0
+        ),
+
+      status:
+        product.status === 'ACTIVE'
+          ? 'active'
+          : 'inactive'
+
+    };
+
+  }
+
+
+  /* ============================
+     CLIENTS API
+  ============================ */
+
+  private loadClients(): void {
+
+
+    this.clientsApi
+      .getClients()
+      .subscribe({
+
+
+        next:
+          clients => {
+
+
+            this.clients =
+              clients.map(
+                client =>
+                  this.mapApiClient(
+                    client
+                  )
+              );
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+              'Error cargando clientes del Dashboard:',
+              error
+            );
+
+
+            this.globalError =
+              'No fue posible cargar los clientes.';
+
+          }
+
+      });
+
+  }
+
+
+  private mapApiClient(
+    client: ApiClient
+  ): Client {
+
+
+    return {
+
+      id:
+        client.id,
+
+      name:
+        client.name,
+
+      status:
+        client.status === 'ACTIVE'
+          ? 'active'
+          : 'inactive'
+
+    };
+
+  }
+
+
+  /* ============================
+     SOURCE NORMALIZATION
+  ============================ */
+
+  private normalizeSource(
+    source: string
+  ): Sale['source'] {
+
+
+    switch (
+      source?.toUpperCase()
+    ) {
+
+
+      case 'MANUAL':
+
+        return 'manual';
+
+
+      case 'EXCEL':
+
+        return 'excel';
+
+
+      case 'INVOICE':
+
+        return 'invoice';
+
+
+      case 'DEMO':
+
+        return 'demo';
+
+
+      default:
+
+        return 'manual';
+
+    }
+
+  }
+
+
+  /* ============================
      MAIN KPIs
   ============================ */
 
   get totalRevenue(): number {
 
+
     return this.sales.reduce(
 
-      (sum, sale) =>
-        sum + Number(sale.total),
+      (
+        sum,
+        sale
+      ) =>
+        sum +
+        Number(
+          sale.total
+        ),
 
       0
+
     );
 
   }
 
 
   get totalTransactions(): number {
+
 
     return this.sales.length;
 
@@ -158,7 +627,10 @@ export class DashComponent implements OnInit {
 
   get averageTicket(): number {
 
-    if (!this.totalTransactions) {
+
+    if (
+      !this.totalTransactions
+    ) {
 
       return 0;
 
@@ -166,8 +638,11 @@ export class DashComponent implements OnInit {
 
 
     return (
+
       this.totalRevenue /
+
       this.totalTransactions
+
     );
 
   }
@@ -175,18 +650,27 @@ export class DashComponent implements OnInit {
 
   get totalUnits(): number {
 
+
     return this.sales.reduce(
 
-      (sum, sale) =>
-        sum + Number(sale.quantity),
+      (
+        sum,
+        sale
+      ) =>
+        sum +
+        Number(
+          sale.quantity
+        ),
 
       0
+
     );
 
   }
 
 
   get identifiedCustomers(): number {
+
 
     const ids =
       this.sales
@@ -202,12 +686,15 @@ export class DashComponent implements OnInit {
         );
 
 
-    return new Set(ids).size;
+    return new Set(
+      ids
+    ).size;
 
   }
 
 
   get anonymousSales(): number {
+
 
     return this.sales.filter(
 
@@ -223,7 +710,9 @@ export class DashComponent implements OnInit {
      PRODUCT RANKING
   ============================ */
 
-  get productRanking(): ProductRanking[] {
+  get productRanking():
+    ProductRanking[] {
+
 
     const map =
       new Map<
@@ -235,26 +724,39 @@ export class DashComponent implements OnInit {
     this.sales.forEach(
       sale => {
 
+
         const key =
           sale.productId ||
           sale.productName;
 
 
         const existing =
-          map.get(key);
+          map.get(
+            key
+          );
 
 
-        if (existing) {
+        if (
+          existing
+        ) {
+
 
           existing.quantity +=
-            Number(sale.quantity);
+            Number(
+              sale.quantity
+            );
+
 
           existing.revenue +=
-            Number(sale.total);
+            Number(
+              sale.total
+            );
 
         }
 
+
         else {
+
 
           map.set(
             key,
@@ -286,9 +788,14 @@ export class DashComponent implements OnInit {
 
 
     return Array
-      .from(map.values())
+      .from(
+        map.values()
+      )
       .sort(
-        (a, b) =>
+        (
+          a,
+          b
+        ) =>
           b.quantity -
           a.quantity
       );
@@ -296,16 +803,22 @@ export class DashComponent implements OnInit {
   }
 
 
-  get topProducts(): ProductRanking[] {
+  get topProducts():
+    ProductRanking[] {
+
 
     return this.productRanking
-      .slice(0, 5);
+      .slice(
+        0,
+        5
+      );
 
   }
 
 
   get bestProduct():
     ProductRanking | null {
+
 
     return (
       this.productRanking[0] ||
@@ -319,7 +832,9 @@ export class DashComponent implements OnInit {
      DAILY SALES
   ============================ */
 
-  get dailySales(): DailySale[] {
+  get dailySales():
+    DailySale[] {
+
 
     const map =
       new Map<
@@ -331,22 +846,31 @@ export class DashComponent implements OnInit {
     this.sales.forEach(
       sale => {
 
+
         const existing =
           map.get(
             sale.saleDate
           );
 
 
-        if (existing) {
+        if (
+          existing
+        ) {
+
 
           existing.total +=
-            Number(sale.total);
+            Number(
+              sale.total
+            );
+
 
           existing.transactions++;
 
         }
 
+
         else {
+
 
           map.set(
             sale.saleDate,
@@ -373,17 +897,29 @@ export class DashComponent implements OnInit {
 
 
     return Array
-      .from(map.values())
+      .from(
+        map.values()
+      )
       .sort(
-        (a, b) =>
-          new Date(a.date).getTime() -
-          new Date(b.date).getTime()
+        (
+          a,
+          b
+        ) =>
+          new Date(
+            a.date
+          ).getTime()
+          -
+          new Date(
+            b.date
+          ).getTime()
       );
 
   }
 
 
-  get maxDailyRevenue(): number {
+  get maxDailyRevenue():
+    number {
+
 
     const totals =
       this.dailySales.map(
@@ -393,7 +929,9 @@ export class DashComponent implements OnInit {
 
 
     return totals.length
-      ? Math.max(...totals)
+      ? Math.max(
+          ...totals
+        )
       : 0;
 
   }
@@ -402,6 +940,7 @@ export class DashComponent implements OnInit {
   getBarHeight(
     value: number
   ): number {
+
 
     if (
       !this.maxDailyRevenue
@@ -413,8 +952,11 @@ export class DashComponent implements OnInit {
 
 
     return (
+
       value /
+
       this.maxDailyRevenue
+
     ) * 100;
 
   }
@@ -426,6 +968,7 @@ export class DashComponent implements OnInit {
 
   get paymentDistribution():
     DistributionItem[] {
+
 
     return this.buildDistribution(
 
@@ -447,6 +990,7 @@ export class DashComponent implements OnInit {
   get sourceDistribution():
     DistributionItem[] {
 
+
     return this.buildDistribution(
 
       this.sales.map(
@@ -465,18 +1009,24 @@ export class DashComponent implements OnInit {
     values: string[]
   ): DistributionItem[] {
 
+
     const map =
-      new Map<string, number>();
+      new Map<
+        string,
+        number
+      >();
 
 
     values.forEach(
       value => {
 
+
         map.set(
           value,
           (
-            map.get(value) ||
-            0
+            map.get(
+              value
+            ) || 0
           ) + 1
         );
 
@@ -493,7 +1043,12 @@ export class DashComponent implements OnInit {
         map.entries()
       )
       .map(
-        ([label, value]) => ({
+        (
+          [
+            label,
+            value
+          ]
+        ) => ({
 
           label,
 
@@ -510,7 +1065,10 @@ export class DashComponent implements OnInit {
         })
       )
       .sort(
-        (a, b) =>
+        (
+          a,
+          b
+        ) =>
           b.value -
           a.value
       );
@@ -525,15 +1083,20 @@ export class DashComponent implements OnInit {
   get lowStockProducts():
     Product[] {
 
+
     return this.products
       .filter(
         product =>
           product.status ===
-            'active' &&
+            'active'
+          &&
           product.stock <= 5
       )
       .sort(
-        (a, b) =>
+        (
+          a,
+          b
+        ) =>
           a.stock -
           b.stock
       );
@@ -547,6 +1110,7 @@ export class DashComponent implements OnInit {
 
   get identifiedSalesPercentage():
     number {
+
 
     if (
       !this.totalTransactions
@@ -565,8 +1129,11 @@ export class DashComponent implements OnInit {
 
 
     return (
+
       identified /
+
       this.totalTransactions
+
     ) * 100;
 
   }
@@ -580,21 +1147,34 @@ export class DashComponent implements OnInit {
     source: Sale['source']
   ): string {
 
-    switch (source) {
+
+    switch (
+      source
+    ) {
+
 
       case 'manual':
+
         return 'Manual';
 
+
       case 'excel':
+
         return 'Excel';
 
+
       case 'invoice':
+
         return 'Foto / Factura';
 
+
       case 'demo':
+
         return 'Demo';
 
+
       default:
+
         return source;
 
     }
@@ -608,8 +1188,11 @@ export class DashComponent implements OnInit {
 
   goToSales(): void {
 
+
     this.router.navigate([
-      '/dashboard/sales'
+      this.isDemoMode
+        ? '/demo/sales'
+        : '/dashboard/sales'
     ]);
 
   }
@@ -617,8 +1200,11 @@ export class DashComponent implements OnInit {
 
   goToProducts(): void {
 
+
     this.router.navigate([
-      '/dashboard/products'
+      this.isDemoMode
+        ? '/demo/products'
+        : '/dashboard/products'
     ]);
 
   }
@@ -626,8 +1212,11 @@ export class DashComponent implements OnInit {
 
   goToClients(): void {
 
+
     this.router.navigate([
-      '/dashboard/clients'
+      this.isDemoMode
+        ? '/demo/clients'
+        : '/dashboard/clients'
     ]);
 
   }
@@ -635,90 +1224,153 @@ export class DashComponent implements OnInit {
 
   goToAI(): void {
 
+
     this.router.navigate([
-      '/dashboard/marketing-ia'
+      this.isDemoMode
+        ? '/demo/marketing-ia'
+        : '/dashboard/marketing-ia'
     ]);
 
   }
 
+
   /* ============================
-   PROFIT / MARGIN
+     PROFIT / MARGIN
   ============================ */
 
-  get estimatedGrossProfit(): number {
+  get estimatedGrossProfit():
+    number {
+
 
     return this.sales.reduce(
-      (sum, sale) => {
+      (
+        sum,
+        sale
+      ) => {
 
-        if (!sale.productId) {
+
+        if (
+          !sale.productId
+        ) {
+
           return sum;
+
         }
+
 
         const product =
           this.products.find(
             item =>
-              item.id === sale.productId
+              item.id ===
+              sale.productId
           );
 
-        if (!product) {
+
+        if (
+          !product
+        ) {
+
           return sum;
+
         }
 
+
         const profitPerUnit =
-          Number(sale.unitPrice) -
-          Number(product.cost);
+
+          Number(
+            sale.unitPrice
+          )
+
+          -
+
+          Number(
+            product.cost
+          );
+
 
         return (
+
           sum +
+
           (
             profitPerUnit *
-            Number(sale.quantity)
+
+            Number(
+              sale.quantity
+            )
           )
+
         );
+
       },
+
       0
+
     );
+
   }
 
 
-  get estimatedMarginPercentage(): number {
+  get estimatedMarginPercentage():
+    number {
 
-    if (!this.totalRevenue) {
+
+    if (
+      !this.totalRevenue
+    ) {
+
       return 0;
+
     }
 
+
     return (
+
       this.estimatedGrossProfit /
+
       this.totalRevenue
+
     ) * 100;
+
   }
 
 
   /* ============================
-    RECURRING CLIENTS
+     RECURRING CLIENTS
   ============================ */
 
-  get recurringCustomers(): number {
+  get recurringCustomers():
+    number {
+
 
     const purchases =
-      new Map<string, number>();
+      new Map<
+        string,
+        number
+      >();
 
 
     this.sales
+
       .filter(
         sale =>
           !!sale.customerId
       )
+
       .forEach(
         sale => {
+
 
           const id =
             sale.customerId as string;
 
+
           purchases.set(
             id,
             (
-              purchases.get(id) || 0
+              purchases.get(
+                id
+              ) || 0
             ) + 1
           );
 
@@ -727,24 +1379,38 @@ export class DashComponent implements OnInit {
 
 
     return Array
-      .from(purchases.values())
+      .from(
+        purchases.values()
+      )
       .filter(
-        count => count >= 2
+        count =>
+          count >= 2
       ).length;
+
   }
 
 
-  get recurringCustomerPercentage(): number {
+  get recurringCustomerPercentage():
+    number {
 
-    if (!this.identifiedCustomers) {
+
+    if (
+      !this.identifiedCustomers
+    ) {
+
       return 0;
+
     }
 
+
     return (
+
       this.recurringCustomers /
+
       this.identifiedCustomers
+
     ) * 100;
+
   }
 
 }
-

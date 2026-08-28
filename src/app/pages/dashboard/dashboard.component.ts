@@ -1,11 +1,6 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import {Component,OnInit} from '@angular/core';
 
-import {
-  CommonModule
-} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 import {
   ActivatedRoute,
@@ -20,6 +15,12 @@ import {
   onAuthStateChanged,
   signOut
 } from '@angular/fire/auth';
+
+import {SalesApiService
+} from '../../core/services/sales-api.service';
+
+import {ProductsApiService
+} from '../../core/services/products-api.service';
 
 
 interface CurrentUser {
@@ -143,7 +144,13 @@ export class DashboardComponent
       ActivatedRoute,
 
     private auth:
-      Auth
+      Auth,
+
+    private salesApi:
+      SalesApiService,
+
+    private productsApi:
+      ProductsApiService
 
   ) {}
 
@@ -197,7 +204,15 @@ export class DashboardComponent
     }
 
 
-    this.generateNotifications();
+    if (this.isDemoMode) {
+
+      this.generateDemoNotifications();
+
+    } else {
+
+      this.generateNotifications();
+
+    }
 
   }
 
@@ -424,34 +439,406 @@ export class DashboardComponent
   ============================ */
 
   private generateNotifications():
-    void {
+  void {
+
 
     const generated:
       NotificationItem[] = [];
 
 
-    const products: Product[] =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_products'
-        ) || '[]'
-      );
+    let productsLoaded =
+      false;
 
 
-    const sales: Sale[] =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_sales'
-        ) || '[]'
-      );
+    let salesLoaded =
+      false;
 
 
-    const campaigns: Campaign[] =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_campaigns'
-        ) || '[]'
-      );
+    let products:
+      Product[] = [];
+
+
+    let sales:
+      Sale[] = [];
+
+
+    const buildNotifications =
+      () => {
+
+
+        if (
+          !productsLoaded ||
+          !salesLoaded
+        ) {
+
+          return;
+
+        }
+
+
+        /* ============================
+          STOCK BAJO
+        ============================ */
+
+        const lowStock =
+          products.filter(
+            product =>
+              product.status ===
+                'active'
+              &&
+              Number(
+                product.stock
+              ) <= 5
+          );
+
+
+        if (
+          lowStock.length > 0
+        ) {
+
+          generated.push({
+
+            id:
+              'low-stock',
+
+            icon:
+              '📦',
+
+            title:
+              'Stock bajo',
+
+            description:
+              `${lowStock.length} producto(s) tienen 5 unidades o menos.`,
+
+            route:
+              `${this.baseRoute}/products`,
+
+            type:
+              'warning'
+
+          });
+
+        }
+
+
+        /* ============================
+          CLIENTES NO IDENTIFICADOS
+        ============================ */
+
+        if (
+          sales.length > 0
+        ) {
+
+
+          const anonymous =
+            sales.filter(
+              sale =>
+                !sale.customerId
+            ).length;
+
+
+          if (
+            anonymous > 0
+          ) {
+
+            generated.push({
+
+              id:
+                'anonymous-sales',
+
+              icon:
+                '👥',
+
+              title:
+                'Clientes por identificar',
+
+              description:
+                `${anonymous} venta(s) no tienen cliente identificado.`,
+
+              route:
+                `${this.baseRoute}/clients`,
+
+              type:
+                'info'
+
+            });
+
+          }
+
+        }
+
+
+        /* ============================
+          CAMPAÑAS ACTIVAS
+        ============================ */
+
+        const campaigns:
+          Campaign[] =
+            JSON.parse(
+              localStorage.getItem(
+                'wisepick_campaigns'
+              ) || '[]'
+            );
+
+
+        const activeCampaigns =
+          campaigns.filter(
+            campaign =>
+              campaign.status ===
+              'active'
+          );
+
+
+        if (
+          activeCampaigns.length > 0
+        ) {
+
+          generated.push({
+
+            id:
+              'active-campaigns',
+
+            icon:
+              '🎯',
+
+            title:
+              'Campañas activas',
+
+            description:
+              `${activeCampaigns.length} campaña(s) están actualmente activas.`,
+
+            route:
+              `${this.baseRoute}/campaigns`,
+
+            type:
+              'success'
+
+          });
+
+        }
+
+
+        this.notifications =
+          generated;
+
+      };
+
+
+    /* ============================
+      PRODUCTS API
+    ============================ */
+
+    this.productsApi
+      .getProducts()
+      .subscribe({
+
+        next:
+          apiProducts => {
+
+
+            products =
+              apiProducts.map(
+                product => ({
+
+                  id:
+                    product.id,
+
+                  name:
+                    product.name,
+
+                  stock:
+                    Number(
+                      product.stock || 0
+                    ),
+
+                  status:
+                    product.status ===
+                      'ACTIVE'
+                      ? 'active'
+                      : 'inactive'
+
+                })
+              );
+
+
+            productsLoaded =
+              true;
+
+
+            buildNotifications();
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+              'Error cargando productos para notificaciones:',
+              error
+            );
+
+
+            productsLoaded =
+              true;
+
+
+            buildNotifications();
+
+          }
+
+      });
+
+
+    /* ============================
+      SALES API
+    ============================ */
+
+    this.salesApi
+      .getSales()
+      .subscribe({
+
+        next:
+          apiSales => {
+
+
+            sales =
+              apiSales.map(
+                sale => ({
+
+                  id:
+                    sale.id,
+
+                  customerId:
+                    sale.customerId || null
+
+                })
+              );
+
+
+            salesLoaded =
+              true;
+
+
+            buildNotifications();
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+              'Error cargando ventas para notificaciones:',
+              error
+            );
+
+
+            salesLoaded =
+              true;
+
+
+            buildNotifications();
+
+          }
+
+      });
+
+  }
+
+
+  /* ============================
+     USER DISPLAY
+  ============================ */
+
+  get userInitials(): string {
+
+    if (
+      this.isDemoMode
+    ) {
+
+      return 'DE';
+
+    }
+
+
+    if (
+      !this.currentUser
+        .isAuthenticated
+    ) {
+
+      return 'DE';
+
+    }
+
+
+    const name =
+      this.currentUser.name ||
+      this.currentUser.email ||
+      'Usuario';
+
+
+    const parts =
+      name
+        .trim()
+        .split(' ')
+        .filter(
+          part =>
+            part.length > 0
+        );
+
+
+    return parts
+      .slice(0, 2)
+      .map(
+        part =>
+          part
+            .charAt(0)
+            .toUpperCase()
+      )
+      .join('');
+
+  }
+
+
+  /* ============================
+     DEMO NOTIFICATIONS
+  ============================ */
+  private generateDemoNotifications():
+  void {
+
+
+    const generated:
+      NotificationItem[] = [];
+
+
+    const products:
+      Product[] =
+        JSON.parse(
+          localStorage.getItem(
+            'wisepick_products'
+          ) || '[]'
+        );
+
+
+    const sales:
+      Sale[] =
+        JSON.parse(
+          localStorage.getItem(
+            'wisepick_sales'
+          ) || '[]'
+        );
+
+
+    const campaigns:
+      Campaign[] =
+        JSON.parse(
+          localStorage.getItem(
+            'wisepick_campaigns'
+          ) || '[]'
+        );
 
 
     /* STOCK BAJO */
@@ -460,8 +847,11 @@ export class DashboardComponent
       products.filter(
         product =>
           product.status ===
-            'active' &&
-          Number(product.stock) <= 5
+            'active'
+          &&
+          Number(
+            product.stock
+          ) <= 5
       );
 
 
@@ -499,6 +889,7 @@ export class DashboardComponent
     if (
       sales.length > 0
     ) {
+
 
       const anonymous =
         sales.filter(
@@ -579,60 +970,6 @@ export class DashboardComponent
 
     this.notifications =
       generated;
-
-  }
-
-
-  /* ============================
-     USER DISPLAY
-  ============================ */
-
-  get userInitials(): string {
-
-    if (
-      this.isDemoMode
-    ) {
-
-      return 'DE';
-
-    }
-
-
-    if (
-      !this.currentUser
-        .isAuthenticated
-    ) {
-
-      return 'DE';
-
-    }
-
-
-    const name =
-      this.currentUser.name ||
-      this.currentUser.email ||
-      'Usuario';
-
-
-    const parts =
-      name
-        .trim()
-        .split(' ')
-        .filter(
-          part =>
-            part.length > 0
-        );
-
-
-    return parts
-      .slice(0, 2)
-      .map(
-        part =>
-          part
-            .charAt(0)
-            .toUpperCase()
-      )
-      .join('');
 
   }
 
