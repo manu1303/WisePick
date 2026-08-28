@@ -1,6 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import {
+  SalesApiService
+} from '../../../../core/services/sales-api.service';
+
+import {
+  ProductsApiService,
+  ApiProduct
+} from '../../../../core/services/products-api.service';
+
+import {
+  ClientsApiService,
+  ApiClient
+} from '../../../../core/services/clients-api.service';
 
 
 interface Sale {
@@ -94,14 +109,17 @@ interface ClientReport {
 @Component({
   selector: 'app-reports',
   standalone: true,
+
   imports: [
     CommonModule,
     FormsModule
   ],
+
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
+
 
   sales: Sale[] = [];
 
@@ -119,6 +137,7 @@ export class ReportsComponent implements OnInit {
   customStartDate =
     '';
 
+
   customEndDate =
     '';
 
@@ -131,7 +150,42 @@ export class ReportsComponent implements OnInit {
     '';
 
 
+  loading =
+    false;
+
+
+  globalError =
+    '';
+
+
+  isDemoMode =
+    false;
+
+
+  constructor(
+
+    private router:
+      Router,
+
+    private salesApi:
+      SalesApiService,
+
+    private productsApi:
+      ProductsApiService,
+
+    private clientsApi:
+      ClientsApiService
+
+  ) {}
+
+
   ngOnInit(): void {
+
+    this.isDemoMode =
+      this.router.url.startsWith(
+        '/demo'
+      );
+
 
     this.loadData();
 
@@ -143,6 +197,44 @@ export class ReportsComponent implements OnInit {
   ============================ */
 
   private loadData(): void {
+
+
+    if (
+      this.isDemoMode
+    ) {
+
+      this.loadDemoData();
+
+      return;
+
+    }
+
+
+    this.loading =
+      true;
+
+
+    this.globalError =
+      '';
+
+
+    this.loadSales();
+
+    this.loadProducts();
+
+    this.loadClients();
+
+    this.loadCampaigns();
+
+  }
+
+
+  /* ============================
+     DEMO
+  ============================ */
+
+  private loadDemoData(): void {
+
 
     this.sales =
       JSON.parse(
@@ -177,6 +269,329 @@ export class ReportsComponent implements OnInit {
 
   }
 
+
+  /* ============================
+     SALES API
+  ============================ */
+
+  private loadSales(): void {
+
+
+    this.salesApi
+      .getSales()
+      .subscribe({
+
+
+        next:
+          sales => {
+
+
+            this.sales =
+              sales.map(
+                sale =>
+                  this.mapApiSale(
+                    sale
+                  )
+              );
+
+
+            this.loading =
+              false;
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+              'Error cargando ventas en Reportes:',
+              error
+            );
+
+
+            this.globalError =
+              'No fue posible cargar las ventas.';
+
+
+            this.loading =
+              false;
+
+          }
+
+      });
+
+  }
+
+
+  private mapApiSale(
+    sale: any
+  ): Sale {
+
+
+    return {
+
+      id:
+        sale.id,
+
+      saleDate:
+        sale.saleDate,
+
+      customerId:
+        sale.customerId || null,
+
+      customerName:
+        sale.customerName || '',
+
+      productId:
+        sale.productId || undefined,
+
+      productName:
+        sale.productName || '',
+
+      quantity:
+        Number(
+          sale.quantity || 0
+        ),
+
+      unitPrice:
+        Number(
+          sale.unitPrice || 0
+        ),
+
+      total:
+        Number(
+          sale.total || 0
+        ),
+
+      paymentMethod:
+        sale.paymentMethod || 'Otro',
+
+      source:
+        this.normalizeSource(
+          sale.source
+        ),
+
+      createdAt:
+        sale.createdAt || ''
+
+    };
+
+  }
+
+
+  /* ============================
+     PRODUCTS API
+  ============================ */
+
+  private loadProducts(): void {
+
+
+    this.productsApi
+      .getProducts()
+      .subscribe({
+
+
+        next:
+          products => {
+
+
+            this.products =
+              products.map(
+                product =>
+                  this.mapApiProduct(
+                    product
+                  )
+              );
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+              'Error cargando productos en Reportes:',
+              error
+            );
+
+
+            this.globalError =
+              'No fue posible cargar los productos.';
+
+          }
+
+      });
+
+  }
+
+
+  private mapApiProduct(
+    product: ApiProduct
+  ): Product {
+
+
+    return {
+
+      id:
+        product.id,
+
+      name:
+        product.name,
+
+      category:
+        product.category || '',
+
+      cost:
+        Number(
+          product.cost || 0
+        ),
+
+      price:
+        Number(
+          product.price || 0
+        ),
+
+      stock:
+        Number(
+          product.stock || 0
+        ),
+
+      status:
+        product.status === 'ACTIVE'
+          ? 'active'
+          : 'inactive'
+
+    };
+
+  }
+
+
+  /* ============================
+     CLIENTS API
+  ============================ */
+
+  private loadClients(): void {
+
+
+    this.clientsApi
+      .getClients()
+      .subscribe({
+
+
+        next:
+          clients => {
+
+
+            this.clients =
+              clients.map(
+                client =>
+                  this.mapApiClient(
+                    client
+                  )
+              );
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+              'Error cargando clientes en Reportes:',
+              error
+            );
+
+
+            this.globalError =
+              'No fue posible cargar los clientes.';
+
+          }
+
+      });
+
+  }
+
+
+  private mapApiClient(
+    client: ApiClient
+  ): Client {
+
+
+    return {
+
+      id:
+        client.id,
+
+      name:
+        client.name,
+
+      status:
+        client.status === 'ACTIVE'
+          ? 'active'
+          : 'inactive'
+
+    };
+
+  }
+
+
+  /* ============================
+     CAMPAIGNS
+  ============================ */
+
+  private loadCampaigns(): void {
+
+
+    this.campaigns =
+      JSON.parse(
+        localStorage.getItem(
+          'wisepick_campaigns'
+        ) || '[]'
+      );
+
+  }
+
+
+  /* ============================
+     SOURCE NORMALIZATION
+  ============================ */
+
+  private normalizeSource(
+    source: string
+  ): Sale['source'] {
+
+
+    switch (
+      source?.toUpperCase()
+    ) {
+
+
+      case 'MANUAL':
+        return 'manual';
+
+
+      case 'EXCEL':
+        return 'excel';
+
+
+      case 'INVOICE':
+        return 'invoice';
+
+
+      case 'DEMO':
+        return 'demo';
+
+
+      default:
+        return 'manual';
+
+    }
+
+  }
 
 
   /* ============================
@@ -223,7 +638,6 @@ export class ReportsComponent implements OnInit {
         break;
 
 
-
       case '30days':
 
         startDate =
@@ -236,7 +650,6 @@ export class ReportsComponent implements OnInit {
         break;
 
 
-
       case 'month':
 
         startDate =
@@ -247,7 +660,6 @@ export class ReportsComponent implements OnInit {
           );
 
         break;
-
 
 
       case 'custom':
@@ -272,6 +684,7 @@ export class ReportsComponent implements OnInit {
           new Date(
             this.customEndDate
           );
+
 
         endDate.setHours(
           23,
@@ -310,7 +723,6 @@ export class ReportsComponent implements OnInit {
     );
 
   }
-
 
 
   /* ============================
@@ -369,7 +781,6 @@ export class ReportsComponent implements OnInit {
     );
 
   }
-
 
 
   /* ============================
@@ -446,13 +857,13 @@ export class ReportsComponent implements OnInit {
   }
 
 
-
   /* ============================
      PRODUCTS
   ============================ */
 
   get productRanking():
     ProductReport[] {
+
 
     const map =
       new Map<
@@ -463,6 +874,7 @@ export class ReportsComponent implements OnInit {
 
     this.filteredSales.forEach(
       sale => {
+
 
         const key =
           sale.productId ||
@@ -475,10 +887,12 @@ export class ReportsComponent implements OnInit {
 
         if (existing) {
 
+
           existing.units +=
             Number(
               sale.quantity
             );
+
 
           existing.revenue +=
             Number(
@@ -487,7 +901,9 @@ export class ReportsComponent implements OnInit {
 
         }
 
+
         else {
+
 
           map.set(
             key,
@@ -543,7 +959,6 @@ export class ReportsComponent implements OnInit {
   }
 
 
-
   /* ============================
      CLIENTS
   ============================ */
@@ -562,6 +977,7 @@ export class ReportsComponent implements OnInit {
 
   get identifiedSalesPercentage():
     number {
+
 
     if (
       !this.totalTransactions
@@ -583,6 +999,7 @@ export class ReportsComponent implements OnInit {
   get clientRanking():
     ClientReport[] {
 
+
     const map =
       new Map<
         string,
@@ -598,6 +1015,7 @@ export class ReportsComponent implements OnInit {
       .forEach(
         sale => {
 
+
           const id =
             sale.customerId as string;
 
@@ -608,7 +1026,9 @@ export class ReportsComponent implements OnInit {
 
           if (existing) {
 
+
             existing.purchases++;
+
 
             existing.total +=
               Number(
@@ -617,7 +1037,9 @@ export class ReportsComponent implements OnInit {
 
           }
 
+
           else {
+
 
             map.set(
               id,
@@ -670,7 +1092,6 @@ export class ReportsComponent implements OnInit {
   }
 
 
-
   /* ============================
      INVENTORY
   ============================ */
@@ -682,12 +1103,12 @@ export class ReportsComponent implements OnInit {
       .filter(
         product =>
           product.status ===
-            'active' &&
+            'active'
+          &&
           product.stock <= 5
       );
 
   }
-
 
 
   /* ============================
@@ -733,13 +1154,13 @@ export class ReportsComponent implements OnInit {
   }
 
 
-
   /* ============================
      FINDINGS
   ============================ */
 
   get businessFindings():
     string[] {
+
 
     const findings:
       string[] = [];
@@ -809,7 +1230,6 @@ export class ReportsComponent implements OnInit {
   }
 
 
-
   /* ============================
      REPORT SELECTION
   ============================ */
@@ -824,19 +1244,11 @@ export class ReportsComponent implements OnInit {
   }
 
 
-
   /* ============================
      EXPORT
   ============================ */
 
   exportReport(): void {
-
-    /*
-      TEMPORAL.
-
-      Más adelante conectaremos
-      un servicio real de PDF.
-    */
 
     this.exportMessage =
       'La exportación PDF quedará disponible al integrar el servicio de reportes del backend.';
