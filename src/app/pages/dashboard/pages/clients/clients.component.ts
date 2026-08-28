@@ -13,6 +13,11 @@ import {
 } from '../../../../core/services/company-api.service';
 
 
+import {
+  SalesApiService
+} from '../../../../core/services/sales-api.service';
+
+
 interface Client {
 
   id: string;
@@ -107,7 +112,8 @@ export class ClientsComponent implements OnInit {
 
   constructor(
     private clientsApi: ClientsApiService,
-    private companyApi: CompanyApiService
+    private companyApi: CompanyApiService,
+    private salesApi: SalesApiService
   ) {}
 
 
@@ -231,18 +237,70 @@ export class ClientsComponent implements OnInit {
 
   loadSales(): void {
 
-    this.sales =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_sales'
-        ) || '[]'
-      );
+    this.salesApi
+      .getSales()
+      .subscribe({
+
+        next: sales => {
+
+          this.sales =
+            sales.map(
+              sale =>
+                this.mapApiSale(
+                  sale
+                )
+            );
+
+        },
+
+        error: error => {
+
+          console.error(
+            'Error cargando ventas:',
+            error
+          );
+
+        }
+
+      });
 
   }
 
 
   /* ============================
-     MAP API
+     MAP API SALE
+  ============================ */
+
+  private mapApiSale(
+    sale: any
+  ): Sale {
+
+    return {
+
+      id:
+        sale.id,
+
+      customerId:
+        sale.customerId || undefined,
+
+      customerName:
+        sale.customerName || '',
+
+      total:
+        Number(
+          sale.total || 0
+        ),
+
+      saleDate:
+        sale.saleDate
+
+    };
+
+  }
+
+
+  /* ============================
+     MAP API CLIENT
   ============================ */
 
   private mapApiClient(

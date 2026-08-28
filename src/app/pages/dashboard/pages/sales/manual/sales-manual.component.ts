@@ -1,30 +1,20 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import {Component,OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute,Router} from '@angular/router';
 
-import {
-  CommonModule
-} from '@angular/common';
-
-import {
-  FormsModule
-} from '@angular/forms';
-
-import {
-  ActivatedRoute,
-  Router
-} from '@angular/router';
-
-import {
-  SalesApiService,
-  SaleRequest
+import {SalesApiService,SaleRequest
 } from '../../../../../core/services/sales-api.service';
 
-import {
-  CompanyApiService
+import {CompanyApiService
 } from '../../../../../core/services/company-api.service';
 
+
+import {ClientsApiService,ApiClient
+} from '../../../../../core/services/clients-api.service';
+
+import {ProductsApiService,ApiProduct
+} from '../../../../../core/services/products-api.service';
 
 interface Product {
 
@@ -200,7 +190,13 @@ export class SalesManualComponent
       SalesApiService,
 
     private companyApi:
-      CompanyApiService
+      CompanyApiService,
+
+    private clientsApi:
+      ClientsApiService,
+
+    private productsApi:
+      ProductsApiService
 
   ) {}
 
@@ -241,21 +237,80 @@ export class SalesManualComponent
 
   private loadProducts(): void {
 
+    this.productsApi
+      .getActiveProducts()
+      .subscribe({
 
-    const storedProducts =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_products'
-        ) || '[]'
-      );
+        next: products => {
 
+          this.products =
+            products.map(
+              product =>
+                this.mapApiProduct(
+                  product
+                )
+            );
 
-    this.products =
-      storedProducts.filter(
-        (product: Product) =>
-          product.status ===
-          'active'
-      );
+        },
+
+        error: error => {
+
+          console.error(
+            'Error cargando productos:',
+            error
+          );
+
+          this.globalError =
+            'No fue posible cargar los productos.';
+
+        }
+
+      });
+
+  }
+
+  /* ==========================
+     MAP API PRODUCT
+  ========================== */
+  private mapApiProduct(
+    product: ApiProduct
+  ): Product {
+
+    return {
+
+      id:
+        product.id,
+
+      name:
+        product.name,
+
+      category:
+        product.category || '',
+
+      sku:
+        product.sku || '',
+
+      cost:
+        Number(
+          product.cost || 0
+        ),
+
+      price:
+        Number(
+          product.price || 0
+        ),
+
+      stock:
+        Number(
+          product.stock || 0
+        ),
+
+      status:
+        product.status === 'ACTIVE'
+          ? 'active'
+          : 'inactive'
+
+    };
 
   }
 
@@ -266,21 +321,68 @@ export class SalesManualComponent
 
   private loadClients(): void {
 
+    this.clientsApi
+      .getActiveClients()
+      .subscribe({
 
-    const storedClients =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_clients'
-        ) || '[]'
-      );
+        next: clients => {
 
+          this.clients =
+            clients.map(
+              client =>
+                this.mapApiClient(
+                  client
+                )
+            );
 
-    this.clients =
-      storedClients.filter(
-        (client: Client) =>
-          client.status ===
-          'active'
-      );
+        },
+
+        error: error => {
+
+          console.error(
+            'Error cargando clientes:',
+            error
+          );
+
+          this.globalError =
+            'No fue posible cargar los clientes.';
+
+        }
+
+      });
+
+  }
+
+  /* ==========================
+     MAP API CLIENTS
+  ========================== */
+  private mapApiClient(
+    client: ApiClient
+  ): Client {
+
+    return {
+
+      id:
+        client.id,
+
+      name:
+        client.name,
+
+      phone:
+        client.phone || '',
+
+      email:
+        client.email || '',
+
+      city:
+        client.city || '',
+
+      status:
+        client.status === 'ACTIVE'
+          ? 'active'
+          : 'inactive'
+
+    };
 
   }
 
