@@ -1,6 +1,11 @@
-import {Component,OnInit} from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
 
-import {CommonModule} from '@angular/common';
+import {
+  CommonModule
+} from '@angular/common';
 
 import {
   ActivatedRoute,
@@ -16,64 +21,116 @@ import {
   signOut
 } from '@angular/fire/auth';
 
-import {SalesApiService
+import {
+  SalesApiService
 } from '../../core/services/sales-api.service';
 
-import {ProductsApiService
+import {
+  ProductsApiService
 } from '../../core/services/products-api.service';
 
+import {
+  CampaignsApiService,
+  CampaignApi
+} from '../../core/services/campaigns-api.service';
+
+
+/* ============================
+   INTERFACES
+============================ */
 
 interface CurrentUser {
+
   isAuthenticated: boolean;
+
   name?: string;
+
   email?: string;
+
 }
 
 
 interface NotificationItem {
+
   id: string;
+
   icon: string;
+
   title: string;
+
   description: string;
+
   route: string;
-  type: 'warning' | 'info' | 'success';
+
+  type:
+    | 'warning'
+    | 'info'
+    | 'success';
+
 }
 
 
 interface Product {
+
   id: string;
+
   name: string;
+
   stock: number;
-  status: 'active' | 'inactive';
+
+  status:
+    | 'active'
+    | 'inactive';
+
 }
 
 
 interface Sale {
+
   id: string;
-  customerId?: string | null;
+
+  customerId?:
+    string | null;
+
 }
 
 
 interface Campaign {
+
   id: string;
+
   name: string;
 
   status:
     | 'draft'
     | 'active'
     | 'completed';
+
 }
 
 
+/* ============================
+   COMPONENT
+============================ */
+
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
+
+  selector:
+    'app-dashboard',
+
+  standalone:
+    true,
 
   imports: [
+
     CommonModule,
+
     RouterLink,
+
     RouterLinkActive,
+
     RouterOutlet
+
   ],
 
   templateUrl:
@@ -81,7 +138,8 @@ interface Campaign {
 
   styleUrls: [
     './dashboard.component.scss'
-  ],
+  ]
+
 })
 export class DashboardComponent
   implements OnInit {
@@ -91,7 +149,9 @@ export class DashboardComponent
      MODE
   ============================ */
 
-  isDemoMode = false;
+  isDemoMode =
+    false;
+
 
   baseRoute =
     '/dashboard';
@@ -101,18 +161,24 @@ export class DashboardComponent
      SIDEBAR
   ============================ */
 
-  isSidebarCollapsed = false;
+  isSidebarCollapsed =
+    false;
 
 
   /* ============================
      DROPDOWNS
   ============================ */
 
-  showAddMenu = false;
+  showAddMenu =
+    false;
 
-  showNotifications = false;
 
-  showUserMenu = false;
+  showNotifications =
+    false;
+
+
+  showUserMenu =
+    false;
 
 
   /* ============================
@@ -122,7 +188,8 @@ export class DashboardComponent
   currentUser:
     CurrentUser = {
 
-      isAuthenticated: false
+      isAuthenticated:
+        false
 
     };
 
@@ -134,6 +201,29 @@ export class DashboardComponent
   notifications:
     NotificationItem[] = [];
 
+
+  /*
+   * El badge representa únicamente
+   * las notificaciones todavía no vistas.
+   */
+
+  unreadNotifications =
+    0;
+
+
+  /*
+   * Evita que una actualización producida
+   * al abrir la campana vuelva a marcar
+   * las mismas notificaciones como nuevas.
+   */
+
+  private notificationsViewed =
+    false;
+
+
+  /* ============================
+     CONSTRUCTOR
+  ============================ */
 
   constructor(
 
@@ -150,16 +240,23 @@ export class DashboardComponent
       SalesApiService,
 
     private productsApi:
-      ProductsApiService
+      ProductsApiService,
+
+    private campaignsApi:
+      CampaignsApiService
 
   ) {}
 
 
+  /* ============================
+     INIT
+  ============================ */
+
   ngOnInit(): void {
 
+
     /*
-     * Determinamos si el Dashboard
-     * fue abierto desde:
+     * Determinamos si estamos en:
      *
      * /demo
      *
@@ -171,7 +268,8 @@ export class DashboardComponent
     this.isDemoMode =
       this.route
         .snapshot
-        .data['mode'] === 'demo';
+        .data['mode'] ===
+        'demo';
 
 
     this.baseRoute =
@@ -181,8 +279,7 @@ export class DashboardComponent
 
 
     /*
-     * En modo demo ignoramos
-     * deliberadamente cualquier
+     * En demo ignoramos cualquier
      * sesión Firebase existente.
      */
 
@@ -197,20 +294,35 @@ export class DashboardComponent
 
       };
 
-    } else {
+    }
+
+    else {
 
       this.listenAuthState();
 
     }
 
 
-    if (this.isDemoMode) {
+    /*
+     * Generamos las notificaciones
+     * iniciales.
+     */
 
-      this.generateDemoNotifications();
+    if (
+      this.isDemoMode
+    ) {
 
-    } else {
+      this.generateDemoNotifications(
+        true
+      );
 
-      this.generateNotifications();
+    }
+
+    else {
+
+      this.generateNotifications(
+        true
+      );
 
     }
 
@@ -221,13 +333,19 @@ export class DashboardComponent
      FIREBASE AUTH
   ============================ */
 
-  private listenAuthState(): void {
+  private listenAuthState():
+  void {
 
     onAuthStateChanged(
+
       this.auth,
+
       user => {
 
-        if (user) {
+
+        if (
+          user
+        ) {
 
           this.currentUser = {
 
@@ -244,7 +362,9 @@ export class DashboardComponent
 
           };
 
-        } else {
+        }
+
+        else {
 
           this.currentUser = {
 
@@ -256,12 +376,18 @@ export class DashboardComponent
         }
 
       }
+
     );
 
   }
 
 
-  async logout(): Promise<void> {
+  /* ============================
+     LOGOUT
+  ============================ */
+
+  async logout():
+  Promise<void> {
 
     this.closeMenus();
 
@@ -286,7 +412,9 @@ export class DashboardComponent
     route: string
   ): string {
 
-    return `${this.baseRoute}${route}`;
+    return (
+      `${this.baseRoute}${route}`
+    );
 
   }
 
@@ -295,7 +423,8 @@ export class DashboardComponent
      SIDEBAR
   ============================ */
 
-  toggleSidebar(): void {
+  toggleSidebar():
+  void {
 
     this.isSidebarCollapsed =
       !this.isSidebarCollapsed;
@@ -307,7 +436,8 @@ export class DashboardComponent
      ADD DATA MENU
   ============================ */
 
-  toggleAddMenu(): void {
+  toggleAddMenu():
+  void {
 
     this.showAddMenu =
       !this.showAddMenu;
@@ -315,6 +445,7 @@ export class DashboardComponent
 
     this.showNotifications =
       false;
+
 
     this.showUserMenu =
       false;
@@ -326,7 +457,8 @@ export class DashboardComponent
      NOTIFICATIONS
   ============================ */
 
-  toggleNotifications(): void {
+  toggleNotifications():
+  void {
 
     this.showNotifications =
       !this.showNotifications;
@@ -335,8 +467,55 @@ export class DashboardComponent
     this.showAddMenu =
       false;
 
+
     this.showUserMenu =
       false;
+
+
+    /*
+     * Al abrir la campana volvemos
+     * a consultar las APIs.
+     *
+     * Así no hace falta refrescar
+     * toda la página.
+     */
+
+    if (
+      this.showNotifications
+    ) {
+
+      this.notificationsViewed =
+        true;
+
+
+      /*
+       * Lo que ya abrió el usuario
+       * deja de considerarse no leído.
+       */
+
+      this.unreadNotifications =
+        0;
+
+
+      if (
+        this.isDemoMode
+      ) {
+
+        this.generateDemoNotifications(
+          false
+        );
+
+      }
+
+      else {
+
+        this.generateNotifications(
+          false
+        );
+
+      }
+
+    }
 
   }
 
@@ -345,7 +524,8 @@ export class DashboardComponent
      USER MENU
   ============================ */
 
-  toggleUserMenu(): void {
+  toggleUserMenu():
+  void {
 
     this.showUserMenu =
       !this.showUserMenu;
@@ -353,6 +533,7 @@ export class DashboardComponent
 
     this.showAddMenu =
       false;
+
 
     this.showNotifications =
       false;
@@ -364,13 +545,16 @@ export class DashboardComponent
      CLOSE MENUS
   ============================ */
 
-  closeMenus(): void {
+  closeMenus():
+  void {
 
     this.showAddMenu =
       false;
 
+
     this.showNotifications =
       false;
+
 
     this.showUserMenu =
       false;
@@ -390,26 +574,30 @@ export class DashboardComponent
 
 
     /*
-     * Las rutas antiguas del
-     * componente siguen usando
-     * /dashboard.
+     * Las rutas antiguas siguen
+     * utilizando /dashboard.
      *
-     * Si estamos en demo,
-     * las convertimos automáticamente
-     * a /demo.
+     * En demo cambiamos automáticamente
+     * /dashboard por /demo.
      */
 
     if (
+
       this.isDemoMode &&
+
       route.startsWith(
         '/dashboard'
       )
+
     ) {
 
       route =
         route.replace(
+
           '/dashboard',
+
           '/demo'
+
         );
 
     }
@@ -422,7 +610,8 @@ export class DashboardComponent
   }
 
 
-  goToLanding(): void {
+  goToLanding():
+  void {
 
     this.closeMenus();
 
@@ -438,9 +627,20 @@ export class DashboardComponent
      NOTIFICATION ENGINE
   ============================ */
 
-  private generateNotifications():
+  private generateNotifications(
+    markAsUnread:
+      boolean = false
+  ):
   void {
 
+
+    /*
+     * Este arreglo se reconstruye
+     * completamente en cada consulta.
+     *
+     * Así evitamos duplicar
+     * notificaciones.
+     */
 
     const generated:
       NotificationItem[] = [];
@@ -454,6 +654,10 @@ export class DashboardComponent
       false;
 
 
+    let campaignsLoaded =
+      false;
+
+
     let products:
       Product[] = [];
 
@@ -462,13 +666,31 @@ export class DashboardComponent
       Sale[] = [];
 
 
+    let campaigns:
+      Campaign[] = [];
+
+
+    /* ============================
+       BUILD NOTIFICATIONS
+    ============================ */
+
     const buildNotifications =
       () => {
 
 
+        /*
+         * Esperamos a que las tres
+         * APIs hayan terminado.
+         */
+
         if (
+
           !productsLoaded ||
-          !salesLoaded
+
+          !salesLoaded ||
+
+          !campaignsLoaded
+
         ) {
 
           return;
@@ -477,18 +699,23 @@ export class DashboardComponent
 
 
         /* ============================
-          STOCK BAJO
+           STOCK BAJO
         ============================ */
 
         const lowStock =
           products.filter(
+
             product =>
+
               product.status ===
                 'active'
+
               &&
+
               Number(
                 product.stock
               ) <= 5
+
           );
 
 
@@ -522,7 +749,7 @@ export class DashboardComponent
 
 
         /* ============================
-          CLIENTES NO IDENTIFICADOS
+           CLIENTES NO IDENTIFICADOS
         ============================ */
 
         if (
@@ -532,8 +759,10 @@ export class DashboardComponent
 
           const anonymous =
             sales.filter(
+
               sale =>
                 !sale.customerId
+
             ).length;
 
 
@@ -569,23 +798,16 @@ export class DashboardComponent
 
 
         /* ============================
-          CAMPAÑAS ACTIVAS
+           CAMPAÑAS ACTIVAS
         ============================ */
-
-        const campaigns:
-          Campaign[] =
-            JSON.parse(
-              localStorage.getItem(
-                'wisepick_campaigns'
-              ) || '[]'
-            );
-
 
         const activeCampaigns =
           campaigns.filter(
+
             campaign =>
               campaign.status ===
               'active'
+
           );
 
 
@@ -618,14 +840,41 @@ export class DashboardComponent
         }
 
 
+        /*
+         * Sustituimos el contenido
+         * anterior.
+         *
+         * Nunca acumulamos notificaciones.
+         */
+
         this.notifications =
           generated;
+
+
+        /*
+         * Solo la carga inicial
+         * se marca como no leída.
+         *
+         * Cuando el usuario abre
+         * la campana, hacemos refresh,
+         * pero mantenemos el badge en 0.
+         */
+
+        if (
+          markAsUnread &&
+          !this.notificationsViewed
+        ) {
+
+          this.unreadNotifications =
+            generated.length;
+
+        }
 
       };
 
 
     /* ============================
-      PRODUCTS API
+       PRODUCTS API
     ============================ */
 
     this.productsApi
@@ -638,6 +887,7 @@ export class DashboardComponent
 
             products =
               apiProducts.map(
+
                 product => ({
 
                   id:
@@ -654,10 +904,11 @@ export class DashboardComponent
                   status:
                     product.status ===
                       'ACTIVE'
-                      ? 'active'
-                      : 'inactive'
+                        ? 'active'
+                        : 'inactive'
 
                 })
+
               );
 
 
@@ -675,8 +926,11 @@ export class DashboardComponent
 
 
             console.error(
+
               'Error cargando productos para notificaciones:',
+
               error
+
             );
 
 
@@ -692,7 +946,7 @@ export class DashboardComponent
 
 
     /* ============================
-      SALES API
+       SALES API
     ============================ */
 
     this.salesApi
@@ -705,6 +959,7 @@ export class DashboardComponent
 
             sales =
               apiSales.map(
+
                 sale => ({
 
                   id:
@@ -714,6 +969,7 @@ export class DashboardComponent
                     sale.customerId || null
 
                 })
+
               );
 
 
@@ -731,12 +987,92 @@ export class DashboardComponent
 
 
             console.error(
+
               'Error cargando ventas para notificaciones:',
+
               error
+
             );
 
 
             salesLoaded =
+              true;
+
+
+            buildNotifications();
+
+          }
+
+      });
+
+
+    /* ============================
+       CAMPAIGNS API
+    ============================ */
+
+    this.campaignsApi
+      .getAll()
+      .subscribe({
+
+        next:
+          (
+            apiCampaigns:
+              CampaignApi[]
+          ) => {
+
+
+            campaigns =
+              apiCampaigns.map(
+
+                campaign => ({
+
+                  id:
+                    campaign.id,
+
+                  name:
+                    campaign.name,
+
+                  status:
+                    campaign.status
+                      ?.toUpperCase() ===
+                      'ACTIVE'
+                        ? 'active'
+
+                        : campaign.status
+                            ?.toUpperCase() ===
+                            'COMPLETED'
+                              ? 'completed'
+
+                              : 'draft'
+
+                })
+
+              );
+
+
+            campaignsLoaded =
+              true;
+
+
+            buildNotifications();
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+
+              'Error cargando campañas para notificaciones:',
+
+              error
+
+            );
+
+
+            campaignsLoaded =
               true;
 
 
@@ -753,7 +1089,9 @@ export class DashboardComponent
      USER DISPLAY
   ============================ */
 
-  get userInitials(): string {
+  get userInitials():
+  string {
+
 
     if (
       this.isDemoMode
@@ -776,7 +1114,9 @@ export class DashboardComponent
 
     const name =
       this.currentUser.name ||
+
       this.currentUser.email ||
+
       'Usuario';
 
 
@@ -785,19 +1125,29 @@ export class DashboardComponent
         .trim()
         .split(' ')
         .filter(
+
           part =>
             part.length > 0
+
         );
 
 
     return parts
-      .slice(0, 2)
+
+      .slice(
+        0,
+        2
+      )
+
       .map(
+
         part =>
           part
             .charAt(0)
             .toUpperCase()
+
       )
+
       .join('');
 
   }
@@ -806,7 +1156,11 @@ export class DashboardComponent
   /* ============================
      DEMO NOTIFICATIONS
   ============================ */
-  private generateDemoNotifications():
+
+  private generateDemoNotifications(
+    markAsUnread:
+      boolean = false
+  ):
   void {
 
 
@@ -816,42 +1170,58 @@ export class DashboardComponent
 
     const products:
       Product[] =
+
         JSON.parse(
+
           localStorage.getItem(
             'wisepick_products'
           ) || '[]'
+
         );
 
 
     const sales:
       Sale[] =
+
         JSON.parse(
+
           localStorage.getItem(
             'wisepick_sales'
           ) || '[]'
+
         );
 
 
     const campaigns:
       Campaign[] =
+
         JSON.parse(
+
           localStorage.getItem(
             'wisepick_campaigns'
           ) || '[]'
+
         );
 
 
-    /* STOCK BAJO */
+    /* ============================
+       STOCK BAJO
+    ============================ */
 
     const lowStock =
       products.filter(
+
         product =>
+
           product.status ===
             'active'
+
           &&
+
           Number(
             product.stock
           ) <= 5
+
       );
 
 
@@ -884,7 +1254,9 @@ export class DashboardComponent
     }
 
 
-    /* CLIENTES NO IDENTIFICADOS */
+    /* ============================
+       CLIENTES NO IDENTIFICADOS
+    ============================ */
 
     if (
       sales.length > 0
@@ -893,8 +1265,10 @@ export class DashboardComponent
 
       const anonymous =
         sales.filter(
+
           sale =>
             !sale.customerId
+
         ).length;
 
 
@@ -929,13 +1303,17 @@ export class DashboardComponent
     }
 
 
-    /* CAMPAÑAS ACTIVAS */
+    /* ============================
+       CAMPAÑAS ACTIVAS
+    ============================ */
 
     const activeCampaigns =
       campaigns.filter(
+
         campaign =>
           campaign.status ===
           'active'
+
       );
 
 
@@ -970,6 +1348,17 @@ export class DashboardComponent
 
     this.notifications =
       generated;
+
+
+    if (
+      markAsUnread &&
+      !this.notificationsViewed
+    ) {
+
+      this.unreadNotifications =
+        generated.length;
+
+    }
 
   }
 

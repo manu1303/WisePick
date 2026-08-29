@@ -21,6 +21,11 @@ import {
   ApiClient
 } from '../../../../core/services/clients-api.service';
 
+import {
+  CampaignsApiService,
+  CampaignApi
+} from '../../../../core/services/campaigns-api.service';
+
 
 interface Sale {
   id: string;
@@ -217,6 +222,9 @@ export class ReportsComponent
     private productsApi:
       ProductsApiService,
 
+    private campaignsApi:
+    CampaignsApiService,  
+
     private clientsApi:
       ClientsApiService
 
@@ -242,7 +250,6 @@ export class ReportsComponent
   ============================ */
 
   private loadData(): void {
-
 
     if (
       this.isDemoMode
@@ -270,6 +277,92 @@ export class ReportsComponent
     this.loadClients();
 
     this.loadCampaigns();
+
+  }
+
+  private loadCampaigns(): void {
+
+    this.campaignsApi
+      .getAll()
+      .subscribe({
+
+        next:
+          (campaigns: CampaignApi[]) => {
+
+            this.campaigns =
+              campaigns.map(
+                campaign =>
+                  this.mapApiCampaign(
+                    campaign
+                  )
+              );
+
+          },
+
+        error:
+          error => {
+
+            console.error(
+              'Error cargando campañas en Reportes:',
+              error
+            );
+
+            this.globalError =
+              'No fue posible cargar las campañas.';
+
+          }
+
+      });
+
+  }
+
+  /* ============================
+     MAP API CAMPAIGN
+  ============================ */
+  private mapApiCampaign(
+    campaign: CampaignApi
+  ): Campaign {
+
+    return {
+
+      id:
+        campaign.id,
+
+      name:
+        campaign.name,
+
+      objective:
+        campaign.objective || '',
+
+      audience:
+        campaign.audience || '',
+
+      channel:
+        campaign.channel || '',
+
+      source:
+        campaign.source
+          ?.toUpperCase()
+          .replace('-', '_') ===
+          'MARKETING_AI'
+            ? 'marketing-ai'
+            : 'manual',
+
+      status:
+        campaign.status
+          ?.toUpperCase() ===
+          'ACTIVE'
+            ? 'active'
+            : campaign.status
+                ?.toUpperCase() ===
+                'COMPLETED'
+                  ? 'completed'
+                  : 'draft',
+
+      createdAt:
+        campaign.createdAt
+
+    };
 
   }
 
@@ -588,17 +681,6 @@ export class ReportsComponent
      CAMPAIGNS
   ============================ */
 
-  private loadCampaigns(): void {
-
-
-    this.campaigns =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_campaigns'
-        ) || '[]'
-      );
-
-  }
 
 
   /* ============================
