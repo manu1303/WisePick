@@ -1,57 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+
+import {
+  CommonModule
+} from '@angular/common';
+
+import {
+  Router
+} from '@angular/router';
+
+import {
+  MarketingAiApiService,
+  MarketingAnalysisApi,
+  MarketingInsightApi,
+  ProductMetricApi
+} from '../../../../core/services/marketing-ai-api.service';
+
 
 interface Sale {
   id: string;
-  saleDate: string;
-
-  customerId?: string | null;
-  customerName: string;
-
-  productId?: string;
-  productName: string;
-
-  quantity: number;
-  unitPrice: number;
-  total: number;
-
-  paymentMethod: string;
-
-  source:
-    | 'manual'
-    | 'excel'
-    | 'invoice'
-    | 'demo';
 }
 
-interface Product {
-  id: string;
-  name: string;
-  category: string;
-  cost: number;
-  price: number;
-  stock: number;
-  status: 'active' | 'inactive';
-}
-
-interface Client {
-  id: string;
-  name: string;
-  phone?: string;
-  email?: string;
-  city?: string;
-  status: 'active' | 'inactive';
-}
 
 interface ProductMetric {
-  id?: string;
+
+  id?: string | null;
+
   name: string;
+
   quantity: number;
+
   revenue: number;
+
 }
 
+
 interface Insight {
+
   id: string;
 
   type:
@@ -68,6 +55,7 @@ interface Insight {
   icon: string;
 
   title: string;
+
   description: string;
 
   evidence: string;
@@ -78,140 +66,447 @@ interface Insight {
     | 'product'
     | 'customer'
     | 'sales'
-    | 'inventory';
+    | 'inventory'
+    | null;
 
-  targetId?: string;
-  targetName?: string;
+  targetId?:
+    string | null;
+
+  targetName?:
+    string | null;
+
 }
 
+
 @Component({
-  selector: 'app-marketing-ai',
-  standalone: true,
+  selector:
+    'app-marketing-ai',
+
+  standalone:
+    true,
+
   imports: [
     CommonModule
   ],
-  templateUrl: './marketing-ai.component.html',
-  styleUrls: ['./marketing-ai.component.scss']
+
+  templateUrl:
+    './marketing-ai.component.html',
+
+  styleUrls: [
+    './marketing-ai.component.scss'
+  ]
 })
-export class MarketingAiComponent implements OnInit {
+export class MarketingAiComponent
+  implements OnInit {
 
-  sales: Sale[] = [];
 
-  products: Product[] = [];
+  sales:
+    Sale[] = [];
 
-  clients: Client[] = [];
 
-  insights: Insight[] = [];
+  insights:
+    Insight[] = [];
+
+
+  bestProduct:
+    ProductMetric | null =
+    null;
+
+
+  totalRevenue =
+    0;
+
+
+  identifiedSales =
+    0;
+
+
+  identifiedPercentage =
+    0;
+
+
+  recurringCustomers =
+    0;
+
+
+  lowStockProducts =
+    0;
+
+
+  loading =
+    false;
+
+
+  globalError =
+    '';
+
+
+  isDemoMode =
+    false;
+
 
   constructor(
-    private router: Router
+
+    private router:
+      Router,
+
+    private marketingAiApi:
+      MarketingAiApiService
+
   ) {}
+
 
   ngOnInit(): void {
 
-    this.loadData();
 
-    this.generateInsights();
+    this.isDemoMode =
+      this.router.url
+        .startsWith(
+          '/demo'
+        );
+
+
+    if (
+      this.isDemoMode
+    ) {
+
+      this.loadDemoData();
+
+      return;
+
+    }
+
+
+    this.loadAnalysis();
+
   }
 
 
   /* ============================
-     DATA
+     BACKEND ANALYSIS
   ============================ */
 
-  private loadData(): void {
+  private loadAnalysis():
+  void {
 
-    this.sales =
+
+    this.loading =
+      true;
+
+
+    this.globalError =
+      '';
+
+
+    this.marketingAiApi
+      .getInsights()
+      .subscribe({
+
+        next:
+          (
+            response:
+              MarketingAnalysisApi
+          ) => {
+
+
+            this.totalRevenue =
+              Number(
+                response.summary
+                  .totalRevenue || 0
+              );
+
+
+            this.identifiedSales =
+              Number(
+                response.summary
+                  .identifiedSales || 0
+              );
+
+
+            this.identifiedPercentage =
+              Number(
+                response.summary
+                  .identifiedPercentage || 0
+              );
+
+
+            this.recurringCustomers =
+              Number(
+                response.summary
+                  .recurringCustomers || 0
+              );
+
+
+            this.lowStockProducts =
+              Number(
+                response.summary
+                  .lowStockProducts || 0
+              );
+
+
+            /*
+             * El HTML actual usa sales.length
+             * para decidir si muestra
+             * estado vacío o análisis.
+             *
+             * No necesitamos traer todas
+             * las ventas al frontend.
+             *
+             * Solo representamos la cantidad
+             * indicada por el backend.
+             */
+
+            this.sales =
+              Array.from(
+                {
+                  length:
+                    response.summary
+                      .totalSales || 0
+                },
+                (
+                  _,
+                  index
+                ) => ({
+                  id:
+                    `${index}`
+                })
+              );
+
+
+            this.bestProduct =
+              response.bestProduct
+                ? this.mapProductMetric(
+                    response.bestProduct
+                  )
+                : null;
+
+
+            this.insights =
+              response.insights.map(
+                insight =>
+                  this.mapInsight(
+                    insight
+                  )
+              );
+
+
+            this.loading =
+              false;
+
+          },
+
+
+        error:
+          error => {
+
+
+            console.error(
+              'Error cargando Marketing IA:',
+              error
+            );
+
+
+            this.globalError =
+              'No fue posible generar el análisis de Marketing IA.';
+
+
+            this.loading =
+              false;
+
+          }
+
+      });
+
+  }
+
+
+  /* ============================
+     API MAPPERS
+  ============================ */
+
+  private mapProductMetric(
+    product:
+      ProductMetricApi
+  ): ProductMetric {
+
+
+    return {
+
+      id:
+        product.id || null,
+
+      name:
+        product.name,
+
+      quantity:
+        Number(
+          product.quantity || 0
+        ),
+
+      revenue:
+        Number(
+          product.revenue || 0
+        )
+
+    };
+
+  }
+
+
+  private mapInsight(
+    insight:
+      MarketingInsightApi
+  ): Insight {
+
+
+    return {
+
+      id:
+        insight.id,
+
+      type:
+        insight.type,
+
+      priority:
+        insight.priority,
+
+      icon:
+        insight.icon,
+
+      title:
+        insight.title,
+
+      description:
+        insight.description,
+
+      evidence:
+        insight.evidence,
+
+      action:
+        insight.action,
+
+      targetType:
+        insight.targetType || null,
+
+      targetId:
+        insight.targetId || null,
+
+      targetName:
+        insight.targetName || null
+
+    };
+
+  }
+
+
+  /* ============================
+     DEMO MODE
+  ============================ */
+
+  private loadDemoData():
+  void {
+
+
+    const demoSales =
       JSON.parse(
         localStorage.getItem(
           'wisepick_sales'
         ) || '[]'
       );
 
-    this.products =
+
+    const demoProducts =
       JSON.parse(
         localStorage.getItem(
           'wisepick_products'
         ) || '[]'
       );
 
-    this.clients =
-      JSON.parse(
-        localStorage.getItem(
-          'wisepick_clients'
-        ) || '[]'
+
+    this.sales =
+      demoSales;
+
+
+    this.totalRevenue =
+      demoSales.reduce(
+        (
+          sum: number,
+          sale: any
+        ) =>
+          sum +
+          Number(
+            sale.total || 0
+          ),
+        0
       );
-  }
 
 
-  /* ============================
-     KPI
-  ============================ */
-
-  get totalRevenue(): number {
-
-    return this.sales.reduce(
-      (sum, sale) =>
-        sum + Number(sale.total),
-      0
-    );
-  }
+    this.identifiedSales =
+      demoSales.filter(
+        (sale: any) =>
+          !!sale.customerId
+      ).length;
 
 
-  get identifiedSales(): number {
-
-    return this.sales.filter(
-      sale =>
-        !!sale.customerId
-    ).length;
-  }
-
-
-  get identifiedPercentage(): number {
-
-    if (!this.sales.length) {
-      return 0;
-    }
-
-    return (
-      this.identifiedSales /
-      this.sales.length
-    ) * 100;
-  }
+    this.identifiedPercentage =
+      demoSales.length
+        ? (
+            this.identifiedSales /
+            demoSales.length
+          ) * 100
+        : 0;
 
 
-  /* ============================
-     PRODUCTS
-  ============================ */
+    const metrics =
+      new Map<
+        string,
+        ProductMetric
+      >();
 
-  get productMetrics(): ProductMetric[] {
 
-    const map =
-      new Map<string, ProductMetric>();
+    demoSales.forEach(
+      (sale: any) => {
 
-    this.sales.forEach(
-      sale => {
 
         const key =
           sale.productId ||
           sale.productName;
 
+
+        if (!key) {
+
+          return;
+
+        }
+
+
         const current =
-          map.get(key);
+          metrics.get(
+            key
+          );
+
 
         if (current) {
 
           current.quantity +=
-            Number(sale.quantity);
+            Number(
+              sale.quantity || 0
+            );
+
 
           current.revenue +=
-            Number(sale.total);
+            Number(
+              sale.total || 0
+            );
 
-        } else {
+        }
 
-          map.set(
+        else {
+
+          metrics.set(
             key,
             {
+
               id:
                 sale.productId,
 
@@ -219,92 +514,125 @@ export class MarketingAiComponent implements OnInit {
                 sale.productName,
 
               quantity:
-                Number(sale.quantity),
+                Number(
+                  sale.quantity || 0
+                ),
 
               revenue:
-                Number(sale.total)
+                Number(
+                  sale.total || 0
+                )
+
             }
           );
+
         }
+
       }
     );
 
-    return Array
-      .from(map.values())
-      .sort(
-        (a, b) =>
-          b.quantity -
-          a.quantity
-      );
-  }
+
+    const productMetrics =
+      Array
+        .from(
+          metrics.values()
+        )
+        .sort(
+          (
+            a,
+            b
+          ) =>
+            b.quantity -
+            a.quantity
+        );
 
 
-  get bestProduct():
-    ProductMetric | null {
-
-    return (
-      this.productMetrics[0] ||
-      null
-    );
-  }
+    this.bestProduct =
+      productMetrics[0] ||
+      null;
 
 
-  /* ============================
-     CLIENTS
-  ============================ */
+    const customerPurchases =
+      new Map<
+        string,
+        number
+      >();
 
-  get recurringCustomers(): number {
 
-    const map =
-      new Map<string, number>();
-
-    this.sales
+    demoSales
       .filter(
-        sale =>
+        (sale: any) =>
           !!sale.customerId
       )
       .forEach(
-        sale => {
+        (sale: any) => {
 
-          const id =
-            sale.customerId as string;
 
-          map.set(
-            id,
+          customerPurchases.set(
+
+            sale.customerId,
+
             (
-              map.get(id) || 0
+              customerPurchases.get(
+                sale.customerId
+              ) || 0
             ) + 1
+
           );
+
         }
       );
 
-    return Array
-      .from(map.values())
-      .filter(
-        purchases =>
-          purchases >= 2
-      )
-      .length;
+
+    this.recurringCustomers =
+      Array
+        .from(
+          customerPurchases.values()
+        )
+        .filter(
+          purchases =>
+            purchases >= 2
+        )
+        .length;
+
+
+    const lowStock =
+      demoProducts.filter(
+        (product: any) =>
+          product.status ===
+            'active'
+          &&
+          Number(
+            product.stock
+          ) <= 5
+      );
+
+
+    this.lowStockProducts =
+      lowStock.length;
+
+
+    this.generateDemoInsights();
+
   }
 
 
-  /* ============================
-     INSIGHT ENGINE
-  ============================ */
-
-  private generateInsights(): void {
-
-    const result: Insight[] = [];
+  private generateDemoInsights():
+  void {
 
 
-    /* PRODUCTO DESTACADO */
+    const result:
+      Insight[] = [];
 
-    if (this.bestProduct) {
+
+    if (
+      this.bestProduct
+    ) {
 
       result.push({
 
         id:
-          crypto.randomUUID(),
+          'demo-product-highlight',
 
         type:
           'success',
@@ -331,15 +659,15 @@ export class MarketingAiComponent implements OnInit {
           'product',
 
         targetId:
-          this.bestProduct.id,
+          this.bestProduct.id || null,
 
         targetName:
           this.bestProduct.name
+
       });
+
     }
 
-
-    /* CLIENTES RECURRENTES */
 
     if (
       this.recurringCustomers > 0
@@ -348,7 +676,7 @@ export class MarketingAiComponent implements OnInit {
       result.push({
 
         id:
-          crypto.randomUUID(),
+          'demo-recurring-customers',
 
         type:
           'customer',
@@ -372,22 +700,30 @@ export class MarketingAiComponent implements OnInit {
           'Crear campaña',
 
         targetType:
-          'customer'
+          'customer',
+
+        targetId:
+          null,
+
+        targetName:
+          null
+
       });
+
     }
 
 
-    /* CLIENTES NO IDENTIFICADOS */
-
     if (
+      this.sales.length >= 5
+      &&
       this.identifiedPercentage <
-      60
+        60
     ) {
 
       result.push({
 
         id:
-          crypto.randomUUID(),
+          'demo-customer-identification',
 
         type:
           'opportunity',
@@ -411,29 +747,27 @@ export class MarketingAiComponent implements OnInit {
           'Ver clientes',
 
         targetType:
-          'sales'
+          'sales',
+
+        targetId:
+          null,
+
+        targetName:
+          null
+
       });
+
     }
 
 
-    /* STOCK BAJO */
-
-    const lowStock =
-      this.products.filter(
-        product =>
-          product.status === 'active' &&
-          product.stock <= 5
-      );
-
-
     if (
-      lowStock.length > 0
+      this.lowStockProducts > 0
     ) {
 
       result.push({
 
         id:
-          crypto.randomUUID(),
+          'demo-low-stock',
 
         type:
           'warning',
@@ -448,7 +782,7 @@ export class MarketingAiComponent implements OnInit {
           'Productos con stock bajo',
 
         description:
-          `${lowStock.length} producto(s) tienen 5 unidades o menos disponibles.`,
+          `${this.lowStockProducts} producto(s) tienen 5 unidades o menos disponibles.`,
 
         evidence:
           'Evita promocionar productos con disponibilidad limitada antes de revisar inventario.',
@@ -457,13 +791,22 @@ export class MarketingAiComponent implements OnInit {
           'Revisar productos',
 
         targetType:
-          'inventory'
+          'inventory',
+
+        targetId:
+          null,
+
+        targetName:
+          null
+
       });
+
     }
 
 
     this.insights =
       result;
+
   }
 
 
@@ -472,8 +815,10 @@ export class MarketingAiComponent implements OnInit {
   ============================ */
 
   executeInsight(
-    insight: Insight
+    insight:
+      Insight
   ): void {
+
 
     if (
       insight.action ===
@@ -485,6 +830,7 @@ export class MarketingAiComponent implements OnInit {
       );
 
       return;
+
     }
 
 
@@ -494,10 +840,13 @@ export class MarketingAiComponent implements OnInit {
     ) {
 
       this.router.navigate([
-        '/dashboard/products'
+        this.isDemoMode
+          ? '/demo/products'
+          : '/dashboard/products'
       ]);
 
       return;
+
     }
 
 
@@ -507,9 +856,13 @@ export class MarketingAiComponent implements OnInit {
     ) {
 
       this.router.navigate([
-        '/dashboard/clients'
+        this.isDemoMode
+          ? '/demo/clients'
+          : '/dashboard/clients'
       ]);
+
     }
+
   }
 
 
@@ -518,8 +871,10 @@ export class MarketingAiComponent implements OnInit {
   ============================ */
 
   private createCampaignFromInsight(
-    insight: Insight
+    insight:
+      Insight
   ): void {
+
 
     const campaignDraft = {
 
@@ -548,31 +903,50 @@ export class MarketingAiComponent implements OnInit {
         insight.targetName || null,
 
       createdAt:
-        new Date().toISOString()
+        new Date()
+          .toISOString()
+
     };
 
 
     localStorage.setItem(
+
       'wisepick_campaign_draft',
+
       JSON.stringify(
         campaignDraft
       )
+
     );
 
 
     this.router.navigate([
-      '/dashboard/campaigns'
+
+      this.isDemoMode
+        ? '/demo/campaigns'
+        : '/dashboard/campaigns'
+
     ]);
+
   }
+
+
   /* ============================
-   GO TO CAMPAIGNS
-============================ */
+     GO TO CAMPAIGNS
+  ============================ */
 
-goToCampaigns(): void {
+  goToCampaigns():
+  void {
 
-  this.router.navigate([
-    '/dashboard/campaigns'
-  ]);
 
-}
+    this.router.navigate([
+
+      this.isDemoMode
+        ? '/demo/campaigns'
+        : '/dashboard/campaigns'
+
+    ]);
+
+  }
+
 }
