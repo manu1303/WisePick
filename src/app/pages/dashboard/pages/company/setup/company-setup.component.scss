@@ -390,3 +390,181 @@
   }
 
 }
+
+
+/* =========================================
+   DARK MODE - COMPANY SETUP
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .company-setup-page {
+    background: var(--wp-page-bg);
+    color: var(--wp-text-primary);
+  }
+
+  .setup-header h1 {
+    color: var(--wp-text-primary);
+  }
+
+  .setup-header p {
+    color: var(--wp-text-secondary);
+  }
+
+  .step-counter {
+    background: var(--wp-surface-secondary);
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     PROGRESS
+  ========================= */
+
+  .progress-track {
+    background: var(--wp-border);
+  }
+
+  .progress-labels {
+    color: #8f8f8f;
+  }
+
+  .progress-labels span.active {
+    color: #7f8cff;
+  }
+
+
+  /* =========================
+     SETUP CARD
+  ========================= */
+
+  .setup-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+    box-shadow: var(--wp-shadow);
+  }
+
+
+  /* =========================
+     STEP
+  ========================= */
+
+  .step-icon {
+    background: var(--wp-surface-secondary);
+  }
+
+  .step h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .step-description {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     FORM
+  ========================= */
+
+  .form-group label {
+    color: #dedede;
+  }
+
+  .form-group input,
+  .form-group select {
+    background: var(--wp-input-bg);
+    border-color: var(--wp-border);
+    color: var(--wp-text-primary);
+  }
+
+  .form-group input::placeholder {
+    color: #8f8f8f;
+  }
+
+  .form-group select option {
+    background: var(--wp-surface);
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     OPTION CARDS
+  ========================= */
+
+  .option-card {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .option-card:hover {
+    background: var(--wp-hover-bg);
+    border-color: #4a5072;
+  }
+
+  .option-card.selected {
+    background: #292a35;
+    border-color: #5968e9;
+  }
+
+  .option-card strong {
+    color: var(--wp-text-primary);
+  }
+
+  .option-card span {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     QUESTIONS
+  ========================= */
+
+  .section-question {
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     CHIPS
+  ========================= */
+
+  .chip {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+    color: var(--wp-text-secondary);
+  }
+
+  .chip:hover {
+    background: var(--wp-hover-bg);
+  }
+
+  .chip.selected {
+    background: #292a35;
+    border-color: #5968e9;
+    color: #7f8cff;
+  }
+
+
+  /* =========================
+     NAVIGATION
+  ========================= */
+
+  .navigation-buttons {
+    border-top-color: var(--wp-border);
+  }
+
+  .secondary-button {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+    color: var(--wp-text-primary);
+  }
+
+  .secondary-button:hover {
+    background: var(--wp-hover-bg);
+  }
+
+}

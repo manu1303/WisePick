@@ -815,3 +815,191 @@
   }
 
 }
+
+
+/* =========================================
+   DARK MODE
+   
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  .analytics-page {
+    background: var(--wp-page-bg);
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     TEXTOS
+  ========================= */
+
+  .page-header h1,
+  .card-header h2,
+  .kpi-card > strong,
+  .card-value,
+  .ranking-product strong,
+  .ranking-value,
+  .distribution-info strong,
+  .customer-percentage strong,
+  .customer-stats strong,
+  .empty-state h2 {
+    color: var(--wp-text-primary);
+  }
+
+
+  .page-header p,
+  .card-header p,
+  .kpi-card small,
+  .chart-y-axis,
+  .bar-date,
+  .ranking-product span,
+  .distribution-info,
+  .distribution-item small,
+  .customer-percentage span,
+  .customer-stats span,
+  .empty-state p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     TARJETAS
+  ========================= */
+
+  .data-badge,
+  .kpi-card,
+  .analytics-card,
+  .empty-state {
+
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+
+  }
+
+
+  /* =========================
+     ELEMENTOS SECUNDARIOS
+  ========================= */
+
+  .kpi-icon,
+  .ranking-position,
+  .empty-icon {
+
+    background:
+      var(--wp-surface-secondary);
+
+  }
+
+
+  .customer-stats div {
+
+    background:
+      var(--wp-surface-secondary);
+
+  }
+
+
+  /* =========================
+     LÍNEAS / DIVISORES
+  ========================= */
+
+  .bars-container,
+  .bar-wrapper,
+  .ranking-item {
+
+    border-color:
+      var(--wp-border);
+
+  }
+
+
+  .progress-track {
+
+    background:
+      var(--wp-surface-secondary);
+
+  }
+
+
+  /* =========================
+     STOCK ALERT
+  ========================= */
+
+  .stock-alert {
+
+    background:
+      #2a241b;
+
+    border-color:
+      #4a3b26;
+
+  }
+
+
+  .stock-alert strong {
+
+    color:
+      #f2d5a8;
+
+  }
+
+
+  .stock-alert p {
+
+    color:
+      #c9ab81;
+
+  }
+
+
+  .alert-icon {
+
+    background:
+      #3a2d1e;
+
+    color:
+      #e9b96e;
+
+  }
+
+
+  /* =========================
+     IA
+  ========================= */
+
+  .ai-insight {
+
+    background:
+      linear-gradient(
+        135deg,
+        #202436,
+        #252a40
+      );
+
+    border-color:
+      #343b60;
+
+  }
+
+
+  .ai-content h2,
+  .ai-content p strong {
+
+    color:
+      var(--wp-text-primary);
+
+  }
+
+
+  .ai-content p {
+
+    color:
+      var(--wp-text-secondary);
+
+  }
+
+}

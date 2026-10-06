@@ -1,1 +1,79 @@
-/* You can add global styles to this file, and also import other style files */
+/* =========================================
+   WISEPICK - GLOBAL THEME
+========================================= */
+
+
+/* =========================
+   LIGHT THEME
+========================= */
+
+:root,
+[data-theme="light"] {
+
+  --wp-page-bg: #f8f9fc;
+
+  --wp-surface: #ffffff;
+
+  --wp-surface-secondary: #f7f8fc;
+
+  --wp-text-primary: #24283b;
+
+  --wp-text-secondary: #7f8699;
+
+  --wp-border: #e5e8f0;
+
+  --wp-input-bg: #ffffff;
+
+  --wp-hover-bg: #f3f4ff;
+
+  --wp-shadow:
+    0 8px 24px rgba(31, 35, 48, 0.06);
+
+}
+
+
+/* =========================
+   DARK THEME
+========================= */
+
+[data-theme="dark"] {
+
+  --wp-page-bg: #121212;
+
+  --wp-surface: #1f1f1f;
+
+  --wp-surface-secondary: #252525;
+
+  --wp-text-primary: #f5f5f5;
+
+  --wp-text-secondary: #b6b6b6;
+
+  --wp-border: #343434;
+
+  --wp-input-bg: #242424;
+
+  --wp-hover-bg: #2c2c2c;
+
+  --wp-shadow:
+    0 8px 24px
+    rgba(0, 0, 0, 0.26);
+
+}
+
+
+/* =========================
+   GLOBAL BASE
+========================= */
+
+html,
+body {
+
+  margin: 0;
+
+  background:
+    var(--wp-page-bg);
+
+  color:
+    var(--wp-text-primary);
+
+}

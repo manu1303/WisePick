@@ -871,3 +871,371 @@ td {
   }
 
 }
+
+
+/* =========================================
+   DARK MODE - PRODUCTS
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .products-page {
+    background: var(--wp-page-bg);
+    color: var(--wp-text-primary);
+  }
+
+  .page-header h1 {
+    color: var(--wp-text-primary);
+  }
+
+  .page-header p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     BUTTONS
+  ========================= */
+
+  .secondary-button {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+    color: var(--wp-text-primary);
+  }
+
+  .secondary-button:hover {
+    background: var(--wp-hover-bg);
+  }
+
+
+  /* =========================
+     EMPTY STATE
+  ========================= */
+
+  .empty-state {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+    box-shadow: var(--wp-shadow);
+  }
+
+  .empty-icon {
+    background: var(--wp-surface-secondary);
+  }
+
+  .empty-label {
+    color: #8e96df;
+  }
+
+  .empty-state h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .empty-state p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     PRODUCT FORM
+  ========================= */
+
+  .product-form-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+    box-shadow: var(--wp-shadow);
+  }
+
+  .form-header {
+    border-bottom-color: var(--wp-border);
+  }
+
+  .form-header h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .form-header p {
+    color: var(--wp-text-secondary);
+  }
+
+  .close-button {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+    color: var(--wp-text-secondary);
+  }
+
+  .close-button:hover {
+    background: var(--wp-hover-bg);
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     FORM FIELDS
+  ========================= */
+
+  .form-group label {
+    color: #dedede;
+  }
+
+  .form-group input,
+  .form-group select {
+    background: var(--wp-input-bg);
+    border-color: var(--wp-border);
+    color: var(--wp-text-primary);
+  }
+
+  .form-group input::placeholder {
+    color: #8f8f8f;
+  }
+
+  .form-group select option {
+    background: var(--wp-surface);
+    color: var(--wp-text-primary);
+  }
+
+  .form-group small {
+    color: var(--wp-text-secondary);
+  }
+
+  .money-input > span {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     MARGIN PREVIEW
+  ========================= */
+
+  .margin-preview {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .margin-preview span {
+    color: var(--wp-text-secondary);
+  }
+
+  .margin-preview strong {
+    color: var(--wp-text-primary);
+  }
+
+  .form-actions {
+    border-top-color: var(--wp-border);
+  }
+
+
+  /* =========================
+     KPI CARDS
+  ========================= */
+
+  .kpi-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+    box-shadow: var(--wp-shadow);
+  }
+
+  .kpi-card span,
+  .kpi-card small {
+    color: var(--wp-text-secondary);
+  }
+
+  .kpi-card strong {
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     TABLE CARD
+  ========================= */
+
+  .table-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+    box-shadow: var(--wp-shadow);
+  }
+
+  .table-header {
+    border-bottom-color: var(--wp-border);
+  }
+
+  .table-label {
+    color: #8e96df;
+  }
+
+  .table-header h2 {
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     SEARCH / FILTERS
+  ========================= */
+
+  .search-box {
+    background: var(--wp-input-bg);
+    border-color: var(--wp-border);
+  }
+
+  .search-box input {
+    color: var(--wp-text-primary);
+  }
+
+  .search-box input::placeholder {
+    color: #8f8f8f;
+  }
+
+  .filter-select {
+    background: var(--wp-input-bg);
+    border-color: var(--wp-border);
+    color: var(--wp-text-primary);
+  }
+
+  .filter-select option {
+    background: var(--wp-surface);
+    color: var(--wp-text-primary);
+  }
+
+  .filter-bar {
+    background: var(--wp-surface-secondary);
+    border-bottom-color: var(--wp-border);
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     TABLE
+  ========================= */
+
+  thead {
+    background: var(--wp-surface-secondary);
+  }
+
+  th {
+    color: var(--wp-text-secondary);
+  }
+
+  td {
+    border-top-color: var(--wp-border);
+    color: #c3c3c3;
+  }
+
+  tbody tr:hover {
+    background: var(--wp-hover-bg);
+  }
+
+
+  /* =========================
+     PRODUCT
+  ========================= */
+
+  .product-avatar {
+    background: #292a35;
+    color: #7f8cff;
+  }
+
+  .product-cell strong {
+    color: var(--wp-text-primary);
+  }
+
+  .price-cell {
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     BADGES
+  ========================= */
+
+  .category-badge {
+    background: #2a2a2a;
+    color: #c0c0c0;
+  }
+
+  .margin-badge {
+    background: #1d2b22;
+    color: #73c991;
+  }
+
+
+  /* =========================
+     LOW STOCK
+  ========================= */
+
+  .low-stock {
+    background: #352a1d;
+    color: #e5ae6d;
+  }
+
+
+  /* =========================
+     STATUS
+  ========================= */
+
+  .status-button {
+    background: #1d2b22;
+    color: #73c991;
+  }
+
+  .status-button.inactive {
+    background: #2a2a2a;
+    color: #a6a6a6;
+  }
+
+
+  /* =========================
+     ROW ACTIONS
+  ========================= */
+
+  .row-actions button {
+    color: var(--wp-text-secondary);
+  }
+
+  .row-actions button:hover {
+    background: var(--wp-hover-bg);
+    border-color: var(--wp-border);
+    color: #7f8cff;
+  }
+
+
+  /* =========================
+     NO RESULTS
+  ========================= */
+
+  .no-results {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     TABLE FOOTER
+  ========================= */
+
+  .table-footer {
+    background: var(--wp-surface-secondary);
+    border-top-color: var(--wp-border);
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     AI BANNER
+  ========================= */
+
+  .ai-banner {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .ai-banner strong {
+    color: var(--wp-text-primary);
+  }
+
+  .ai-banner p {
+    color: var(--wp-text-secondary);
+  }
+
+}

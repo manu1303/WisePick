@@ -407,3 +407,141 @@
   }
 
 }
+
+
+/* =========================================
+   DARK MODE - COMPANY
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .company-page {
+    background: var(--wp-page-bg);
+    color: var(--wp-text-primary);
+  }
+
+  .page-header h1 {
+    color: var(--wp-text-primary);
+  }
+
+  .page-header p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     STATUS
+  ========================= */
+
+  .status-card {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .status-content strong {
+    color: var(--wp-text-primary);
+  }
+
+  .status-content span {
+    color: var(--wp-text-secondary);
+  }
+
+  .status-badge {
+    background: #292a35;
+    color: #7f8cff;
+  }
+
+
+  /* =========================
+     SUMMARY CARDS
+  ========================= */
+
+  .summary-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+    box-shadow: var(--wp-shadow);
+  }
+
+
+  /* =========================
+     CARD HEADER
+  ========================= */
+
+  .card-icon {
+    background: var(--wp-surface-secondary);
+  }
+
+  .card-label {
+    color: #8e96df;
+  }
+
+  .card-header h2 {
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     DETAILS
+  ========================= */
+
+  .detail-row {
+    border-bottom-color: var(--wp-border);
+  }
+
+  .detail-row span {
+    color: var(--wp-text-secondary);
+  }
+
+  .detail-row strong {
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     TAGS
+  ========================= */
+
+  .tag {
+    background: #292a35;
+    border-color: #3a3b4d;
+    color: #8f9aff;
+  }
+
+
+  /* =========================
+     NEXT STEP
+  ========================= */
+
+  .next-step-card {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .next-step-content h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .next-step-content p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     SECONDARY BUTTON
+  ========================= */
+
+  .secondary-button {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+    color: var(--wp-text-primary);
+  }
+
+  .secondary-button:hover {
+    background: var(--wp-hover-bg);
+  }
+
+}

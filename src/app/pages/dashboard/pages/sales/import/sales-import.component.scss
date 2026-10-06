@@ -507,3 +507,250 @@
   }
 
 }
+
+
+/* =========================================
+   DARK MODE - IMPORT METHODS
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .import-page {
+    background:
+      var(--wp-page-bg);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header h1 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .step-badge {
+    background:
+      var(--wp-surface-secondary);
+
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     PROGRESS
+  ========================= */
+
+  .progress-card {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+
+    box-shadow:
+      var(--wp-shadow);
+  }
+
+  .progress-step strong {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .progress-step span {
+    color:
+      #8f8f8f;
+  }
+
+  .progress-step.active strong,
+  .progress-step.completed strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .progress-number {
+    background:
+      var(--wp-surface-secondary);
+
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .progress-line {
+    background:
+      var(--wp-border);
+  }
+
+  .progress-line.active {
+    background:
+      #5968e9;
+  }
+
+
+  /* =========================
+     SECTION HEADER
+  ========================= */
+
+  .section-header h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .section-header p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     METHOD CARDS
+  ========================= */
+
+  .method-card {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+
+    box-shadow:
+      var(--wp-shadow);
+  }
+
+  .method-card:hover {
+    background:
+      var(--wp-hover-bg);
+
+    border-color:
+      #4a5072;
+
+    box-shadow:
+      0 7px 20px
+      rgba(0, 0, 0, .18);
+  }
+
+  .method-card.selected {
+    background:
+      #252633;
+
+    border-color:
+      #5968e9;
+
+    box-shadow:
+      0 8px 24px
+      rgba(89, 104, 233, .14);
+  }
+
+
+  /* =========================
+     METHOD TOP
+  ========================= */
+
+  .method-icon {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .recommended-badge {
+    background:
+      #2a2a2a;
+
+    color:
+      #b8b8b8;
+  }
+
+  .recommended-badge.highlight {
+    background:
+      #292a35;
+
+    color:
+      #7f8cff;
+  }
+
+
+  /* =========================
+     METHOD TEXT
+  ========================= */
+
+  .method-card h3 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .method-card p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .method-info {
+    border-top-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     RADIO VISUAL
+  ========================= */
+
+  .selection-indicator {
+    border-color:
+      #666a77;
+  }
+
+
+  /* =========================
+     INFO CARD
+  ========================= */
+
+  .info-card {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .info-card strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .info-card p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     SECONDARY BUTTON
+  ========================= */
+
+  .secondary-button {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .secondary-button:hover {
+    background:
+      var(--wp-hover-bg);
+  }
+
+}

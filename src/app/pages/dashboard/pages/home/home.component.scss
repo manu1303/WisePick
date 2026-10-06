@@ -414,3 +414,128 @@
   }
 
 }
+
+
+/* =========================================
+   DARK MODE - HOME
+
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE
+  ========================= */
+
+  .home-page {
+    background: var(--wp-page-bg);
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     WELCOME CARD
+  ========================= */
+
+  .welcome-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+    box-shadow: var(--wp-shadow);
+  }
+
+  .welcome-content h1 {
+    color: var(--wp-text-primary);
+  }
+
+  .welcome-description {
+    color: #d7d7d7;
+  }
+
+  .welcome-helper {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     SETUP INFO
+  ========================= */
+
+  .setup-info {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .setup-info strong {
+    color: var(--wp-text-primary);
+  }
+
+  .setup-info span {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     AI VISUAL CARD
+  ========================= */
+
+  .ai-card {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .ai-label {
+    color: var(--wp-text-primary);
+  }
+
+  .ai-card p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     JOURNEY CARD
+  ========================= */
+
+  .journey-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+    box-shadow: var(--wp-shadow);
+  }
+
+  .journey-header h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .progress-label {
+    background: var(--wp-surface-secondary);
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     JOURNEY STEPS
+  ========================= */
+
+  .step-number {
+    background: var(--wp-surface-secondary);
+    color: var(--wp-text-secondary);
+  }
+
+  .journey-step.active .step-number {
+    background: #506de8;
+    color: #ffffff;
+  }
+
+  .step-content h3 {
+    color: var(--wp-text-primary);
+  }
+
+  .step-content p {
+    color: var(--wp-text-secondary);
+  }
+
+  .step-line {
+    background: var(--wp-border);
+  }
+
+}

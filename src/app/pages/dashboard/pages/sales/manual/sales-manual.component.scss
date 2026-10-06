@@ -875,3 +875,359 @@ tr,
 td {
   overflow: visible;
 }
+
+
+/* =========================================
+   DARK MODE - MANUAL SALE
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .manual-sale-page {
+    background:
+      var(--wp-page-bg);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header h1 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     MAIN CARDS
+  ========================= */
+
+  .sale-card,
+  .summary-card,
+  .success-card {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+
+    box-shadow:
+      var(--wp-shadow);
+  }
+
+
+  /* =========================
+     CARD TITLE
+  ========================= */
+
+  .card-title {
+    border-bottom-color:
+      var(--wp-border);
+  }
+
+  .title-icon {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .card-title span {
+    color:
+      #8e96df;
+  }
+
+  .card-title h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     FORM
+  ========================= */
+
+  .form-group label {
+    color:
+      #dedede;
+  }
+
+  .form-group small {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background:
+      var(--wp-input-bg);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color:
+      #8f8f8f;
+  }
+
+  .form-group select option {
+    background:
+      var(--wp-surface);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .money-input > span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     PAYMENT
+  ========================= */
+
+  .payment-option {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .payment-option:hover {
+    background:
+      var(--wp-hover-bg);
+  }
+
+  .payment-option.selected {
+    background:
+      #292a35;
+
+    border-color:
+      #5968e9;
+
+    color:
+      #7f8cff;
+  }
+
+
+  /* =========================
+     ACTIONS
+  ========================= */
+
+  .form-actions {
+    border-top-color:
+      var(--wp-border);
+  }
+
+  .secondary-button {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .secondary-button:hover {
+    background:
+      var(--wp-hover-bg);
+  }
+
+
+  /* =========================
+     SUMMARY
+  ========================= */
+
+  .summary-card h2,
+  .total {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .summary-details > div {
+    border-bottom-color:
+      var(--wp-border);
+  }
+
+  .summary-details span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .summary-details strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     AI INFO
+  ========================= */
+
+  .ai-info {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .ai-info strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .ai-info p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     SELECTED PRODUCT
+  ========================= */
+
+  .selected-product-info {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .selected-product-info span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .selected-product-info strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     SUCCESS
+  ========================= */
+
+  .success-card h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .success-card > p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .success-summary > div {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .success-summary span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .success-summary strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     ROW ACTION
+  ========================= */
+
+  .row-action {
+    color:
+      #a0a0a0;
+  }
+
+  .row-action:hover {
+    background:
+      var(--wp-hover-bg);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      #7f8cff;
+  }
+
+
+  /* =========================
+     FLOATING MENU
+  ========================= */
+
+  .row-menu {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+
+    box-shadow:
+      0 16px 40px
+      rgba(0, 0, 0, .32);
+  }
+
+  .row-menu::before {
+    background:
+      var(--wp-surface-secondary);
+
+    border-left-color:
+      var(--wp-border);
+
+    border-top-color:
+      var(--wp-border);
+  }
+
+  .row-menu-item {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .row-menu-item:hover {
+    background:
+      var(--wp-hover-bg);
+
+    color:
+      #7f8cff;
+  }
+
+  .row-menu-item.danger {
+    color:
+      #e0717a;
+  }
+
+  .row-menu-item.danger:hover {
+    background:
+      #352124;
+
+    color:
+      #f08a93;
+  }
+
+}

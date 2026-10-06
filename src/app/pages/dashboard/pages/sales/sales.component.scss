@@ -1070,3 +1070,456 @@ tr,
 td {
   overflow: visible;
 }
+
+
+/* =========================================
+   DARK MODE - SALES
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .sales-page {
+    background:
+      var(--wp-page-bg);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header h1 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     KPI CARDS
+  ========================= */
+
+  .kpi-card {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+
+    box-shadow:
+      var(--wp-shadow);
+  }
+
+  .kpi-top > span,
+  .kpi-card small {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .kpi-card > strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .kpi-icon {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+
+  /* =========================
+     DATA SUMMARY
+  ========================= */
+
+  .data-summary {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .data-summary strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .data-summary div div span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .data-status {
+    background:
+      var(--wp-surface-secondary);
+
+    color:
+      #7f8cff;
+  }
+
+
+  /* =========================
+     TABLE CARD
+  ========================= */
+
+  .table-card {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+
+    box-shadow:
+      var(--wp-shadow);
+  }
+
+  .table-header {
+    border-bottom-color:
+      var(--wp-border);
+  }
+
+  .table-header h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .table-label {
+    color:
+      #8e96df;
+  }
+
+
+  /* =========================
+     SEARCH / FILTERS
+  ========================= */
+
+  .search-box {
+    background:
+      var(--wp-input-bg);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .search-box input {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .search-box input::placeholder {
+    color:
+      #8f8f8f;
+  }
+
+  .filter-select {
+    background:
+      var(--wp-input-bg);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .filter-select option {
+    background:
+      var(--wp-surface);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     TABLE
+  ========================= */
+
+  thead {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  th {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  td {
+    border-top-color:
+      var(--wp-border);
+
+    color:
+      #c3c3c3;
+  }
+
+  tbody tr:hover {
+    background:
+      var(--wp-hover-bg);
+  }
+
+  .total-cell,
+  .product-cell strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .product-avatar {
+    background:
+      #2a2b38;
+
+    color:
+      #7f8cff;
+  }
+
+
+  /* =========================
+     BADGES
+  ========================= */
+
+  .payment-badge {
+    background:
+      #2a2a2a;
+
+    color:
+      #c0c0c0;
+  }
+
+  .source-badge {
+    background:
+      #292a35;
+
+    color:
+      #7f8cff;
+  }
+
+  .source-badge[data-source='manual'] {
+    background:
+      #292a35;
+
+    color:
+      #7f8cff;
+  }
+
+  .source-badge[data-source='excel'] {
+    background:
+      #1d2b22;
+
+    color:
+      #73c991;
+  }
+
+  .source-badge[data-source='invoice'] {
+    background:
+      #35281d;
+
+    color:
+      #e5ae6d;
+  }
+
+  .source-badge[data-source='demo'] {
+    background:
+      #2e2637;
+
+    color:
+      #b89ad9;
+  }
+
+
+  /* =========================
+     TABLE FOOTER / FILTER BAR
+  ========================= */
+
+  .table-footer,
+  .filter-bar {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .table-footer strong,
+  .filter-bar strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     SECONDARY BUTTON
+  ========================= */
+
+  .secondary-button {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .secondary-button:hover {
+    background:
+      var(--wp-hover-bg);
+  }
+
+
+  /* =========================
+     AI BANNER
+  ========================= */
+
+  .ai-banner {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .ai-banner strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .ai-banner p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .ai-button {
+    background:
+      #292a35;
+
+    border-color:
+      #3a3b4d;
+
+    color:
+      #7f8cff;
+  }
+
+
+  /* =========================
+     EMPTY STATE
+  ========================= */
+
+  .empty-state {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .empty-icon {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .empty-state h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .empty-state p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     ROW ACTION
+  ========================= */
+
+  .row-action {
+    color:
+      #a0a0a0;
+  }
+
+  .row-action:hover {
+    background:
+      var(--wp-hover-bg);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      #7f8cff;
+  }
+
+
+  /* =========================
+     FLOATING ROW MENU
+  ========================= */
+
+  .row-menu {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+
+    box-shadow:
+      0 14px 40px
+      rgba(0, 0, 0, .32);
+  }
+
+  .row-menu::before {
+    background:
+      var(--wp-surface-secondary);
+
+    border-top-color:
+      var(--wp-border);
+
+    border-left-color:
+      var(--wp-border);
+  }
+
+  .row-menu-item {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .row-menu-item:hover {
+    background:
+      var(--wp-hover-bg);
+
+    color:
+      #7f8cff;
+  }
+
+  .row-menu-item.danger {
+    color:
+      #e0717a;
+  }
+
+  .row-menu-item.danger:hover {
+    background:
+      #352124;
+
+    color:
+      #f08a93;
+  }
+
+
+  /* =========================
+     NO RESULTS
+  ========================= */
+
+  .no-results {
+    color:
+      var(--wp-text-secondary);
+  }
+
+}

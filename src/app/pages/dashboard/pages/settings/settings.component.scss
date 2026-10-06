@@ -573,3 +573,304 @@
   }
 
 }
+
+
+.theme-field {
+  margin-top: 20px;
+}
+
+/* =========================================
+   DARK MODE - SETTINGS
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE
+  ========================= */
+
+  .settings-page {
+    background:
+      var(--wp-page-bg);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     HEADER
+  ========================= */
+
+  .page-header h1 {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  .page-header p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     SAVED MESSAGE
+  ========================= */
+
+  .saved-message {
+    background:
+      #1d2b22;
+
+    border-color:
+      #31513b;
+
+    color:
+      #73c991;
+  }
+
+
+  /* =========================
+     MAIN CARDS
+  ========================= */
+
+  .settings-menu,
+  .settings-content {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+  }
+
+
+  /* =========================
+     SETTINGS MENU
+  ========================= */
+
+  .settings-menu button > span {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+
+  .settings-menu strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  .settings-menu small {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  .settings-menu button:hover {
+    background:
+      var(--wp-hover-bg);
+  }
+
+
+  .settings-menu button.active {
+    background:
+      #292a35;
+  }
+
+
+  .settings-menu button.active > span {
+    background:
+      #303246;
+  }
+
+
+  .settings-menu button.active strong {
+    color:
+      #7f8cff;
+  }
+
+
+  /* =========================
+     SECTION HEADER
+  ========================= */
+
+  .section-header {
+    border-bottom-color:
+      var(--wp-border);
+  }
+
+
+  .section-header h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  .section-header p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     FORM
+  ========================= */
+
+  .form-group label {
+    color:
+      #dedede;
+  }
+
+
+  .form-group input,
+  .form-group select {
+    background:
+      var(--wp-input-bg);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  .form-group input::placeholder {
+    color:
+      #8f8f8f;
+  }
+
+
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color:
+      #5968e9;
+  }
+
+
+  /* readonly email */
+
+  .form-group input[readonly] {
+    background:
+      #202020;
+
+    color:
+      #aaaaaa;
+  }
+
+
+  /* =========================
+     ACTION DIVIDER
+  ========================= */
+
+  .section-actions {
+    border-top-color:
+      var(--wp-border);
+  }
+
+
+  /* =========================
+     NOTIFICATIONS
+  ========================= */
+
+  .notification-item {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+  }
+
+
+  .notification-item strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  .notification-item span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     DATA / FUTURE
+  ========================= */
+
+  .future-card {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+  }
+
+
+  .future-icon {
+    background:
+      #2c2c2c;
+  }
+
+
+  .future-card strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  .future-card p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     INTEGRATIONS
+  ========================= */
+
+  .integration-card {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+  }
+
+
+  .integration-icon {
+    background:
+      #292a35;
+  }
+
+
+  .integration-card strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  .integration-card p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  .available {
+    background:
+      #1d2b22;
+
+    color:
+      #73c991;
+  }
+
+
+  .soon {
+    background:
+      #2b2b2b;
+
+    color:
+      #aaaaaa;
+  }
+
+}

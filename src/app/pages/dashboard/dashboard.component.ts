@@ -1,11 +1,5 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-
-import {
-  CommonModule
-} from '@angular/common';
+import {Component,OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
 import {
   ActivatedRoute,
@@ -33,6 +27,14 @@ import {
   CampaignsApiService,
   CampaignApi
 } from '../../core/services/campaigns-api.service';
+
+import {
+  UserPreferencesApiService
+} from '../../core/services/user-preferences-api.service';
+
+import {
+  ThemeService
+} from '../../core/services/theme.service';
 
 
 /* ============================
@@ -243,7 +245,13 @@ export class DashboardComponent
       ProductsApiService,
 
     private campaignsApi:
-      CampaignsApiService
+      CampaignsApiService,
+
+    private preferencesApi:
+      UserPreferencesApiService,  
+
+    private themeService: 
+      ThemeService  
 
   ) {}
 
@@ -329,57 +337,108 @@ export class DashboardComponent
   }
 
 
-  /* ============================
-     FIREBASE AUTH
-  ============================ */
+/* ============================
+   FIREBASE AUTH
+============================ */
 
-  private listenAuthState():
-  void {
+private listenAuthState():
+void {
 
-    onAuthStateChanged(
+  onAuthStateChanged(
 
-      this.auth,
+    this.auth,
 
-      user => {
+    user => {
 
 
-        if (
-          user
-        ) {
+      if (
+        user
+      ) {
 
-          this.currentUser = {
+        this.currentUser = {
 
-            isAuthenticated:
-              true,
+          isAuthenticated:
+            true,
 
-            name:
-              user.displayName ||
-              'Usuario WisePick',
+          name:
+            user.displayName ||
+            'Usuario WisePick',
 
-            email:
-              user.email ||
-              ''
+          email:
+            user.email ||
+            ''
 
-          };
+        };
 
-        }
 
-        else {
+        /*
+         * Cargar preferencias
+         * del usuario autenticado.
+         */
+        this.preferencesApi
+          .getMyPreferences()
+          .subscribe({
 
-          this.currentUser = {
+            next: preferences => {
 
-            isAuthenticated:
-              false
+              this.themeService
+                .setTheme(
+                  preferences.theme
+                );
 
-          };
+            },
 
-        }
+            error: error => {
+
+              console.error(
+                'No se pudieron cargar preferencias del usuario:',
+                error
+              );
+
+
+              /*
+               * Si es un usuario nuevo
+               * o todavía no tiene preferencias,
+               * usar el tema del sistema.
+               */
+              this.themeService
+                .setTheme(
+                  'system'
+                );
+
+            }
+
+          });
 
       }
 
-    );
+      else {
 
-  }
+        this.currentUser = {
+
+          isAuthenticated:
+            false
+
+        };
+
+
+        /*
+         * Sin sesión iniciada,
+         * WisePick no debe conservar
+         * el tema del usuario anterior.
+         */
+        this.themeService
+          .setTheme(
+            'system'
+          );
+
+      }
+
+    }
+
+  );
+
+}
 
 
   /* ============================
@@ -391,11 +450,14 @@ export class DashboardComponent
 
     this.closeMenus();
 
-
     await signOut(
       this.auth
     );
 
+    this.themeService
+      .setTheme(
+        'system'
+      );
 
     await this.router.navigate([
       '/login'

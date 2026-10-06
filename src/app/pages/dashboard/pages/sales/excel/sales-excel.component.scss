@@ -855,3 +855,394 @@ td {
   }
 
 }
+
+
+/* =========================================
+   DARK MODE - EXCEL IMPORT
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .excel-page {
+    background:
+      var(--wp-page-bg);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header h1 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     MAIN CARDS
+  ========================= */
+
+  .upload-card,
+  .format-card,
+  .table-card,
+  .success-card {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+
+    box-shadow:
+      var(--wp-shadow);
+  }
+
+
+  /* =========================
+     UPLOAD HEADER
+  ========================= */
+
+  .upload-icon {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .upload-header h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .card-label {
+    color:
+      #8e96df;
+  }
+
+
+  /* =========================
+     DROP ZONE
+  ========================= */
+
+  .drop-zone {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      #4a4f63;
+  }
+
+  .drop-zone:hover {
+    background:
+      var(--wp-hover-bg);
+
+    border-color:
+      #5968e9;
+  }
+
+  .drop-icon {
+    background:
+      #292a35;
+
+    color:
+      #7f8cff;
+  }
+
+  .drop-zone strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .drop-zone > span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     SELECTED FILE
+  ========================= */
+
+  .selected-file {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .file-icon {
+    background:
+      #292a35;
+
+    color:
+      #7f8cff;
+  }
+
+  .selected-file strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .selected-file span,
+  .processing {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     ERROR BOX
+  ========================= */
+
+  .error-box {
+    background:
+      #352124;
+
+    color:
+      #ef8b94;
+  }
+
+
+  /* =========================
+     FORMAT CARD
+  ========================= */
+
+  .format-card h3 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .format-card p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .columns span {
+    background:
+      #292a35;
+
+    color:
+      #8f9aff;
+  }
+
+  .format-note {
+    border-top-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .format-note strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     TEMPLATE DOWNLOAD
+  ========================= */
+
+  .template-download {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .template-download-icon {
+    background:
+      #292a35;
+  }
+
+  .template-download-info strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .template-download-info small {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     PREVIEW HEADER
+  ========================= */
+
+  .preview-header h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .preview-header p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     PREVIEW KPI
+  ========================= */
+
+  .preview-kpi {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .preview-kpi span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .preview-kpi strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .preview-kpi.success {
+    background:
+      #1d2b22;
+  }
+
+  .preview-kpi.error {
+    background:
+      #352124;
+  }
+
+
+  /* =========================
+     TABLE
+  ========================= */
+
+  thead {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  th {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  td {
+    border-top-color:
+      var(--wp-border);
+
+    color:
+      #c3c3c3;
+  }
+
+  .total-cell {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .invalid-row {
+    background:
+      #2b2022;
+  }
+
+
+  /* =========================
+     STATUS
+  ========================= */
+
+  .status-valid {
+    background:
+      #1d2b22;
+
+    color:
+      #73c991;
+  }
+
+  .status-error {
+    background:
+      #352124;
+
+    color:
+      #ef8b94;
+  }
+
+
+  /* =========================
+     ERRORS CARD
+  ========================= */
+
+  .errors-card {
+    background:
+      #2b2022;
+
+    border-color:
+      #59363b;
+  }
+
+  .errors-card strong {
+    color:
+      #ef8b94;
+  }
+
+  .errors-card p {
+    color:
+      #c59da1;
+  }
+
+
+  /* =========================
+     SECONDARY BUTTON
+  ========================= */
+
+  .secondary-button {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .secondary-button:hover {
+    background:
+      var(--wp-hover-bg);
+  }
+
+
+  /* =========================
+     SUCCESS CARD
+  ========================= */
+
+  .success-card h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .success-card p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .success-stats > div {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .success-stats span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .success-stats strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+}

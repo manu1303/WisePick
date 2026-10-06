@@ -721,3 +721,207 @@
 
   color: #9296a5 !important;
 }
+
+
+/* =========================================
+   DARK MODE - MARKETING IA
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .marketing-ai-page {
+    background: var(--wp-page-bg);
+    color: var(--wp-text-primary);
+  }
+
+  .page-header h1 {
+    color: var(--wp-text-primary);
+  }
+
+  .page-header p {
+    color: var(--wp-text-secondary);
+  }
+
+  .ai-status {
+    background: #292a35;
+    border-color: #3a3b4d;
+    color: #8f9aff;
+  }
+
+
+  /* =========================
+     AI HERO
+  ========================= */
+
+  .ai-hero {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .ai-hero-content h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .ai-hero-content p {
+    color: var(--wp-text-secondary);
+  }
+
+  .analysis-score {
+    background: var(--wp-surface);
+    border: 1px solid var(--wp-border);
+  }
+
+  .analysis-score span {
+    color: var(--wp-text-secondary);
+  }
+
+  .analysis-score strong {
+    color: #7f8cff;
+  }
+
+
+  /* =========================
+     SECTION HEADING
+  ========================= */
+
+  .section-heading h2 {
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     INSIGHTS
+  ========================= */
+
+  .insight-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+  }
+
+  .insight-icon {
+    background: var(--wp-surface-secondary);
+  }
+
+  .insight-type {
+    color: #8e96df;
+  }
+
+  .insight-content h3 {
+    color: var(--wp-text-primary);
+  }
+
+  .insight-content p {
+    color: var(--wp-text-secondary);
+  }
+
+  .insight-content button {
+    color: #7f8cff;
+  }
+
+  .insight-content button:hover {
+    color: #9aa3ff;
+  }
+
+
+  /* =========================
+     INSIGHT EVIDENCE
+  ========================= */
+
+  .insight-evidence {
+    background: var(--wp-surface-secondary);
+    border: 1px solid var(--wp-border);
+  }
+
+  .insight-evidence span {
+    color: #b5b5b5;
+  }
+
+  .insight-evidence p {
+    color: var(--wp-text-secondary) !important;
+  }
+
+
+  /* =========================
+     BUSINESS HIGHLIGHT
+  ========================= */
+
+  .business-highlight {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+  }
+
+  .business-highlight h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .business-highlight p {
+    color: var(--wp-text-secondary);
+  }
+
+  .highlight-stats > div {
+    background: var(--wp-surface-secondary);
+  }
+
+  .highlight-stats span {
+    color: var(--wp-text-secondary);
+  }
+
+  .highlight-stats strong {
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     CAMPAIGN RECOMMENDATION
+  ========================= */
+
+  .campaign-card {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .campaign-icon {
+    background: var(--wp-surface);
+    border: 1px solid var(--wp-border);
+  }
+
+  .campaign-card h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .campaign-card p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     EMPTY STATE
+  ========================= */
+
+  .empty-state {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+  }
+
+  .empty-icon {
+    background: var(--wp-surface-secondary);
+    color: #7f8cff;
+  }
+
+  .empty-label {
+    color: #8e96df;
+  }
+
+  .empty-state h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .empty-state p {
+    color: var(--wp-text-secondary);
+  }
+
+}

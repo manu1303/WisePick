@@ -812,3 +812,364 @@ td strong {
 .export-actions .primary-button {
   margin: 0;
 }
+
+
+
+/* =========================================
+   DARK MODE - REPORTS
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .reports-page {
+    background:
+      var(--wp-page-bg);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header h1 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .page-header p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     EXPORT MESSAGE
+  ========================= */
+
+  .export-message {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      #8e96df;
+  }
+
+
+  /* =========================
+     FILTER CARD
+  ========================= */
+
+  .report-filter-card {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .report-filter-card h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .period-options button {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .period-options button:hover {
+    background:
+      var(--wp-hover-bg);
+  }
+
+  .period-options button.selected {
+    background:
+      #292a35;
+
+    border-color:
+      #5968e9;
+
+    color:
+      #7f8cff;
+  }
+
+  .custom-dates label {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .custom-dates input {
+    background:
+      var(--wp-input-bg);
+
+    border-color:
+      var(--wp-border);
+
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     TABS
+  ========================= */
+
+  .report-tabs {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .report-tabs button {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .report-tabs button:hover {
+    background:
+      var(--wp-hover-bg);
+  }
+
+  .report-tabs button.active {
+    background:
+      #292a35;
+
+    color:
+      #7f8cff;
+
+    box-shadow:
+      0 2px 8px
+      rgba(0, 0, 0, .18);
+  }
+
+
+  /* =========================
+     REPORT HEADING
+  ========================= */
+
+  .report-heading h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .report-heading p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .report-status {
+    background:
+      #1d2b22;
+
+    color:
+      #73c991;
+  }
+
+
+  /* =========================
+     KPI
+  ========================= */
+
+  .kpi-card {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .kpi-card span,
+  .kpi-card small {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .kpi-card strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     REPORT CARDS
+  ========================= */
+
+  .report-card,
+  .report-table-card {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .card-header h3 {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     RANKING
+  ========================= */
+
+  .ranking-item {
+    border-bottom-color:
+      var(--wp-border);
+  }
+
+  .position {
+    background:
+      var(--wp-surface-secondary);
+
+    color:
+      #7f8cff;
+  }
+
+  .ranking-info strong,
+  .ranking-total {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .ranking-info span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     CUSTOMER REPORT
+  ========================= */
+
+  .customer-report > p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .mini-stats div {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .mini-stats span {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  .mini-stats strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     FINDINGS
+  ========================= */
+
+  .findings-card {
+    background:
+      var(--wp-surface-secondary);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .findings-card h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .findings-list p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     TABLE
+  ========================= */
+
+  thead {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  th {
+    color:
+      var(--wp-text-secondary);
+  }
+
+  td {
+    border-top-color:
+      var(--wp-border);
+
+    color:
+      #c3c3c3;
+  }
+
+  td strong {
+    color:
+      var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     CLIENT BADGES
+  ========================= */
+
+  .client-badge {
+    background:
+      #2a2a2a;
+
+    color:
+      #b8b8b8;
+  }
+
+  .client-badge.recurring {
+    background:
+      #1d2b22;
+
+    color:
+      #73c991;
+  }
+
+
+  /* =========================
+     EMPTY STATE
+  ========================= */
+
+  .empty-state {
+    background:
+      var(--wp-surface);
+
+    border-color:
+      var(--wp-border);
+  }
+
+  .empty-icon {
+    background:
+      var(--wp-surface-secondary);
+  }
+
+  .empty-state h2 {
+    color:
+      var(--wp-text-primary);
+  }
+
+  .empty-state p {
+    color:
+      var(--wp-text-secondary);
+  }
+
+}

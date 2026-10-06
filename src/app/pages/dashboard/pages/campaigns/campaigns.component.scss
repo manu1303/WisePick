@@ -1137,3 +1137,443 @@ td {
   }
 
 }
+
+
+/* =========================================
+   DARK MODE - CAMPAIGNS
+========================================= */
+
+:host-context([data-theme='dark']) {
+
+  /* =========================
+     PAGE / HEADER
+  ========================= */
+
+  .campaigns-page {
+    background: var(--wp-page-bg);
+    color: var(--wp-text-primary);
+  }
+
+  .page-header h1 {
+    color: var(--wp-text-primary);
+  }
+
+  .page-header p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     BUTTONS
+  ========================= */
+
+  .secondary-button {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+    color: var(--wp-text-primary);
+  }
+
+  .secondary-button:hover {
+    background: var(--wp-hover-bg);
+  }
+
+
+  /* =========================
+     MAIN CARDS
+  ========================= */
+
+  .campaign-form-card,
+  .campaign-preview,
+  .campaign-list-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+    box-shadow: var(--wp-shadow);
+  }
+
+
+  /* =========================
+     FORM HEADER
+  ========================= */
+
+  .form-header {
+    border-bottom-color: var(--wp-border);
+  }
+
+  .form-header h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .form-header p {
+    color: var(--wp-text-secondary);
+  }
+
+  .close-button {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+    color: var(--wp-text-secondary);
+  }
+
+  .close-button:hover {
+    background: var(--wp-hover-bg);
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     AI CONTEXT
+  ========================= */
+
+  .ai-context {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .ai-context span {
+    color: #8e96df;
+  }
+
+  .ai-context strong {
+    color: var(--wp-text-primary);
+  }
+
+  .ai-context p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     FORM
+  ========================= */
+
+  .form-group label {
+    color: #dedede;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--wp-input-bg);
+    border-color: var(--wp-border);
+    color: var(--wp-text-primary);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: #8f8f8f;
+  }
+
+  .form-group select option {
+    background: var(--wp-surface);
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     CHANNEL OPTIONS
+  ========================= */
+
+  .channel-options button {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+    color: var(--wp-text-secondary);
+  }
+
+  .channel-options button:hover {
+    background: var(--wp-hover-bg);
+  }
+
+  .channel-options button.selected {
+    background: #292a35;
+    border-color: #5968e9;
+    color: #7f8cff;
+  }
+
+
+  /* =========================
+     AI GENERATE BUTTON
+  ========================= */
+
+  .ai-generate-button {
+    background: #292a35;
+    border-color: #3a3b4d;
+    color: #7f8cff;
+  }
+
+  .ai-generate-button:hover:not(:disabled) {
+    background: var(--wp-hover-bg);
+  }
+
+
+  /* =========================
+     FORM ACTIONS
+  ========================= */
+
+  .form-actions {
+    border-top-color: var(--wp-border);
+  }
+
+
+  /* =========================
+     CAMPAIGN PREVIEW
+  ========================= */
+
+  .campaign-preview h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .phone-preview {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+  }
+
+  .phone-header {
+    border-bottom-color: var(--wp-border);
+  }
+
+  .phone-header strong {
+    color: var(--wp-text-primary);
+  }
+
+  .phone-header span {
+    color: var(--wp-text-secondary);
+  }
+
+  .message-preview p {
+    color: #d0d0d0;
+  }
+
+  .message-placeholder {
+    color: #8f8f8f !important;
+  }
+
+  .target-preview {
+    background: var(--wp-surface);
+    border: 1px solid var(--wp-border);
+  }
+
+  .target-preview span {
+    color: var(--wp-text-secondary);
+  }
+
+  .target-preview strong {
+    color: var(--wp-text-primary);
+  }
+
+  .preview-note {
+    background: #292a35;
+    border: 1px solid var(--wp-border);
+  }
+
+  .preview-note span {
+    color: #7f8cff;
+  }
+
+  .preview-note p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     EMPTY STATE
+  ========================= */
+
+  .empty-state {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+  }
+
+  .empty-icon {
+    background: var(--wp-surface-secondary);
+  }
+
+  .empty-label {
+    color: #8e96df;
+  }
+
+  .empty-state h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .empty-state p {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     KPI CARDS
+  ========================= */
+
+  .kpi-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+  }
+
+  .kpi-card span,
+  .kpi-card small {
+    color: var(--wp-text-secondary);
+  }
+
+  .kpi-card strong {
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     CAMPAIGN LIST
+  ========================= */
+
+  .list-header {
+    border-bottom-color: var(--wp-border);
+  }
+
+  .list-header h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .list-tools input,
+  .list-tools select {
+    background: var(--wp-input-bg);
+    border-color: var(--wp-border);
+    color: var(--wp-text-primary);
+  }
+
+  .list-tools input::placeholder {
+    color: #8f8f8f;
+  }
+
+  .list-tools select option {
+    background: var(--wp-surface);
+    color: var(--wp-text-primary);
+  }
+
+
+  /* =========================
+     TABLE
+  ========================= */
+
+  thead {
+    background: var(--wp-surface-secondary);
+  }
+
+  th {
+    color: var(--wp-text-secondary);
+  }
+
+  td {
+    border-top-color: var(--wp-border);
+    color: #c3c3c3;
+  }
+
+  tbody tr:hover {
+    background: var(--wp-hover-bg);
+  }
+
+
+  /* =========================
+     CAMPAIGN NAME
+  ========================= */
+
+  .campaign-avatar {
+    background: #292a35;
+    color: #7f8cff;
+  }
+
+  .campaign-name strong {
+    color: var(--wp-text-primary);
+  }
+
+  .campaign-name span {
+    color: var(--wp-text-secondary);
+  }
+
+
+  /* =========================
+     BADGES
+  ========================= */
+
+  .channel-badge,
+  .source-badge,
+  .status-badge {
+    background: #2a2a2a;
+    color: #c0c0c0;
+  }
+
+  .source-badge.ai {
+    background: #292a35;
+    color: #7f8cff;
+  }
+
+  .status-badge[data-status="draft"] {
+    background: #2a2a2a;
+    color: #b8b8b8;
+  }
+
+  .status-badge[data-status="active"] {
+    background: #1d2b22;
+    color: #73c991;
+  }
+
+  .status-badge[data-status="completed"] {
+    background: #292a35;
+    color: #7f8cff;
+  }
+
+
+  /* =========================
+     ROW ACTIONS
+  ========================= */
+
+  .row-actions button {
+    background: var(--wp-surface-secondary);
+    border-color: var(--wp-border);
+    color: var(--wp-text-secondary);
+  }
+
+  .row-actions button:hover {
+    background: var(--wp-hover-bg);
+    color: #7f8cff;
+  }
+
+  .row-actions .delete-button:hover {
+    background: #352124;
+    color: #ef8b94;
+    border-color: #59363b;
+  }
+
+
+  /* =========================
+     CAMPAIGN DETAIL
+  ========================= */
+
+  .campaign-detail-card {
+    background: var(--wp-surface);
+    border-color: var(--wp-border);
+  }
+
+  .detail-header h2 {
+    color: var(--wp-text-primary);
+  }
+
+  .detail-grid > div {
+    background: var(--wp-surface-secondary);
+  }
+
+  .detail-grid span,
+  .detail-message > span {
+    color: var(--wp-text-secondary);
+  }
+
+  .detail-grid strong {
+    color: var(--wp-text-primary);
+  }
+
+  .detail-message {
+    background: var(--wp-surface-secondary);
+    border: 1px solid var(--wp-border);
+  }
+
+  .detail-message p {
+    color: #c3c3c3;
+  }
+
+}

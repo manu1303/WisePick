@@ -319,6 +319,7 @@
                 [(ngModel)]="
                   userSettings.email
                 "
+                readonly
               >
 
             </div>
@@ -334,7 +335,7 @@
               type="button"
               class="primary-button"
               (click)="
-                saveSettings()
+                saveAccount()
               "
             >
               Guardar cambios
@@ -571,6 +572,38 @@
 
             </div>
 
+
+          </div>
+
+
+          <div class="form-group full theme-field">
+
+            <label>
+              Tema
+            </label>
+
+            <select
+              [(ngModel)]="
+                userSettings.theme
+              "
+              (ngModelChange)="
+                onThemeChange($event)
+              "
+            >
+
+              <option value="light">
+                Claro
+              </option>
+
+              <option value="dark">
+                Oscuro
+              </option>
+
+              <option value="system">
+                Usar configuración del sistema
+              </option>
+
+            </select>
 
           </div>
 

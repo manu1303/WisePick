@@ -136,6 +136,11 @@ public class SecurityConfig {
                                         )
                                         .authenticated()
 
+                                        .requestMatchers(
+                                                "/api/preferences/**"
+                                        )
+                                        .authenticated()
+
 
                                         .anyRequest()
                                         .permitAll()
